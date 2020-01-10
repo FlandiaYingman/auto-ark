@@ -1,0 +1,10 @@
+**/.gradle
+**/build
+
+**/.idea
+
+log
+opencv
+
+screen.png
+lombok.config
