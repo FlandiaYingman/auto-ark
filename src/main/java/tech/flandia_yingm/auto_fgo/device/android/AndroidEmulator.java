@@ -63,7 +63,7 @@ public class AndroidEmulator implements Device {
 
     @Override
     public void tap(Point point) {
-        point = Point.map(point, 0, Short.MAX_VALUE, 0, width, 0, Short.MAX_VALUE, 0, height);
+        //point = Point.map(point, 0, Short.MAX_VALUE, 0, width, 0, Short.MAX_VALUE, 0, height);
         try {
             log.debug("{} - Touching the screen at point {}", this, point);
             val shellStream = device.executeShell("input", "tap", String.valueOf(point.getX()), String.valueOf(point.getY()));
@@ -190,11 +190,11 @@ public class AndroidEmulator implements Device {
                     }
                     val yEvent = AndroidEvent.parse(line);
                     if (isYEvent(yEvent)) {
-                        val point = new Point((int) xEvent.getEventValue(), (int) yEvent.getEventValue());
+                        var point = new Point((int) xEvent.getEventValue(), (int) yEvent.getEventValue());
                         val image = String.format("./record/%d.png", num++);
                         ImageIO.write(capture(), "png", new File(image));
 
-
+                        point = Point.map(point, 0, 32767, 0, 960, 0, 32767, 0, 540);
                         log.info("{} - Recorded event: new Point({}, {}) num: {}", this, point.getX(), point.getY(), num);
                     }
                 }

@@ -90,7 +90,7 @@ public class Images {
     }
 
 
-    public double matchSameTemplate(BufferedImage image, BufferedImage template) {
+    public double matchTemplate(BufferedImage image, BufferedImage template) {
         log.debug("{} - Matching the same template of the image", Images.class.getSimpleName());
 
         val imageMat = toMat(image);
@@ -115,7 +115,7 @@ public class Images {
         return result;
     }
 
-    public Point matchTemplate(BufferedImage image, BufferedImage template) {
+    public Point findTemplate(BufferedImage image, BufferedImage template) {
         log.debug("{} - Matching the template of the image", Images.class.getSimpleName());
         val imageMat = toMat(image);
         val templateMat = toMat(template);
@@ -154,7 +154,7 @@ public class Images {
     }
 
 
-    public BufferedImage readImageResource(String imageName, Class<?> imageClass) {
+    public static BufferedImage fromResource(String imageName, Class<?> imageClass) {
         try (val imageStream = imageClass.getResourceAsStream(imageName)) {
             log.debug("{} - Reading the image resource {} from class {}",
                       Images.class.getSimpleName(), imageName, imageClass);

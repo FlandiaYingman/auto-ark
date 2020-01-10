@@ -26,7 +26,7 @@ public class TillMatchSt extends Statement {
     @Override
     protected void runStatement(Device device, Script superScript) {
         try {
-            while (!device.match(template)) {
+            while (!device.matches(template)) {
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {

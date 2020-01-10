@@ -27,7 +27,7 @@ public class IfMatchSt extends Statement {
     @Override
     protected void runStatement(Device device, Script superScript) {
         val script = Script.of(String.format("%s -> %s", superScript.getName(), this), statement);
-        if (device.match(template)) {
+        if (device.matches(template)) {
             device.run(script);
         }
     }

@@ -43,6 +43,10 @@ lombok {
     config['lombok.tostring.includefieldnames'] = 'false'
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
 
 clean.delete(file('log'))
 clean.delete(file('screen.png'))

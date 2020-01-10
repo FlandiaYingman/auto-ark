@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Thread.currentThread;
+
 public interface Device {
 
     void tap(Point point);
@@ -22,11 +24,11 @@ public interface Device {
     BufferedImage capture();
 
 
-    default boolean match(Template template) {
+    default boolean matches(Template template) {
         val log = LoggerFactory.getLogger(this.getClass());
 
         log.debug("{} - Matching template: {}", this, template);
-        val similarity = Images.matchSameTemplate(capture(), template.getImage());
+        val similarity = Images.matchTemplate(capture(), template.getImage());
         val match = similarity > template.getThreshold();
         if (match) {
             log.debug("{} - Matched template: {}, similarity: {}", this, template, similarity);
@@ -36,25 +38,36 @@ public interface Device {
         return match;
     }
 
-    default boolean match(Template... templates) {
-        return match(Arrays.asList(templates));
+    default Template matches(Template... tmpls) {
+        return matches(Arrays.asList(tmpls));
     }
 
-    default boolean match(List<Template> templateList) {
-        return templateList.stream()
-                           .map(this::match)
-                           .reduce(false, (a, b) -> a || b);
-    }
-
-    default Point find(Template template) {
+    default Template matches(List<Template> tmpls) {
         val log = LoggerFactory.getLogger(this.getClass());
+        log.debug("{} - Matching templates {}", this, tmpls);
 
-        log.debug("{} - Finding template: {}", this, template);
-        val similarityPoint = Images.matchTemplate(capture(), template.getImage());
-        if (similarityPoint.getWeight() > template.getThreshold()) {
-            return similarityPoint;
-        } else {
-            return Point.getEmpty();
+        val img = capture();
+        for (Template tmpl : tmpls) {
+            val sim = Images.matchTemplate(img, tmpl.getImage());
+            if (sim > tmpl.getThreshold()) {
+                log.debug("{} - Matched template {}, similarity: {}", this, tmpl, sim);
+                return tmpl;
+            } else {
+                log.debug("{} - Didn't match template {}, similarity: {}", this, tmpl, sim);
+            }
+        }
+        return null;
+    }
+
+    default void tillMatched(Template tmpl) {
+        while (!matches(tmpl) && !currentThread().isInterrupted()) {
+            Thread.yield();
+        }
+    }
+
+    default void tillMatched(Template... tmpls) {
+        while (matches(tmpls) != null && !currentThread().isInterrupted()) {
+            Thread.yield();
         }
     }
 
@@ -66,6 +79,18 @@ public interface Device {
             log.debug("{} - Delayed {} ms", this, ms);
         } catch (InterruptedException e) {
             //Ignored: thread interrupted
+        }
+    }
+
+    default Point find(Template template) {
+        val log = LoggerFactory.getLogger(this.getClass());
+
+        log.debug("{} - Finding template: {}", this, template);
+        val similarityPoint = Images.findTemplate(capture(), template.getImage());
+        if (similarityPoint.getWeight() > template.getThreshold()) {
+            return similarityPoint;
+        } else {
+            return Point.getEmpty();
         }
     }
 

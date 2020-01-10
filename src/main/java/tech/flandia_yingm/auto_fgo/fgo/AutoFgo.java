@@ -43,9 +43,9 @@ public class AutoFgo {
 
 
     public boolean match(EnumSet<State> states) {
-        val result = device.match(states.stream()
-                                        .map(State::getTemplate)
-                                        .collect(Collectors.toList()));
+        val result = device.matches(states.stream()
+                                          .map(State::getTemplate)
+                                          .collect(Collectors.toList()));
         log.info("{} - Matched states {}, result: {}", this, states, result);
         return result;
     }
@@ -72,7 +72,7 @@ public class AutoFgo {
         device.tap(FgoPoints.ENTER_INSTANCE);
         if (useAppleIfInsufficient) {
             delay(500);
-            if (device.match(FgoTemplates.AP_INSUFFICIENT)) {
+            if (device.matches(FgoTemplates.AP_INSUFFICIENT)) {
                 device.tap(FgoPoints.USE_APPLE_N1);
                 delay(500);
                 device.tap(FgoPoints.USE_APPLE_N2);

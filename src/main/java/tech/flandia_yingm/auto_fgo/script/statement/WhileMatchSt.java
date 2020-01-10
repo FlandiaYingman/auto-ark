@@ -34,7 +34,7 @@ public class WhileMatchSt extends Statement {
     @Override
     protected void runStatement(Device device, Script superScript) {
         val script = Script.of(String.format("%s -> %s", superScript.getName(), this), statement);
-        while (!device.match(template)) {
+        while (!device.matches(template)) {
             device.run(script);
         }
     }
