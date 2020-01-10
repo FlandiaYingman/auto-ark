@@ -19,26 +19,26 @@ public class ArknightsAuto {
     }
 
 
-    public void login(ArknightsAccount account) {
+    public void 登录(ArknightsAccount account) {
         log.info("{} - Logging in using account: {}", this, account);
         device.run(ArknightsScripts.getLogin(account));
         log.info("{} - Logon using account: {}", this, account);
     }
 
-    public void commandAsAgent() {
+    public void 代理指挥() {
         log.info("{} - Commanding as agent", this);
         device.run(ArknightsScripts.getCommandAsAgent());
         log.info("{} - Commanded successful as agent", this);
     }
 
 
-    public void harvestManufacturingStation() {
+    public void 收获加工站() {
         log.info("{} - Harvesting manufacturing station", this);
         device.run(ArknightsScripts.getHarvestManufacturingStation());
         log.info("{} - Harvested manufacturing station", this);
     }
 
-    public void harvestTradeStation() {
+    public void 收获贸易站() {
         log.info("{} - Harvesting trade station", this);
         device.run(ArknightsScripts.getHarvestTradeStation());
         log.info("{} - Harvested trade station", this);

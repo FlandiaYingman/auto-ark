@@ -44,4 +44,6 @@ lombok {
 }
 
 
-clean.delete('./log')
+clean.delete(file('log'))
+clean.delete(file('screen.png'))
+clean.delete(file('lombok.config'))

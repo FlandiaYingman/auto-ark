@@ -157,14 +157,14 @@ public class Images {
     public BufferedImage readImageResource(String imageName, Class<?> imageClass) {
         try (val imageStream = imageClass.getResourceAsStream(imageName)) {
             log.debug("{} - Reading the image resource {} from class {}",
-                    Images.class.getSimpleName(), imageName, imageClass);
+                      Images.class.getSimpleName(), imageName, imageClass);
             val read = ImageIO.read(imageStream);
             log.debug("{} - Read the image resource {} from class {}",
-                    Images.class.getSimpleName(), imageName, imageClass);
+                      Images.class.getSimpleName(), imageName, imageClass);
             return read;
         } catch (IOException e) {
             log.error("{} - An I/O error occurs while reading the image resource {} from class {}",
-                    Images.class.getSimpleName(), imageName, imageClass, e);
+                      Images.class.getSimpleName(), imageName, imageClass, e);
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         }
     }
