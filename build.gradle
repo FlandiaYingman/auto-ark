@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'io.freefair.lombok' version '4.1.6'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'tech.flandia_yingm.auto_fgo'
+version '1.1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'tech.flandia_yingm.auto_fgo.arknights.AutoArknights'
+    }
+}
+
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.0-rc-2', ext: 'pom'
+
+    implementation group: 'com.github.vidstige', name: 'jadb', version: '94ebf38'
+    implementation group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '4.0.1-1.4.4'
+
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.0-alpha5'
+
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+}
+
+lombok {
+    config['lombok.tostring.includefieldnames'] = 'false'
+}
+
+
+clean.delete('./log')
