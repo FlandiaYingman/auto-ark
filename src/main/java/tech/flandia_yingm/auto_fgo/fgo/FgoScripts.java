@@ -3,7 +3,7 @@ package tech.flandia_yingm.auto_fgo.fgo;
 import lombok.experimental.UtilityClass;
 import se.vidstige.jadb.JadbException;
 import tech.flandia_yingm.auto_fgo.device.Device;
-import tech.flandia_yingm.auto_fgo.device.android.AndroidEmulator;
+import tech.flandia_yingm.auto_fgo.device.android.AdbDevice;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -16,7 +16,7 @@ public class FgoScripts {
 
 
     public static void main(String[] args) throws IOException, JadbException {
-        Device device = new AndroidEmulator("localhost:5555");
+        Device device = new AdbDevice("localhost:5555");
         AutoFgo autoFgo = new AutoFgo(device);
         for (int i = 0; i < 256; i++) {
             getDailyFireScript().accept(autoFgo);

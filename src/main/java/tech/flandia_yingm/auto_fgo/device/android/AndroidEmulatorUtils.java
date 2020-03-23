@@ -12,11 +12,11 @@ import java.io.IOException;
 public class AndroidEmulatorUtils {
 
     public static void main(String[] args) throws IOException, JadbException {
-        val ae = new AndroidEmulator("emulator-5554");
+        val ae = new AdbDevice("emulator-5554");
         writeImage(ae);
     }
 
-    private static void writeImage(AndroidEmulator ae) throws IOException {
+    private static void writeImage(AdbDevice ae) throws IOException {
         ImageIO.write(ae.capture(), "png", new File("./screen.png"));
     }
 

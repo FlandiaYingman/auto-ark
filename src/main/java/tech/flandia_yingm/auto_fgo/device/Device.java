@@ -4,7 +4,6 @@ import lombok.val;
 import org.slf4j.LoggerFactory;
 import tech.flandia_yingm.auto_fgo.img.Images;
 import tech.flandia_yingm.auto_fgo.img.Point;
-import tech.flandia_yingm.auto_fgo.script.Script;
 import tech.flandia_yingm.auto_fgo.img.Template;
 
 import java.awt.image.BufferedImage;
@@ -65,10 +64,12 @@ public interface Device {
         }
     }
 
-    default void tillMatched(Template... tmpls) {
-        while (matches(tmpls) != null && !currentThread().isInterrupted()) {
+    default Template tillMatched(Template... tmpls) {
+        Template tmpl;
+        while ((tmpl = matches(tmpls)) == null && !currentThread().isInterrupted()) {
             Thread.yield();
         }
+        return tmpl;
     }
 
     default void delay(long ms) {
@@ -87,16 +88,13 @@ public interface Device {
 
         log.debug("{} - Finding template: {}", this, template);
         val similarityPoint = Images.findTemplate(capture(), template.getImage());
+        log.debug("{} - Found template, point: {}", this, similarityPoint);
         if (similarityPoint.getWeight() > template.getThreshold()) {
             return similarityPoint;
         } else {
-            return Point.getEmpty();
+            return Point.getEMPTY();
         }
     }
 
-
-    default void run(Script script) {
-        script.runScript(this);
-    }
 
 }

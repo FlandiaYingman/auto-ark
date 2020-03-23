@@ -47,7 +47,8 @@ public class AutoFgo {
                                           .map(State::getTemplate)
                                           .collect(Collectors.toList()));
         log.info("{} - Matched states {}, result: {}", this, states, result);
-        return result;
+        // TODO: 1/10/2020 Change return value, brc
+        return false;
     }
 
     public void waitTillMatch(EnumSet<State> states) {
