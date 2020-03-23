@@ -1,11 +1,8 @@
-**/.gradle
-**/build
-
-**/.idea
+.gradle
+.idea
+out
 
 log
 record
-opencv
 
 screen.png
-lombok.config
