@@ -8,7 +8,7 @@ import java.nio.charset.Charset
 
 
 fun main() {
-    val device = AdbDevice("127.0.0.1:7555")
+    AdbDevice.connect("127.0.0.1:7555")
     recordEvents()
 }
 

@@ -1,114 +1,108 @@
 package tech.flandia_yingm.auto_fgo.arknights
 
+import tech.flandia_yingm.auto_fgo.Properties
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsAuto.SanityPolicy.NEVER_USE
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.chooseFirstOperator
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.chooseOperatorXOffset
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.chooseOperatorYOffset
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.closeAnnouncement
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmInput
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmLevelUp
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmLogin
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmManageRoom
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmWorkingWarning
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.enterManagingRooms
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.enterTrade
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.exitInfrastructure
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.exitManagingRooms
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.finishMission
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.loginAccount
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.manageAccount
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.manageFirstRoom
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.passwordInput
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.screenCenter
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.selectFirstRoom
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.slideRoomAcrossFloorEnd
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.slideRoomAcrossFloorStart
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.slideRoomEnd
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.slideRoomStart
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.startMission
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.usernameInput
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.ableToConfirmMissionStart
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.ableToStartMission
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.levelUp
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.requiredToUseOriginium
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.requiredToUsePotion
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedIn
-import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedInAnnouncement
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedInAnnouncement1
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedInAnnouncement2
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.logoScreen
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.missionFailure
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.missionSuccess
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.operatorWorkingWarning
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.productBubble
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.tradeOrder
 import tech.flandia_yingm.auto_fgo.device.Device
+import tech.flandia_yingm.auto_fgo.device.android.AdbDevice
+import tech.flandia_yingm.auto_fgo.img.Template.Companion.EMPTY_TEMPLATE
 import tech.flandia_yingm.auto_fgo.script.*
 
-class ArknightsMissionAuto(
-        device: Device,
-        private val sanityPolicy: SanityPolicy = SanityPolicy.NEVER_USE
-) : Auto(device) {
+class ArknightsAuto(device: Device) : Auto(device) {
 
     enum class SanityPolicy {
         NEVER_USE, //永不
         USE_POTION, //使用合剂
         USE_ORIGINIUM; //使用源石
 
-        fun canUsePotion(): Boolean = this == USE_POTION || this == USE_ORIGINIUM
-        fun canUseOriginium(): Boolean = this == USE_ORIGINIUM
+        private fun potionUsable(): Boolean = this == USE_POTION || this == USE_ORIGINIUM
+        private fun originiumUsable(): Boolean = this == USE_ORIGINIUM
+
+        fun assertPotionUsable() = if (!potionUsable()) throw Exception("Can't use potion.") else Unit
+        fun assertOriginiumUsable() = if (!originiumUsable()) throw Exception("Can't use potion.") else Unit
     }
 
-    fun autoCommand() {
-        operation {
-            invoke whenAble startMission
+    fun autoCommand(sanityPolicy: SanityPolicy = NEVER_USE) {
+        assertMatching(ableToStartMission)
 
-            invoke ifAble (usePotion thenInvokeWhenAble startMission)
-            invoke ifAble (useOriginium thenInvokeWhenAble startMission)
+        tap(startMission)
+        waitMatching(ableToConfirmMissionStart, requiredToUsePotion, requiredToUseOriginium).run {
+            if (this == requiredToUseOriginium) {
+                sanityPolicy.assertPotionUsable()
 
-            invoke whenAble confirmMissionStart
-            invoke whenAble finishMission
-        }.invoke()
-    }
-
-    private val startMission = operation {
-        tap(ArknightsPoints.startMission)
-    } ableAfter {
-        waitMatching(ArknightsTemplates.ableToStartMission)
-    }
-
-    private val usePotion = operation {
-        tap(ArknightsPoints.confirmRefreshSanity)
-    } ableIf {
-        if (isMatching(ArknightsTemplates.ableToUsePotion)) {
-            if (sanityPolicy.canUsePotion()) {
-                true
-            } else {
-                exception("no sanity but cannot use potion")
+                tap(ArknightsPoints.chooseOriginium)
+                delay()
             }
-        } else {
-            false
-        }
-    }
+            if (this == requiredToUsePotion || this == requiredToUseOriginium) {
+                sanityPolicy.assertPotionUsable()
 
-    private val useOriginium = operation {
-        tap(ArknightsPoints.useOriginium)
+                tap(ArknightsPoints.confirmUseSanityItem)
+                delay()
+
+                tap(startMission)
+                waitMatching(ableToConfirmMissionStart)
+            }
+        }
+
+        tap(ArknightsPoints.confirmStartMission)
+        waitMatching(missionSuccess, missionFailure, levelUp).run {
+            if (this == levelUp) {
+                tap(confirmLevelUp)
+                waitMatching(missionSuccess)
+            }
+        }
+
+        tap(finishMission)
         delay()
-        tap(ArknightsPoints.confirmRefreshSanity)
-    } ableIf {
-        if (isMatching(ArknightsTemplates.ableToUseOriginium)) {
-            if (sanityPolicy.canUseOriginium()) {
-                true
-            } else {
-                exception("no sanity but cannot use originium")
-            }
-        } else {
-            false
-        }
+        tap(finishMission)
+        waitMatching(ableToStartMission)
     }
 
-    private val confirmMissionStart = operation {
-        tap(ArknightsPoints.confirmMissionStart)
-    } ableAfter {
-        waitMatching(ArknightsTemplates.ableToConfirmMissionStart)
-    }
-
-    private val finishMission = operation {
-        tap(ArknightsPoints.finishMission)
-    } ableAfter {
-        waitMatching(ArknightsTemplates.missionSuccess, ArknightsTemplates.missionFailure, ArknightsTemplates.levelUp)
-        delay(5000)
-        invoke ifAble (confirmLevelUp thenInvokeWhenAble operation { delay(5000) })
-    }
-
-    private val confirmLevelUp = operation {
-        tap(ArknightsPoints.confirmLevelUp)
-    } ableIf {
-        isMatching(ArknightsTemplates.levelUp)
-    }
-
-}
-
-class ArknightsInfrastructureAuto(device: Device) : Auto(device) {
 
     fun enterInfrastructure() {
         assertMatching(loggedIn)
 
         tap(ArknightsPoints.enterInfrastructure)
-        delay(5000)
+        delay(10000)
     }
 
     fun harvestProduct() {
@@ -149,16 +143,120 @@ class ArknightsInfrastructureAuto(device: Device) : Auto(device) {
         waitMatching(loggedIn)
     }
 
-}
 
-class ArknightsLoginAuto(device: Device) : Auto(device) {
+    fun enterManagingStationed() {
+        // assertMatching(inInfrastructure)
+        // TODO: Create a template inInfrastructure
+
+        tap(enterManagingRooms)
+        delay(3000)
+    }
+
+    fun exitManagingStationed() {
+        tap(exitManagingRooms)
+        delay(3000)
+    }
+
+    fun exchangeAll() {
+        /*//Dormitory
+        repeat(4) {
+            slideRoom(4)
+            slideRoomAcrossFloor(1)
+            exchangeOperators(5)
+        }
+
+        enterManagingStationed()
+        exitManagingStationed()
+    */
+        //Others
+        exchangeOperators(5)
+        slideRoom(1)
+        exchangeOperators(2)
+        slideRoomAcrossFloor(1)
+
+        exchangeOperators(3)
+        slideRoom(1)
+        exchangeOperators(3)
+        slideRoom(1)
+        exchangeOperators(1)
+        slideRoom(2)
+        exchangeOperators(1)
+
+        exchangeOperators(3)
+        slideRoom(1)
+        exchangeOperators(3)
+        slideRoom(1)
+        exchangeOperators(1)
+        slideRoom(2)
+        exchangeOperators(1)
+
+        exchangeOperators(3)
+        slideRoom(1)
+        exchangeOperators(3)
+        slideRoom(1)
+        exchangeOperators(1)
+        slideRoom(2)
+        exchangeOperators(1)
+    }
+
+    fun exchangeOperators(count: Int) {
+        tap(manageFirstRoom)
+        delay()
+
+        for (i in 0 until count * 2) {
+            chooseOperator(i)
+        }
+        delay()
+
+        tap(confirmManageRoom)
+        delay()
+
+        if (isMatching(operatorWorkingWarning)) {
+            tap(confirmWorkingWarning)
+        }
+        delay(2000)
+    }
+
+    fun chooseOperator(num: Int) {
+        val x = num / 2
+        val y = num % 2
+
+        val point = chooseFirstOperator + chooseOperatorXOffset * x + chooseOperatorYOffset * y
+        tap(point)
+        delay(25)
+    }
+
+    fun slideRoom(count: Int) {
+        repeat(count) {
+            slide(slideRoomStart, slideRoomEnd)
+            tap(selectFirstRoom)
+            delay(500)
+        }
+        delay(2000)
+    }
+
+    fun slideRoomAcrossFloor(count: Int) {
+        repeat(count) {
+            slide(slideRoomAcrossFloorStart, slideRoomAcrossFloorEnd)
+            tap(selectFirstRoom)
+            delay(500)
+        }
+        delay(2000)
+    }
+
 
     fun skipLogo() {
-        tapInWaitMatching(logoScreen, screenCenter)
+        while (isMatching(logoScreen, loggedIn) == EMPTY_TEMPLATE) {
+            tap(screenCenter)
+            delay()
+        }
     }
 
     fun login(account: ArknightsAccount) {
-        assertMatching(logoScreen)
+        assertMatching(logoScreen, loggedIn)
+        if (isMatching(loggedIn)) {
+            return
+        }
 
         tap(manageAccount)
         delay()
@@ -166,22 +264,22 @@ class ArknightsLoginAuto(device: Device) : Auto(device) {
         delay(2000)
 
         tap(usernameInput)
-        delay(2000)
+        delay(3000)
         input(account.username)
         delay()
         tap(confirmInput)
         delay()
 
         tap(passwordInput)
-        delay(2000)
+        delay(3000)
         input(account.password)
         delay()
         tap(confirmInput)
         delay()
 
         tap(confirmLogin)
-        waitMatching(loggedIn, loggedInAnnouncement).also {
-            if (it == loggedInAnnouncement) {
+        waitMatching(loggedIn, loggedInAnnouncement1, loggedInAnnouncement2).run {
+            if (this == loggedInAnnouncement1 || this == loggedInAnnouncement2) {
                 tap(closeAnnouncement)
                 waitMatching(loggedIn)
             }
@@ -190,4 +288,11 @@ class ArknightsLoginAuto(device: Device) : Auto(device) {
         delay(3000)
     }
 
+}
+
+fun main() {
+    val auto = ArknightsAuto(AdbDevice.connect(Properties.adbSerial))
+    while (true) {
+        auto.autoCommand()
+    }
 }

@@ -1,16 +1,17 @@
 package tech.flandia_yingm.auto_fgo.arknights
 
+import tech.flandia_yingm.auto_fgo.Properties
 import java.io.File
 import java.net.InetAddress
 import java.net.Socket
 
 object ArknightsNative {
 
-    val nemuLancher = File("D:/Program Files/Arknights/emulator/nemu/EmulatorShell/NemuLauncher.exe").absolutePath
-    val nemuArguments = listOf("-p", "com.hypergryph.arknights")
+    private val nemuPath = File(Properties.arknightsNemuPath).absolutePath
+    private val nemuPackage = Properties.arknightsNemuPackage
 
     fun startNemu() {
-        val cmd = "\"$nemuLancher\" ${nemuArguments.joinToString(" ")}"
+        val cmd = """"$nemuPath" -p $nemuPackage"""
         Socket(InetAddress.getLoopbackAddress(), 990).use { so ->
             so.getOutputStream().bufferedWriter().use {
                 it.write(cmd)

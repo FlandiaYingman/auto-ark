@@ -1,17 +1,21 @@
 package tech.flandia_yingm.auto_fgo.img
 
+import java.lang.Double.isNaN
+import kotlin.math.absoluteValue
+import kotlin.math.pow
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
-class Point constructor(val name: String, val x: Int, val y: Int, val weight: Double = Double.NaN) {
-
-    constructor(x: Int, y: Int) : this("", x, y)
-    constructor(x: Int, y: Int, weight: Double) : this("", x, y, weight)
-
-    val isEmpty: Boolean
-        get() = x == -1 && y == -1 && java.lang.Double.isNaN(weight)
+class Point(
+        val x: Int,
+        val y: Int,
+        val weight: Double = Double.NaN,
+        val name: String = ""
+) {
 
     val isValid: Boolean
-        get() = !isEmpty
+        get() = x != -1 && y != -1 && !isNaN(weight)
+
 
     operator fun plus(p: Point): Point {
         return Point(x + p.x, y + p.y)
@@ -30,14 +34,13 @@ class Point constructor(val name: String, val x: Int, val y: Int, val weight: Do
     }
 
 
-    fun addMultipliedOffset(offset: Point, n: Int): Point {
-        return this + (offset * n)
-    }
-
     override fun toString(): String = if (!weight.isNaN()) "$name($x, $y, $weight)" else "$name($x, $y)"
 
+
     companion object {
-        @JvmStatic
+        val EMPTY: Point
+            get() = Point(-1, -1, Double.NaN)
+
         fun map(p: Point,
                 xStartMin: Int, xStartMax: Int, xEndMin: Int, xEndMax: Int,
                 yStartMin: Int, yStartMax: Int, yEndMin: Int, yEndMax: Int): Point {
@@ -47,10 +50,13 @@ class Point constructor(val name: String, val x: Int, val y: Int, val weight: Do
             y = ((y - yStartMin).toDouble() / (yStartMax - yStartMin).toDouble() * (yEndMax - yEndMin).toDouble()).roundToInt()
             return Point(x, y)
         }
-
-        @JvmStatic
-        val EMPTY: Point
-            get() = Point(-1, -1, Double.NaN)
     }
 
+}
+
+infix fun Point.name(name: String): Point = Point(x, y, weight, name)
+
+fun distance(p1: Point, p2: Point): Double {
+    val distPoint = Point((p1 - p2).x.absoluteValue, (p1 - p2).y.absoluteValue)
+    return sqrt(distPoint.x.toDouble().pow(2) + distPoint.y.toDouble().pow(2))
 }

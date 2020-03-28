@@ -1,20 +1,21 @@
 package tech.flandia_yingm.auto_fgo.arknights
 
+import tech.flandia_yingm.auto_fgo.Properties
 import tech.flandia_yingm.auto_fgo.device.android.AdbDevice
 
 fun main() {
+
     ArknightsNative.startNemu()
-    val emu = AdbDevice.connect("127.0.0.1:7555")
+    val emu = AdbDevice.connect(Properties.adbSerial)
 
-    val loginAuto = ArknightsLoginAuto(emu)
+    val loginAuto = ArknightsAuto(emu)
     loginAuto.skipLogo()
-    loginAuto.login(ArknightsAccount("13046875179", "F1andiaYingM"))
+    loginAuto.login(ArknightsAccount(Properties.arknightsUsername, Properties.arknightsPassword))
 
-    val infrastructureAuto = ArknightsInfrastructureAuto(emu)
+    val infrastructureAuto = ArknightsAuto(emu)
     infrastructureAuto.enterInfrastructure()
     infrastructureAuto.harvestProduct()
     infrastructureAuto.harvestTrade()
     infrastructureAuto.exitInfrastructure()
 
 }
-

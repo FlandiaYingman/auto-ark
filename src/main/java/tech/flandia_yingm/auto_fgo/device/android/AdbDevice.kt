@@ -16,36 +16,42 @@ import java.util.*
 import java.util.concurrent.TimeUnit.SECONDS
 import javax.imageio.ImageIO
 
-class AdbDevice(serial: String) : Device {
+class AdbDevice
+private constructor(device: JadbDevice) : Device {
 
     companion object {
         private val log = KotlinLogging.logger {}
 
         fun connect(serial: String): AdbDevice {
             log.info { "$this - Connecting to ADB device, serial: $serial" }
+            var failed = false
             do {
-                try {
-                    val adbDevice = AdbDevice(serial)
-
+                runCatching {
                     log.info { "$this - Connected to ADB device, serial: $serial" }
-                    return adbDevice
-                } catch (e: JadbException) {
-                    log.debug(e) { "$this - An error occurs while connecting to ADB device $serial, retrying" }
+                    AdbDevice(connect0(serial, failed))
+                }.onSuccess {
+                    return it
+                }.onFailure {
+                    log.debug(it) { "$this - An error occurs while connecting to ADB device $serial, retrying" }
+                    failed = true
                 }
             } while (true)
         }
 
         @Throws(IOException::class)
-        private fun connect0(serial: String): JadbDevice {
-            do {
-                val adbKillProcess = ProcessBuilder("adb", "kill-server").start()
+        private fun connect0(serial: String, doKillServer: Boolean): JadbDevice {
+            if (doKillServer) {
+                val adbKillProcess = Runtime.getRuntime().exec(arrayOf("adb", "kill-server"))
                 adbKillProcess.waitFor(10, SECONDS)
+            }
 
-                val adbConnectProcess = ProcessBuilder("adb", "connect", serial).start()
-                adbConnectProcess.waitFor(10, SECONDS)
+            val adbConnectProcess = Runtime.getRuntime().exec(arrayOf("adb", "connect", serial))
+            adbConnectProcess.waitFor(10, SECONDS)
 
-                val response = adbConnectProcess.inputStream.reader(defaultCharset()).use { it.readText() }
-            } while (response.contains("unable to connect to"))
+            val response = adbConnectProcess.inputStream.reader(defaultCharset()).use { it.readText() }
+            if (response.contains("unable to connect to")) {
+                throw JadbException(response)
+            }
 
             val connection = JadbConnection()
             var optionalDevice: Optional<JadbDevice>
@@ -59,29 +65,27 @@ class AdbDevice(serial: String) : Device {
         }
     }
 
-    private val device: JadbDevice
+    private val device: JadbDevice = device
     private val screenWidth: Int
     private val screenHeight: Int
 
     init {
-        device = connect0(serial)
-
         val capture = capture()
         screenWidth = capture.width
         screenHeight = capture.height
     }
 
 
-    override fun tap(p: Point) {
-        log.debug("{} - Touching the screen at point {}", this, p)
-        device.executeShell("input", "tap", "${p.x}", "${p.y}").waitStream()
-        log.debug("{} - Touched the screen at point {}", this, p)
+    override fun tap(point: Point) {
+        log.debug("{} - Touching the screen at point {}", this, point)
+        device.executeShell("input", "tap", "${point.x}", "${point.y}").waitStream()
+        log.debug("{} - Touched the screen at point {}", this, point)
     }
 
-    override fun swipe(bp: Point, ep: Point, duration: Long) {
-        log.debug("{} - Swiping the screen from point {} to point {}", this, bp, ep)
-        device.executeShell("input", "touchscreen", "swipe", "${bp.x}", "${bp.y}", "${ep.x}", "${ep.y}").waitStream()
-        log.debug("{} - Swiped the screen from point {} to point {}", this, bp, ep)
+    override fun swipe(start: Point, end: Point, duration: Long) {
+        log.debug("{} - Swiping the screen from point {} to point {}", this, start, end)
+        device.executeShell("input", "touchscreen", "swipe", "${start.x}", "${start.y}", "${end.x}", "${end.y}", "$duration").waitStream()
+        log.debug("{} - Swiped the screen from point {} to point {}", this, start, end)
     }
 
     override fun insert(text: String) {
