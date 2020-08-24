@@ -18,8 +18,8 @@ object ArknightsPoints {
     val harvestTradeOrder = Point(275, 250) name "harvest_order"
     val exitInfrastructure = Point(70, 30) name "exit_infrastructure"
 
-    val enterManagingRooms = Point(90, 90) name "enter_managing_rooms"
-    val exitManagingRooms = Point(70, 30) name "exit_managing_rooms"
+    val enterManageRoom = Point(90, 90) name "enter_managing_rooms"
+    val exitManageRoom = Point(70, 30) name "exit_managing_rooms"
 
     val manageFirstRoom = Point(500, 150) name "manage_first_room"
     val chooseFirstOperator = Point(365, 160) name "choose_first_operator"
@@ -28,10 +28,10 @@ object ArknightsPoints {
     val confirmManageRoom = Point(875, 515) name "confirm_manage_operator"
     val confirmWorkingWarning = Point(635, 380) name "confirm_working_warning"
 
-    val slideRoomStart = Point(845, 275) name "slide_room_start"
-    val slideRoomEnd = Point(845, 135) name "slide_room_end"
-    val slideRoomAcrossFloorStart = Point(845, 315) name "slide_room_across_floor_start"
-    val slideRoomAcrossFloorEnd = Point(845, 145) name "slide_room_across_floor_end"
+    val slideRoomStart = Point(350, 275) name "slide_room_start"
+    val slideRoomEnd = Point(350, 142) name "slide_room_end"
+    val slideRoomAcrossFloorStart = Point(350, 315) name "slide_room_across_floor_start"
+    val slideRoomAcrossFloorEnd = Point(350, 149) name "slide_room_across_floor_end"
     val selectFirstRoom = Point(350, 150) name "select_first_room"
 
     val screenCenter = Point(480, 270) name "screen_center"

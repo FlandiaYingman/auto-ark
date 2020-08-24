@@ -15,6 +15,8 @@ import java.nio.charset.Charset.defaultCharset
 import java.util.*
 import java.util.concurrent.TimeUnit.SECONDS
 import javax.imageio.ImageIO
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 class AdbDevice
 private constructor(device: JadbDevice) : Device {
@@ -84,7 +86,11 @@ private constructor(device: JadbDevice) : Device {
 
     override fun swipe(start: Point, end: Point, duration: Long) {
         log.debug("{} - Swiping the screen from point {} to point {}", this, start, end)
-        device.executeShell("input", "touchscreen", "swipe", "${start.x}", "${start.y}", "${end.x}", "${end.y}", "$duration").waitStream()
+        device.executeShell(
+                "input", "touchscreen", "swipe", "${start.x}", "${start.y}", "${start.x}", "${start.y}", "100", "&&",
+                "input", "touchscreen", "swipe", "${start.x}", "${start.y}", "${end.x}", "${end.y}", "$duration", "&&",
+                "input", "touchscreen", "swipe", "${end.x}", "${end.y}", "${end.x}", "${end.y}", "100"
+        ).waitStream()
         log.debug("{} - Swiped the screen from point {} to point {}", this, start, end)
     }
 

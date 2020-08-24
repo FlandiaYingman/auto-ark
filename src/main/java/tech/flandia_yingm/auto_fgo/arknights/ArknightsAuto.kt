@@ -11,10 +11,10 @@ import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmLevelUp
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmLogin
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmManageRoom
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.confirmWorkingWarning
-import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.enterManagingRooms
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.enterManageRoom
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.enterTrade
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.exitInfrastructure
-import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.exitManagingRooms
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.exitManageRoom
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.finishMission
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.loginAccount
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.manageAccount
@@ -31,8 +31,6 @@ import tech.flandia_yingm.auto_fgo.arknights.ArknightsPoints.usernameInput
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.ableToConfirmMissionStart
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.ableToStartMission
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.levelUp
-import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.requiredToUseOriginium
-import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.requiredToUsePotion
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedIn
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedInAnnouncement1
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.loggedInAnnouncement2
@@ -41,11 +39,13 @@ import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.missionFailure
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.missionSuccess
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.operatorWorkingWarning
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.productBubble
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.requiredToUseOriginium
+import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.requiredToUsePotion
 import tech.flandia_yingm.auto_fgo.arknights.ArknightsTemplates.tradeOrder
 import tech.flandia_yingm.auto_fgo.device.Device
 import tech.flandia_yingm.auto_fgo.device.android.AdbDevice
 import tech.flandia_yingm.auto_fgo.img.Template.Companion.EMPTY_TEMPLATE
-import tech.flandia_yingm.auto_fgo.script.*
+import tech.flandia_yingm.auto_fgo.script.Auto
 
 class ArknightsAuto(device: Device) : Auto(device) {
 
@@ -98,11 +98,21 @@ class ArknightsAuto(device: Device) : Auto(device) {
     }
 
 
+    //Infrastructure
+
     fun enterInfrastructure() {
         assertMatching(loggedIn)
 
         tap(ArknightsPoints.enterInfrastructure)
         delay(10000)
+    }
+
+    fun exitInfrastructure() {
+        // assertMatching(inInfrastructure)
+        // TODO: Create a template inInfrastructure
+
+        tap(exitInfrastructure)
+        waitMatching(loggedIn)
     }
 
     fun harvestProduct() {
@@ -135,71 +145,59 @@ class ArknightsAuto(device: Device) : Auto(device) {
         } while (bubble.isValid)
     }
 
-    fun exitInfrastructure() {
+    fun enterManageRoom() {
         // assertMatching(inInfrastructure)
         // TODO: Create a template inInfrastructure
 
-        tap(exitInfrastructure)
-        waitMatching(loggedIn)
-    }
-
-
-    fun enterManagingStationed() {
-        // assertMatching(inInfrastructure)
-        // TODO: Create a template inInfrastructure
-
-        tap(enterManagingRooms)
+        tap(enterManageRoom)
         delay(3000)
     }
 
-    fun exitManagingStationed() {
-        tap(exitManagingRooms)
+    fun exitManageRoom() {
+        tap(exitManageRoom)
         delay(3000)
     }
 
     fun exchangeAll() {
-        /*//Dormitory
+        enterManageRoom()
+
+        //Dormitory
         repeat(4) {
             slideRoom(4)
-            slideRoomAcrossFloor(1)
+            slideRoomAcrossFloor()
             exchangeOperators(5)
         }
+        exitManageRoom()
 
-        enterManagingStationed()
-        exitManagingStationed()
-    */
+        enterManageRoom()
+
         //Others
         exchangeOperators(5)
         slideRoom(1)
         exchangeOperators(2)
-        slideRoomAcrossFloor(1)
+        slideRoomAcrossFloor()
 
         exchangeOperators(3)
         slideRoom(1)
         exchangeOperators(3)
-        slideRoom(1)
-        exchangeOperators(1)
-        slideRoom(2)
-        exchangeOperators(1)
+        slideRoom(3)
+        slideRoomAcrossFloor()
 
         exchangeOperators(3)
         slideRoom(1)
         exchangeOperators(3)
-        slideRoom(1)
+        slideRoom(3)
         exchangeOperators(1)
-        slideRoom(2)
-        exchangeOperators(1)
+        slideRoomAcrossFloor()
 
         exchangeOperators(3)
         slideRoom(1)
         exchangeOperators(3)
-        slideRoom(1)
-        exchangeOperators(1)
-        slideRoom(2)
-        exchangeOperators(1)
+
+        exitManageRoom()
     }
 
-    fun exchangeOperators(count: Int) {
+    private fun exchangeOperators(count: Int) {
         tap(manageFirstRoom)
         delay()
 
@@ -217,30 +215,24 @@ class ArknightsAuto(device: Device) : Auto(device) {
         delay(2000)
     }
 
-    fun chooseOperator(num: Int) {
+    private fun chooseOperator(num: Int) {
         val x = num / 2
         val y = num % 2
 
         val point = chooseFirstOperator + chooseOperatorXOffset * x + chooseOperatorYOffset * y
         tap(point)
-        delay(25)
     }
 
     fun slideRoom(count: Int) {
         repeat(count) {
             slide(slideRoomStart, slideRoomEnd)
-            tap(selectFirstRoom)
-            delay(500)
         }
         delay(2000)
     }
 
-    fun slideRoomAcrossFloor(count: Int) {
-        repeat(count) {
-            slide(slideRoomAcrossFloorStart, slideRoomAcrossFloorEnd)
-            tap(selectFirstRoom)
-            delay(500)
-        }
+    fun slideRoomAcrossFloor() {
+        slide(slideRoomAcrossFloorStart, slideRoomAcrossFloorEnd)
+        tap(selectFirstRoom)
         delay(2000)
     }
 
@@ -278,10 +270,12 @@ class ArknightsAuto(device: Device) : Auto(device) {
         delay()
 
         tap(confirmLogin)
-        waitMatching(loggedIn, loggedInAnnouncement1, loggedInAnnouncement2).run {
-            if (this == loggedInAnnouncement1 || this == loggedInAnnouncement2) {
-                tap(closeAnnouncement)
-                waitMatching(loggedIn)
+        repeat(2) {
+            waitMatching(loggedIn, loggedInAnnouncement1, loggedInAnnouncement2).run {
+                if (this == loggedInAnnouncement1 || this == loggedInAnnouncement2) {
+                    tap(closeAnnouncement)
+                    waitMatching(loggedIn)
+                }
             }
         }
 
@@ -290,9 +284,16 @@ class ArknightsAuto(device: Device) : Auto(device) {
 
 }
 
+fun ArknightsAuto.autoInfrastructure() {
+    enterInfrastructure()
+    harvestProduct()
+    harvestTrade()
+    enterManageRoom()
+    exchangeAll()
+    exitManageRoom()
+}
+
 fun main() {
     val auto = ArknightsAuto(AdbDevice.connect(Properties.adbSerial))
-    while (true) {
-        auto.autoCommand()
-    }
+    auto.exchangeAll()
 }

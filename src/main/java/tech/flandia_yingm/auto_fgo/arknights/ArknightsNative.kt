@@ -12,12 +12,7 @@ object ArknightsNative {
 
     fun startNemu() {
         val cmd = """"$nemuPath" -p $nemuPackage"""
-        Socket(InetAddress.getLoopbackAddress(), 990).use { so ->
-            so.getOutputStream().bufferedWriter().use {
-                it.write(cmd)
-                it.flush()
-            }
-        }
+
     }
 
     fun stopNemu() {
