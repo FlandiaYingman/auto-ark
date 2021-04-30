@@ -1,9 +1,4 @@
 .gradle
-.idea
-out
-
 log
-record
 
-screen.png
-auto-fgo.properties
+ark-props.yaml

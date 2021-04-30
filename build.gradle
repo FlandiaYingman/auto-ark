@@ -1,58 +1,38 @@
 plugins {
     id 'java'
     id 'groovy'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.0'
 }
 
-group 'tech.flandia_yingm.auto_fgo'
-version '1.1-1'
+mainClassName = 'top.anagke.auto_ark.ArkOpsKt'
 
-sourceCompatibility = 1.8
+group 'top.anagke.auto_ark'
+version '2.0'
 
 repositories {
     mavenCentral()
-    maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'tech.flandia_yingm.auto_fgo.arknights.AutoArknights'
-    }
 }
 
 dependencies {
-    implementation group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '4.0.1-1.4.4'
-    implementation group: 'com.github.vidstige', name: 'jadb', version: '94ebf38'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.0'
 
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.0-alpha5'
-    implementation "io.github.microutils:kotlin-logging:1.7.9"
+    implementation 'ch.qos.logback:logback-classic:1.3.0-alpha5'
+    implementation 'io.github.microutils:kotlin-logging:2.0.6'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.3.71'
+    implementation 'org.openpnp:opencv:4.5.1-2'
+    implementation 'com.baidu.aip:java-sdk:4.15.7'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
-}
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0"
+    implementation "com.charleskorn.kaml:kaml:0.31.0"
 
-compileJava {
-    options.encoding = 'UTF-8'
-}
+    implementation 'net.java.dev.jna:jna:5.8.0'
+    implementation 'net.java.dev.jna:jna-platform:5.8.0'
+    implementation 'com.github.albfernandez:juniversalchardet:2.4.0'
 
-clean.delete(file('out'))
-clean.delete(file('log'))
-clean.delete(file('record'))
-clean.delete(file('screen.png'))
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    testImplementation 'org.jetbrains.kotlin:kotlin-test:1.5.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
 }
 
 test {
