@@ -1,9 +1,11 @@
 package top.anagke.auto_ark.dsl
 
-import mu.KotlinLogging
 import java.time.Instant
 
-class Scheduler(val interval: Long) {
+/**
+ * A class helps restrict the minimal interval of calling a method.
+ */
+class Timer(private val interval: Long) {
 
     private var nextInvoking: Long = Long.MIN_VALUE
 

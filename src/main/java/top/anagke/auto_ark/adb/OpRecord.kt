@@ -1,5 +1,9 @@
 package top.anagke.auto_ark.adb
 
+import mu.KotlinLogging
+
+private val log = KotlinLogging.logger {}
+
 fun main() {
     val xAxisRegex = Regex("""/dev/input/event\d: \w{4} 0035 (\w{8})""")
     val yAxisRegex = Regex("""/dev/input/event\d: \w{4} 0036 (\w{8})""")
@@ -17,7 +21,7 @@ fun main() {
         }
         if (yResult != null) {
             tempY = yResult.groupValues[1].toInt(16)
-            println("tap($tempX, $tempY)")
+            log.info { "tap($tempX, $tempY)" }
         }
     }
 }

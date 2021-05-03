@@ -3,7 +3,8 @@ package top.anagke.auto_ark.ark
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Tmpl
-import top.anagke.auto_ark.autoArkProps
+import top.anagke.auto_ark.ark.OperateResult.SUCCESS
+import top.anagke.auto_ark.AUTO_PROPS
 import top.anagke.auto_ark.img.Img
 import java.io.FileNotFoundException
 import java.net.URL
@@ -12,41 +13,58 @@ import java.net.URL
 data class ArkProps(
     val loginProps: LoginProps = LoginProps(),
     val operateProps: OperateProps = OperateProps(),
-    val recruitProps: RecruitProps = RecruitProps(),
     val riicProps: RiicProps = RiicProps(),
+    val recruitProps: RecruitProps = RecruitProps(),
 )
 
-val arkProps = autoArkProps.arkProps
+val arkProps = AUTO_PROPS.arkProps
 
 
-private object ArkRes {
+object ArkRes {
     operator fun invoke(name: String): URL? {
         return this.javaClass.getResource(name)
     }
 }
 
-fun template(name: String, diff: Double = 0.05): Lazy<Tmpl> {
-    return lazy {
-        val url = ArkRes(name)
-        if (url == null) {
+fun template(name: String, diff: Double = 0.05): Tmpl {
+    val url = ArkRes(name)
+    var count = 0
+
+    if (url == null) {
+        val urlList = mutableListOf<URL>()
+        do {
+            val varUrl = ArkRes("${name.substringBeforeLast(".")}_${count++}.${name.substringAfterLast(".")}")
+            if (varUrl != null) urlList.add(varUrl)
+        } while (varUrl != null)
+        if (urlList.isEmpty()) {
             throw FileNotFoundException("resource '$name' not found by '${ArkRes.javaClass.packageName}'")
         } else {
-            Tmpl(Img(url.readBytes()), diff, name)
+            return Tmpl(urlList.map { Img(it.readBytes()) }, diff, name = name)
         }
+    } else {
+        return Tmpl(Img(url.readBytes()), diff, name)
     }
 }
 
 // 主界面
-val atMainScreen by template("awaitMainScreen.png", diff = 0.10)
+val atMainScreen = template("atMainScreen.png", diff = 0.06)
 
 
 fun dailyRoutine(device: Device) {
     device(login())
+    device(autoRecruit())
+    device(autoRiic())
     device(lastOperation())
-    while (device(autoOperation()) == true);
+    while (device(autoOperation()) == SUCCESS);
     device(exitOperation())
     device(autoMission())
-    device(autoRecruitment())
-    //TODO: device(autoRIIC())
     //TODO: device(autoCreditStore())
+}
+
+
+fun main() {
+//    stopNemu()
+//    startNemu()
+    Device().let { dailyRoutine(it) }
+//    stopNemu()
 }

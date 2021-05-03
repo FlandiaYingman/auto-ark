@@ -9,45 +9,60 @@ import top.anagke.auto_ark.img.match
 private val log = mu.KotlinLogging.logger { }
 
 
-class OpsContext(val device: Device)
+open class OpsContext(val device: Device) {
 
-data class Tmpl(val tmpl: Img, val diff: Double, val name: String = "") {
+    var lastMatchedTemplate: Tmpl? = null
+    var lastMatchDiff: Double? = null
+
+    operator fun <T> invoke(opsType: OpsType<T>): T = device.invoke(opsType)
+
+}
+
+data class Tmpl(val tmpls: List<Img>, val threshold: Double, val name: String = "") {
+
+    constructor(tmpl: Img, diff: Double, name: String = "") : this(listOf(tmpl), diff, name)
 
     fun diff(img: Img): Double {
-        return match(img, tmpl)
+        return tmpls.minOf { match(img, it) }
     }
 
     override fun toString(): String {
-        return "Tmpl(name='$name', diff=$diff)"
+        return "Tmpl($name)"
     }
 
 }
 
+
 class TmplNotMatchException(vararg tmpls: Tmpl) : Exception("template ${tmpls.toList()} not match")
 
-typealias Ops = OpsContext.() -> Any
+typealias OpsType<T> = OpsContext.() -> T
+typealias Ops = OpsType<Unit>
 
 
 fun ops(block: Ops): Ops {
     return block
 }
 
+fun <T> opsType(block: OpsType<T>): OpsType<T> {
+    return block
+}
+
 
 fun OpsContext.back(delay: Int = 250) {
     device.back()
-    log.info { "Back, delay $delay ms" }
+    log.debug { "Back, delay $delay ms" }
     delay(delay)
 }
 
 fun OpsContext.input(str: String, delay: Int = 250) {
     device.input(str)
-    log.info { "Input '$str', delay $delay ms" }
+    log.debug { "Input '$str', delay $delay ms" }
     delay(delay)
 }
 
 fun OpsContext.tap(x: Int, y: Int, delay: Int = 250) {
     device.tap(x, y)
-    log.info { "Tap ($x, $y), delay $delay ms" }
+    log.debug { "Tap ($x, $y), delay $delay ms" }
     delay(delay)
 }
 
@@ -58,47 +73,76 @@ fun OpsContext.delay(delay: Int = 250) {
 
 fun OpsContext.match(tmpl: Tmpl): Boolean {
     val diff = tmpl.diff(device.cap())
-    log.info { "Match screen, template $tmpl, diff $diff" }
-    return diff <= tmpl.diff
+    val result = diff <= tmpl.threshold
+    this.lastMatchedTemplate = if (result) tmpl else null
+    this.lastMatchDiff = diff
+    log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
+    return result
 }
 
-fun OpsContext.match(vararg tmpls: Tmpl): Tmpl? {
+fun OpsContext.notMatch(tmpl: Tmpl): Boolean {
+    return match(tmpl).not()
+}
+
+fun OpsContext.which(vararg tmpls: Tmpl): Tmpl? {
+    val screen = device.cap()
     tmpls.forEach { tmpl ->
-        val diff = tmpl.diff(device.cap())
-        log.info { "Match screen, template $tmpl, diff $diff" }
-        if (diff <= tmpl.diff) return tmpl
+        val diff = tmpl.diff(screen)
+        val result = diff <= tmpl.threshold
+        this.lastMatchedTemplate = if (result) tmpl else null
+        this.lastMatchDiff = diff
+        log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
+        if (result) return tmpl
     }
     return null
 }
 
+
 fun OpsContext.await(vararg tmpls: Tmpl): Tmpl {
-    log.info { "Await template(s) matching ${tmpls.toList()}" }
+    log.debug { "Await matching ${tmpls.toList()}" }
     do {
-        val cap = device.cap()
-        val tmpl = tmpls.find {
-            val diff = it.diff(cap)
-            val matching = diff <= it.diff
-            if (matching) {
-                log.info { "Screen matches, template $it, diff $diff" }
-            } else {
-                log.debug { "Matching screen, template $it, diff $diff" }
-            }
-            matching
+        val screen = device.cap()
+        val result = tmpls.find { tmpl ->
+            val diff = tmpl.diff(screen)
+            val result = diff <= tmpl.threshold
+            this.lastMatchedTemplate = if (result) tmpl else null
+            this.lastMatchDiff = diff
+            log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
+            result
         }
-        if (tmpl != null) {
-            return tmpl
+        if (result != null) {
+            return result
         }
-    } while (tmpl == null)
+    } while (result == null)
     throw InterruptedException()
 }
 
 fun OpsContext.assert(vararg tmpls: Tmpl): Tmpl {
-    log.info { "Assert template(s) matching ${tmpls.toList()}" }
-    val cap = device.cap()
-    val tmpl = tmpls.find {
-        val diff = it.diff(cap)
-        diff <= it.diff
+    log.debug { "Assert matching ${tmpls.toList()}" }
+    val screen = device.cap()
+    val result = tmpls.find { tmpl ->
+        val diff = tmpl.diff(screen)
+        val result = diff <= tmpl.threshold
+        this.lastMatchedTemplate = if (result) tmpl else null
+        this.lastMatchDiff = diff
+        log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
+        result
     }
-    if (tmpl != null) return tmpl
-    throw TmplNotMatchException(*tmpls)
+    if (result != null) {
+        return result
+    } else {
+        throw TmplNotMatchException(*tmpls)
+    }
 }
+
+
+fun OpsContext.matched(vararg tmpls: Tmpl): Boolean {
+    return lastMatchedTemplate in tmpls
+}
+
+fun OpsContext.matchedAny(): Boolean {
+    return lastMatchedTemplate != null
+}
+
+
+private fun Double.formatDiff() = "%.6f".format(this)

@@ -1,17 +1,26 @@
 package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
+import mu.KotlinLogging
+import top.anagke.auto_ark.adb.Device
+import top.anagke.auto_ark.adb.Ops
 import top.anagke.auto_ark.adb.OpsContext
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.back
+import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.ops
 import top.anagke.auto_ark.adb.tap
 
 @Serializable
-data class RiicProps()
+data class RiicProps(
+    val autoAssigning: Boolean = true,
+    val autoAssignControlCenter: Boolean = false,
+)
 
 private val riicProps = arkProps.riicProps
+private val log = KotlinLogging.logger {}
+
 
 enum class RiicFacility(
     val operatorLimit: Int,
@@ -33,23 +42,46 @@ enum class RiicFacility(
     B302(3, 275, 522),
     B303(3, 487, 522),
     B304(5, 821, 522),
-    B404(5, 904, 522),
+    B401(5, 904, 626),
 }
 
-fun autoRiic() = ops {
-    assert(atMainScreen)
+private val atRiicScreen = template("riic/atRiicScreen.png")
 
-    tap(986, 624) //进入基建
-    //await(atRIICScreen)
 
-    riicAssign()
-    //await(atRIICScreen)
+fun main() {
+    Device()(autoRiic())
+}
 
-    riicCollect()
-    //await(atRIICScreen)
 
-    back()
-    await(atMainScreen)
+fun autoRiic(): Ops {
+    return ops {
+        assert(atMainScreen)
+
+        tap(986, 624) //进入基建
+        await(atRiicScreen)
+        delay(2000)
+
+        riicCollect()
+        await(atRiicScreen)
+
+        back()
+        await(atMainScreen)
+        tap(986, 624) //进入基建
+        await(atRiicScreen)
+        delay(2000)
+
+        riicAssign()
+        await(atRiicScreen)
+
+        back()
+        await(atMainScreen)
+    }
+}
+
+private fun OpsContext.riicCollect() {
+    tap(1203, 92) //打开基建提醒
+    repeat(3) { tap(239, 693, delay = 1500) } //收取贸易站产物、制造站产物和干员信赖
+    tap(1136, 94) //关闭基建提醒
 }
 
 private fun OpsContext.riicAssign() {
@@ -76,12 +108,7 @@ private fun OpsContext.riicAssign() {
         }
 
         tap(1182, 677, delay = 1500) //确认
+        tap(1182, 677, delay = 1500) //确认
         back(delay = 1000) //退出房间
     }
-}
-
-private fun OpsContext.riicCollect() {
-    tap(1203, 92) //打开基建提醒
-    repeat(3) { tap(239, 693, delay = 1500) } //收取贸易站产物、制造站产物和干员信赖
-    tap(1136, 94) //关闭基建提醒
 }

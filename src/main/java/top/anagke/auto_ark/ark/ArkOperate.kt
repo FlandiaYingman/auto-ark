@@ -1,14 +1,20 @@
 package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
+import mu.KotlinLogging
+import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Ops
+import top.anagke.auto_ark.adb.OpsType
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.back
-import top.anagke.auto_ark.adb.match
+import top.anagke.auto_ark.adb.matched
+import top.anagke.auto_ark.adb.notMatch
 import top.anagke.auto_ark.adb.ops
+import top.anagke.auto_ark.adb.opsType
 import top.anagke.auto_ark.adb.tap
 import top.anagke.auto_ark.ark.SanityStrategy.WAIT
+import top.anagke.auto_ark.testTemplate
 
 @Serializable
 data class OperateProps(
@@ -16,6 +22,9 @@ data class OperateProps(
 )
 
 private val props = arkProps.operateProps
+
+private val log = KotlinLogging.logger {}
+
 
 /**
  * 在自动化操作时遵循的理智策略。
@@ -32,28 +41,38 @@ enum class SanityStrategy {
     /**
      * 使用源石恢复理智。隐含[POTION]，即：优先使用**非原石**道具，只有当不存在**非原石**道具时，才会使用源石。
      */
-    ORIGINITE,
+    ORIGINITE;
+
+    fun canUsePotion() = this == POTION || this == ORIGINITE
+    fun canUseOriginite() = this == ORIGINITE
 }
 
-// 关卡准备页面，且代理指挥开启
-val enabledAutoDeploy by template("enabledAutoDeploy.png")
-// 关卡准备页面，且代理指挥关闭
-val disabledAutoDeploy by template("disabledAutoDeploy.png")
-// 等待“开始行动”
-val awaitOperationStart by template("awaitOperationStart.png")
+enum class OperateResult {
+    SUCCESS,
+    EMPTY_SANITY
+}
 
-// 等待“理智不足”
-val awaitSanityEmpty by template("awaitSanityEmpty.png")
-// 等待“理智不足”，且仅能使用源石补充
-val awaitSanityEmptyOriginite by template("awaitSanityEmptyOriginite.png")
+
+// 关卡准备页面，且代理指挥开启
+private val atPrepareScreen = template("operate/atPrepareScreen.png", diff = 0.01)
+// 关卡准备页面，且代理指挥关闭
+private val isAutoDeployDisabled = template("operate/isAutoDeployDisabled.png", diff = 0.01)
+// 等待“开始行动”
+private val atFormationScreen = template("operate/atFormationScreen.png", diff = 0.01)
+
+// 理智不足
+private val popupSanityEmpty = template("operate/popupSanityEmpty.png", diff = 0.01)
+// 理智不足，且仅能使用源石补充
+private val popupSanityEmptyOriginite = template("operate/popupSanityEmptyOriginite.png", diff = 0.01)
 
 // 等待“作战结束”
-val awaitOperationFinish by template("awaitOperationFinish.png")
+private val atCompleteScreen = template("operate/atCompleteScreen.png", diff = 0.05)
 // 等待“升级”
-val awaitOperationLevelUp by template("awaitOperationLevelUp.png")
+private val popupLevelUp = template("operate/popupLevelUp.png")
 
-// 退出游戏提示
-val isBackToEnd by template("isBackToEnd.png")
+fun main() {
+    Device()(autoOperation())
+}
 
 
 /**
@@ -67,7 +86,7 @@ fun lastOperation(): Ops {
         assert(atMainScreen)
         tap(970, 203) //终端
         tap(1121, 597) //前往上一次作战
-        await(enabledAutoDeploy, disabledAutoDeploy)
+        await(atPrepareScreen, isAutoDeployDisabled)
     }
 }
 
@@ -79,15 +98,10 @@ fun lastOperation(): Ops {
  */
 fun exitOperation(): Ops {
     return ops {
-        assert(enabledAutoDeploy, disabledAutoDeploy)
-        do {
+        assert(atPrepareScreen, isAutoDeployDisabled)
+        while (notMatch(atMainScreen)) {
             back()
-            val mainScreen = match(atMainScreen)
-            val backToEnd = match(isBackToEnd)
-            if (backToEnd) {
-                back()
-            }
-        } while (!mainScreen && !backToEnd)
+        }
     }
 }
 
@@ -97,39 +111,46 @@ fun exitOperation(): Ops {
  * 开始于：关卡准备界面。
  * 结束于：主界面。
  */
-fun autoOperation(): Ops {
-    return ops {
-        assert(enabledAutoDeploy, disabledAutoDeploy).let {
-            if (it === disabledAutoDeploy) tap(1067, 592) // 开启“代理指挥”
+fun autoOperation(): OpsType<OperateResult> {
+    val strategy = props.sanityStrategy
+    return opsType {
+        log.info { "自动化代理指挥完成关卡，检测进入准备界面" }
+
+        assert(atPrepareScreen, isAutoDeployDisabled)
+        if (matched(isAutoDeployDisabled)) {
+            log.info { "检测到代理指挥关闭，自动开启代理指挥" }
+            tap(1067, 592) // 开启“代理指挥”
         }
 
+        log.info { "开始行动，等待进入编队界面" }
         tap(1078, 661)
-        await(awaitOperationStart, awaitSanityEmpty, awaitSanityEmptyOriginite).let {
-            if ((it == awaitSanityEmpty &&
-                        props.sanityStrategy == WAIT) ||
-                (it == awaitSanityEmptyOriginite &&
-                        (props.sanityStrategy == WAIT || props.sanityStrategy == SanityStrategy.POTION))
-            ) {
-                tap(783, 580)
-                await(enabledAutoDeploy)
-                return@ops false
-            }
-            if ((it == awaitSanityEmpty &&
-                        (props.sanityStrategy == SanityStrategy.POTION || props.sanityStrategy == SanityStrategy.ORIGINITE)) ||
-                (it == awaitSanityEmptyOriginite && props.sanityStrategy == SanityStrategy.ORIGINITE)
-            ) {
-                tap(1088, 577) // 恢复理智
-                await(enabledAutoDeploy)
-                tap(1078, 661)
-                await(awaitOperationStart)
-            }
+        await(atFormationScreen, popupSanityEmpty, popupSanityEmptyOriginite)
+
+        if (matched(popupSanityEmpty) && strategy.canUsePotion() ||
+            matched(popupSanityEmptyOriginite) && strategy.canUseOriginite()
+        ) {
+            log.info { "理智不足，恢复理智" }
+            tap(1088, 577) // 恢复理智
+            await(atPrepareScreen)
+            tap(1078, 661)
+            await(atFormationScreen)
         }
 
-        tap(1103, 522)
-        await(awaitOperationFinish, awaitOperationLevelUp).let { tap(640, 360) }
+        if (matched(popupSanityEmpty, popupSanityEmptyOriginite)) {
+            log.info { "理智不足，返回准备界面" }
+            tap(783, 580)
+            await(atPrepareScreen)
+            return@opsType OperateResult.EMPTY_SANITY
+        }
 
+        log.info { "开始行动，等待行动结束" }
+        tap(1103, 522)
+        await(atCompleteScreen, popupLevelUp)
+        tap(640, 360, delay = 1000)
+
+        log.info { "行动结束，等待返回准备页面" }
         tap(640, 360)
-        await(enabledAutoDeploy)
-        return@ops true
+        await(atPrepareScreen)
+        return@opsType OperateResult.SUCCESS
     }
 }
