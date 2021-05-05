@@ -9,13 +9,14 @@ import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.notMatch
 import top.anagke.auto_ark.adb.ops
 import top.anagke.auto_ark.adb.tap
+import top.anagke.auto_ark.autoProps
 
 
 // 任务领取完毕
 private val ifRewardEmpty = template("mission/ifRewardEmpty.png")
 
 fun main() {
-    Device()(autoMission())
+    Device(autoProps.adbHost, autoProps.adbPort)(autoMission())
 }
 
 /**

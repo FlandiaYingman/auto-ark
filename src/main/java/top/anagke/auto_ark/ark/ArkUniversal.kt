@@ -3,21 +3,12 @@ package top.anagke.auto_ark.ark
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Tmpl
-import top.anagke.auto_ark.ark.OperateResult.SUCCESS
-import top.anagke.auto_ark.AUTO_PROPS
+import top.anagke.auto_ark.autoProps
 import top.anagke.auto_ark.img.Img
+import top.anagke.auto_ark.startNemu
+import top.anagke.auto_ark.stopNemu
 import java.io.FileNotFoundException
 import java.net.URL
-
-@Serializable
-data class ArkProps(
-    val loginProps: LoginProps = LoginProps(),
-    val operateProps: OperateProps = OperateProps(),
-    val riicProps: RiicProps = RiicProps(),
-    val recruitProps: RecruitProps = RecruitProps(),
-)
-
-val arkProps = AUTO_PROPS.arkProps
 
 
 object ArkRes {
@@ -46,25 +37,35 @@ fun template(name: String, diff: Double = 0.05): Tmpl {
     }
 }
 
+
+@Serializable
+data class ArkProps(
+    val loginProps: LoginProps = LoginProps(),
+    val operateProps: OperateProps = OperateProps(),
+    val riicProps: RiicProps = RiicProps(),
+    val recruitProps: RecruitProps = RecruitProps(),
+)
+
+val arkProps = autoProps.arkProps
+
+
 // 主界面
 val atMainScreen = template("atMainScreen.png", diff = 0.06)
 
 
 fun dailyRoutine(device: Device) {
-    device(login())
+    device(loginBilibili())
     device(autoRecruit())
     device(autoRiic())
-    device(lastOperation())
-    while (device(autoOperation()) == SUCCESS);
-    device(exitOperation())
+    device(autoLastOperation())
     device(autoMission())
     //TODO: device(autoCreditStore())
 }
 
 
 fun main() {
-//    stopNemu()
-//    startNemu()
-    Device().let { dailyRoutine(it) }
-//    stopNemu()
+    startNemu()
+    val device = Device(autoProps.adbHost, autoProps.adbPort)
+    dailyRoutine(device)
+    stopNemu()
 }

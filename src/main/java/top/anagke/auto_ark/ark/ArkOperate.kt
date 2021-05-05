@@ -2,7 +2,6 @@ package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
-import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Ops
 import top.anagke.auto_ark.adb.OpsType
 import top.anagke.auto_ark.adb.assert
@@ -14,7 +13,6 @@ import top.anagke.auto_ark.adb.ops
 import top.anagke.auto_ark.adb.opsType
 import top.anagke.auto_ark.adb.tap
 import top.anagke.auto_ark.ark.SanityStrategy.WAIT
-import top.anagke.auto_ark.testTemplate
 
 @Serializable
 data class OperateProps(
@@ -70,10 +68,14 @@ private val atCompleteScreen = template("operate/atCompleteScreen.png", diff = 0
 // 等待“升级”
 private val popupLevelUp = template("operate/popupLevelUp.png")
 
-fun main() {
-    Device()(autoOperation())
-}
 
+fun autoLastOperation(): Ops {
+    return ops {
+        device(lastOperation())
+        while (device(autoOperation()) == OperateResult.SUCCESS);
+        device(exitOperation())
+    }
+}
 
 /**
  * 进入最后一次完成的关卡的关卡准备界面。

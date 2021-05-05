@@ -1,4 +1,2 @@
-.gradle
-log
-
-ark-props.yaml
+build/
+log/

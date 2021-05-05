@@ -4,7 +4,6 @@ import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Tmpl
-import top.anagke.auto_ark.adb.awaitDevice
 import top.anagke.auto_ark.ark.ArkProps
 import top.anagke.auto_ark.ark.dailyRoutine
 import top.anagke.auto_ark.native.executeElevated
@@ -21,7 +20,7 @@ data class AutoProps(
     val arkProps: ArkProps = ArkProps()
 )
 
-val AUTO_PROPS: AutoProps by lazy {
+val autoProps: AutoProps by lazy {
     val file = File("auto-ark-props.yaml")
     if (file.exists()) {
         Yaml.default.decodeFromString(AutoProps.serializer(), file.readText())
@@ -33,7 +32,7 @@ val AUTO_PROPS: AutoProps by lazy {
 
 fun testTemplate(tmpl: Tmpl) {
     while (true) {
-        val diff = tmpl.diff(Device().cap())
+        val diff = tmpl.diff(Device(autoProps.adbHost, autoProps.adbPort).cap())
         println("'${tmpl.name}''s diff   = ${String.format("%.6f", diff)}")
         println("'${tmpl.name}''s result = ${diff < tmpl.threshold}")
         println("=".repeat(32))
@@ -44,8 +43,7 @@ fun startNemu() {
     //Ensure NEMU is not running
     stopNemu()
 
-    executeElevated(AUTO_PROPS.arkLauncher, "-p ${AUTO_PROPS.arkPackage}")
-    awaitDevice(AUTO_PROPS.adbHost, AUTO_PROPS.adbPort)
+    executeElevated(autoProps.arkLauncher, "-p ${autoProps.arkPackage}")
 }
 
 fun stopNemu() {
@@ -55,9 +53,9 @@ fun stopNemu() {
 }
 
 fun main() {
-    //startNemu()
+    startNemu()
 
-    val device = Device()
+    val device = Device(autoProps.adbHost, autoProps.adbPort)
     dailyRoutine(device)
 
     stopNemu()

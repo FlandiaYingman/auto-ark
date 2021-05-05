@@ -11,6 +11,7 @@ import top.anagke.auto_ark.adb.back
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.ops
 import top.anagke.auto_ark.adb.tap
+import top.anagke.auto_ark.autoProps
 
 @Serializable
 data class RiicProps(
@@ -49,7 +50,7 @@ private val atRiicScreen = template("riic/atRiicScreen.png")
 
 
 fun main() {
-    Device()(autoRiic())
+    Device(autoProps.adbHost, autoProps.adbPort)(autoRiic())
 }
 
 
@@ -79,8 +80,10 @@ fun autoRiic(): Ops {
 }
 
 private fun OpsContext.riicCollect() {
-    tap(1203, 92) //打开基建提醒
-    repeat(3) { tap(239, 693, delay = 1500) } //收取贸易站产物、制造站产物和干员信赖
+    tap(1203, 132) //打开基建提醒（下方位置）
+    repeat(3) { tap(239, 693, delay = 1000) } //收取贸易站产物、制造站产物和干员信赖
+    tap(1203, 92) //打开基建提醒（一般位置）
+    repeat(3) { tap(239, 693, delay = 1000) } //收取贸易站产物、制造站产物和干员信赖
     tap(1136, 94) //关闭基建提醒
 }
 

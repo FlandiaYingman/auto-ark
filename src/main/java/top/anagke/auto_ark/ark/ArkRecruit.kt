@@ -19,6 +19,7 @@ import top.anagke.auto_ark.adb.ops
 import top.anagke.auto_ark.adb.tap
 import top.anagke.auto_ark.adb.which
 import top.anagke.auto_ark.ark.RecruitSlotStatus.*
+import top.anagke.auto_ark.autoProps
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.crop
 import top.anagke.auto_ark.img.ocr
@@ -94,7 +95,7 @@ private enum class RecruitSlotStatus {
 }
 
 fun main() {
-    Device()(autoRecruit())
+    Device(autoProps.adbHost, autoProps.adbPort)(autoRecruit())
 }
 
 
