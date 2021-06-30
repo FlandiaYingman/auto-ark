@@ -9,7 +9,7 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.TM_CCORR_NORMED
-import org.opencv.imgproc.Imgproc.TM_SQDIFF_NORMED
+import top.anagke.auto_ark.adb.Device
 import java.awt.Rectangle
 import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
@@ -53,6 +53,16 @@ class Img(val data: ByteArray) {
 
 }
 
+class Tmpl(val name: String, val threshold: Double, val tmplImgs: List<Img>) {
+
+    fun diff(img: Img): Double {
+        return tmplImgs.minOf { match(img, it) }
+    }
+
+    override fun toString() = "Tmpl($name)"
+
+}
+
 
 private fun extractAlpha(mat: Mat): Mat {
     val channels = ArrayList<Mat>()
@@ -66,7 +76,7 @@ private fun extractAlpha(mat: Mat): Mat {
     try {
         return resultMat
     } finally {
-       // channels.forEach { it.release() }
+        // channels.forEach { it.release() }
     }
 }
 
@@ -103,5 +113,14 @@ fun crop(img: Img, rect: Rectangle): Img {
 //        imgMat.release()
 //        crop.release()
 //        encode.release()
+    }
+}
+
+fun testTemplate(tmpl: Tmpl) {
+    while (true) {
+        val diff = tmpl.diff(Device().cap())
+        println("'${tmpl.name}''s diff   = ${String.format("%.6f", diff)}")
+        println("'${tmpl.name}''s result = ${diff < tmpl.threshold}")
+        println("=".repeat(32))
     }
 }

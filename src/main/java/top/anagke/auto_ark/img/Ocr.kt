@@ -10,12 +10,13 @@ private val log = KotlinLogging.logger { }
 private val aipOcr = AipOcr("24091627", "tWdUbMYCgkZ6pAULERS8iBOL", "INUscWQAl7o3AGT8u8dBRpAzzWAyffus")
 
 
-private const val QPS = 2
+private const val QPS = 1
 private const val MSPQ = 1000 / QPS
 private val ocrScheduler = Timer(MSPQ.toLong())
 
 @Synchronized
 fun ocr(img: Img, retry: Int = 3): String = ocrScheduler.invoke {
+    log.info { "Calling OCR..." }
     val json = aipOcr.basicGeneral(img.data, HashMap())
     try {
         val str = json.getJSONArray("words_result").joinToString("") { (it as JSONObject).getString("words") }

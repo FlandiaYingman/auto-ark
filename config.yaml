@@ -1,0 +1,18 @@
+DEBUG: true
+emulator: !<top.anagke.auto_ark.adb.Nemu>
+  location: "C:/Program Files (x86)/MuMu/emulator/nemu/EmulatorShell/NemuLauncher.exe"
+arkConfig:
+#  loginType: !<top.anagke.auto_ark.ark.ArkLoginContext.BilibiliLogin> {}
+  loginType: !<top.anagke.auto_ark.ark.ArkLoginContext.OfficialLogin>
+    username: "13046875179"
+    password: "F1andiaYingM"
+  riicConfig:
+    autoAssigning: true
+    autoAssignControlCenter: false
+  recruitConfig:
+    retain6SOperators: true
+    retain5SOperators: true
+    retain4SOperators: false
+  arkOperateConfig:
+    strategy: "WAIT"
+    isOnEvent: false

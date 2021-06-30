@@ -2,23 +2,14 @@ package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
-import top.anagke.auto_ark.adb.Ops
+import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.back
 import top.anagke.auto_ark.adb.delay
-import top.anagke.auto_ark.adb.input
 import top.anagke.auto_ark.adb.matched
+import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.notMatch
-import top.anagke.auto_ark.adb.ops
-import top.anagke.auto_ark.adb.tap
-
-@Serializable
-data class LoginProps(
-    val username: String = "<username>",
-    val password: String = "<password>",
-)
-
-private val props = arkProps.loginProps
+import top.anagke.auto_ark.ark.ArkLoginContext.BilibiliLogin
+import top.anagke.auto_ark.ark.ArkLoginContext.OfficialLogin
 
 private val log = KotlinLogging.logger { }
 
@@ -29,10 +20,25 @@ private val atSplashScreen = template("login/atSplashScreen.png", diff = 0.04)
 private val atLoginScreen = template("login/atLoginScreen.png", diff = 0.01)
 // 弹出日常公告
 private val popupDailyAnnounce = template("login/popupDailyAnnounce.png", diff = 0.01)
-//TODO To Be Tested
 // 弹出日常奖励
-private val popupDailyBonus = template("login/popupDailyBonus.png", diff = 0.02)
+private val popupDailyBonus = template("login/popupDailyBonus.png", diff = 0.10)
 
+
+@Serializable
+sealed class ArkLoginContext {
+    @Serializable
+    class OfficialLogin(val username: String, val password: String) : ArkLoginContext()
+    @Serializable
+    class BilibiliLogin : ArkLoginContext()
+}
+
+
+fun Device.login(context: ArkLoginContext) {
+    when (context) {
+        is OfficialLogin -> loginOfficial(context.username, context.password)
+        is BilibiliLogin -> loginBilibili()
+    }
+}
 
 /**
  * 登录明日方舟。
@@ -42,71 +48,57 @@ private val popupDailyBonus = template("login/popupDailyBonus.png", diff = 0.02)
  * 开始于：登录界面或欢迎界面。
  * 结束于：主界面。
  */
-fun login(): Ops {
-    return ops {
-        log.info { "登录明日方舟" }
-
-        log.info { "等待进入登录界面或欢迎界面" }
-        await(atLoginScreen, atSplashScreen)
-        if (matched(atSplashScreen)) {
-            log.info { "检测到进入欢迎界面，进入登录界面" }
-
-            tap(640, 360)
-            await(atLoginScreen)
-        }
-
-        log.info { "检测到登录界面，输入登录信息" }
-        tap(923, 683) // 账号管理
-        tap(412, 509, delay = 1000)  // 账号登录
-
-        tap(509, 429) // 账号
-        input(props.username) // *输入账号*
-        tap(1199, 669) // *完成输入*
-
-        tap(512, 482) // 密码
-        input(props.password) //*输入密码*
-        tap(1199, 669) // *完成输入*
-        tap(639, 577) //登录
-
-        log.info { "登录信息输入完毕，等待登录完成" }
-        await(atMainScreen, popupDailyAnnounce, popupDailyBonus)
-        delay(2500) //等待日常公告/奖励弹出
-        while (notMatch(atMainScreen)) {
-            back(delay = 1000)
-        }
-
-        log.info { "登录完成" }
+fun Device.loginOfficial(username: String, password: String) {
+    log.info { "登录明日方舟" }
+    await(atLoginScreen, atSplashScreen)
+    if (matched(atSplashScreen)) {
+        log.info { "检测到欢迎界面，跳过" }
+        tap(640, 360).nap()
+        await(atLoginScreen)
     }
+
+    log.info { "检测到登录界面，输入登录信息" }
+    tap(923, 683).nap() // 账号管理
+    tap(412, 509).delay(1000)  // 账号登录
+
+    tap(509, 429).nap() // 账号
+    input(username).nap() // *输入账号*
+    tap(1199, 669).nap() // *完成输入*
+    tap(512, 482).nap() // 密码
+    input(password).nap() //*输入密码*
+    tap(1199, 669).nap() // *完成输入*
+
+    tap(639, 577).nap() //登录
+
+    log.info { "登录信息输入完毕，等待登录完成" }
+    await(atMainScreen, popupDailyAnnounce, popupDailyBonus)
+    delay(2000) //等待日常公告/奖励弹出
+    while (notMatch(atMainScreen)) {
+        back()
+    }
+    log.info { "登录完成" }
 }
 
 /**
- * 登录明日方舟（Bilibili服务器）。
+ * 登录明日方舟（B服）。
  *
  * 由于这通常是最先调用的操作，因此其在开始于不符合的界面时不会报错而等待。
  *
  * 开始于：登录界面或欢迎界面。
  * 结束于：主界面。
  */
-fun loginBilibili(): Ops {
-    return ops {
-        log.info { "登录明日方舟（Bilibili服务器）" }
-
-        log.info { "等待进入欢迎界面或主界面" }
-        await(atSplashScreen, atMainScreen).let {
-            if (it == atSplashScreen) {
-                log.info { "检测到欢迎界面，进入主界面" }
-                tap(640, 360)
-            }
-        }
-
-        log.info { "等待进入主界面" }
-        await(atMainScreen, popupDailyAnnounce, popupDailyBonus).let {
-            delay(2500) //等待日常公告/奖励弹出
-            while (notMatch(atMainScreen)) {
-                back(delay = 1000)
-            }
-        }
-
-        log.info { "检测到主界面，登录完成" }
+fun Device.loginBilibili() {
+    log.info { "登录明日方舟（B服）" }
+    await(atSplashScreen, atMainScreen)
+    if (matched(atSplashScreen)) {
+        log.info { "检测到欢迎界面，跳过" }
+        tap(640, 360).nap()
+        await(atMainScreen)
     }
+    await(atMainScreen, popupDailyAnnounce, popupDailyBonus)
+    delay(2500) //等待日常公告/奖励弹出
+    while (notMatch(atMainScreen)) {
+        back()
+    }
+    log.info { "登录完成" }
 }

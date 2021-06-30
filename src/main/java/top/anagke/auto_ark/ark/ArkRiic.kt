@@ -3,24 +3,16 @@ package top.anagke.auto_ark.ark
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.Ops
-import top.anagke.auto_ark.adb.OpsContext
-import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.back
 import top.anagke.auto_ark.adb.delay
-import top.anagke.auto_ark.adb.ops
-import top.anagke.auto_ark.adb.tap
-import top.anagke.auto_ark.autoProps
+import top.anagke.auto_ark.adb.assert
+import top.anagke.auto_ark.adb.nap
 
 @Serializable
-data class RiicProps(
+data class RiicConfig(
     val autoAssigning: Boolean = true,
     val autoAssignControlCenter: Boolean = false,
 )
-
-private val riicProps = arkProps.riicProps
-private val log = KotlinLogging.logger {}
 
 
 enum class RiicFacility(
@@ -49,50 +41,47 @@ enum class RiicFacility(
 private val atRiicScreen = template("riic/atRiicScreen.png")
 
 
-fun main() {
-    Device(autoProps.adbHost, autoProps.adbPort)(autoRiic())
+fun Device.autoRiic(riicConfig: RiicConfig) {
+
+    assert(atMainScreen)
+
+    tap(986, 624) //进入基建
+    await(atRiicScreen)
+    delay(2000)
+
+    riicCollect()
+    await(atRiicScreen)
+
+    back()
+    await(atMainScreen)
+    tap(986, 624) //进入基建
+    await(atRiicScreen)
+    delay(2000)
+
+    riicAssign()
+    await(atRiicScreen)
+
+    back()
+    await(atMainScreen)
+
 }
 
-
-fun autoRiic(): Ops {
-    return ops {
-        assert(atMainScreen)
-
-        tap(986, 624) //进入基建
-        await(atRiicScreen)
-        delay(2000)
-
-        riicCollect()
-        await(atRiicScreen)
-
-        back()
-        await(atMainScreen)
-        tap(986, 624) //进入基建
-        await(atRiicScreen)
-        delay(2000)
-
-        riicAssign()
-        await(atRiicScreen)
-
-        back()
-        await(atMainScreen)
-    }
-}
-
-private fun OpsContext.riicCollect() {
+private fun Device.riicCollect() {
     tap(1203, 132) //打开基建提醒（下方位置）
-    repeat(3) { tap(239, 693, delay = 1000) } //收取贸易站产物、制造站产物和干员信赖
+    repeat(3) { tap(239, 693).delay(1000) } //收取贸易站产物、制造站产物和干员信赖
+    tap(1136, 94) //关闭基建提醒
     tap(1203, 92) //打开基建提醒（一般位置）
-    repeat(3) { tap(239, 693, delay = 1000) } //收取贸易站产物、制造站产物和干员信赖
+    repeat(3) { tap(239, 693).delay(1000) } //收取贸易站产物、制造站产物和干员信赖
     tap(1136, 94) //关闭基建提醒
 }
 
-private fun OpsContext.riicAssign() {
+private fun Device.riicAssign() {
     RiicFacility.values().filter { it != RiicFacility.CONTROL_CENTER }.forEach { facility ->
         tap(facility.riicScreenX, facility.riicScreenY) //进入房间
-        tap(640, 360, delay = 0) //确保“进驻信息”为非开启状态
+        tap(640, 360) //确保“进驻信息”为非开启状态
         tap(69, 297) //进驻信息
         tap(919, 159) //第一进驻栏
+        delay(200)
 
         val operatorPos = listOf(
             490 to 253,
@@ -107,11 +96,12 @@ private fun OpsContext.riicAssign() {
             1033 to 454,
         )
         repeat(facility.operatorLimit * 2) {
-            tap(operatorPos[it].first, operatorPos[it].second, delay = 0)
+            tap(operatorPos[it].first, operatorPos[it].second).delay(100)
         }
 
-        tap(1182, 677, delay = 1500) //确认
-        tap(1182, 677, delay = 1500) //确认
-        back(delay = 1000) //退出房间
+        tap(1182, 677).nap() //确认
+        tap(1182, 677).nap() //确认
+        delay(500)
+        back().nap() //退出房间
     }
 }

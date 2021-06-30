@@ -2,24 +2,22 @@ package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
-import top.anagke.auto_ark.adb.Ops
-import top.anagke.auto_ark.adb.OpsType
+import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.back
+import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.matched
+import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.notMatch
-import top.anagke.auto_ark.adb.ops
-import top.anagke.auto_ark.adb.opsType
-import top.anagke.auto_ark.adb.tap
-import top.anagke.auto_ark.ark.SanityStrategy.WAIT
+import top.anagke.auto_ark.ark.ArkOperateStrategy.WAIT
+import java.time.DayOfWeek.*
+import java.time.LocalDate
 
 @Serializable
-data class OperateProps(
-    val sanityStrategy: SanityStrategy = WAIT,
+data class ArkOperateConfig(
+    val strategy: ArkOperateStrategy = WAIT,
+    val isOnEvent: Boolean = false,
 )
-
-private val props = arkProps.operateProps
 
 private val log = KotlinLogging.logger {}
 
@@ -27,7 +25,7 @@ private val log = KotlinLogging.logger {}
 /**
  * 在自动化操作时遵循的理智策略。
  */
-enum class SanityStrategy {
+enum class ArkOperateStrategy {
     /**
      * 不使用任何恢复理智的道具。
      */
@@ -45,7 +43,7 @@ enum class SanityStrategy {
     fun canUseOriginite() = this == ORIGINITE
 }
 
-enum class OperateResult {
+enum class ArkOperateResult {
     SUCCESS,
     EMPTY_SANITY
 }
@@ -69,13 +67,21 @@ private val atCompleteScreen = template("operate/atCompleteScreen.png", diff = 0
 private val popupLevelUp = template("operate/popupLevelUp.png")
 
 
-fun autoLastOperation(): Ops {
-    return ops {
-        device(lastOperation())
-        while (device(autoOperation()) == OperateResult.SUCCESS);
-        device(exitOperation())
+fun Device.autoOperate(config: ArkOperateConfig) {
+    val dayOfWeek = LocalDate.now().dayOfWeek
+    if (config.isOnEvent) {
+        lastOperation()
+    } else {
+        when (dayOfWeek) {
+            TUESDAY, THURSDAY, SATURDAY -> enterLmd()
+            WEDNESDAY, FRIDAY -> enterSkill()
+            else -> enterExp()
+        }
     }
+    while (doAutoDeploy(config.strategy) == ArkOperateResult.SUCCESS);
+    exitOperation()
 }
+
 
 /**
  * 进入最后一次完成的关卡的关卡准备界面。
@@ -83,13 +89,11 @@ fun autoLastOperation(): Ops {
  * 开始于：主界面。
  * 结束于：关卡准备界面。
  */
-fun lastOperation(): Ops {
-    return ops {
-        assert(atMainScreen)
-        tap(970, 203) //终端
-        tap(1121, 597) //前往上一次作战
-        await(atPrepareScreen, isAutoDeployDisabled)
-    }
+fun Device.lastOperation() {
+    assert(atMainScreen)
+    tap(970, 203).nap() //终端
+    tap(1121, 597).nap() //前往上一次作战
+    await(atPrepareScreen, isAutoDeployDisabled)
 }
 
 /**
@@ -98,12 +102,10 @@ fun lastOperation(): Ops {
  * 开始于：关卡准备界面。
  * 结束于：主界面。
  */
-fun exitOperation(): Ops {
-    return ops {
-        assert(atPrepareScreen, isAutoDeployDisabled)
-        while (notMatch(atMainScreen)) {
-            back()
-        }
+fun Device.exitOperation() {
+    assert(atPrepareScreen, isAutoDeployDisabled)
+    while (notMatch(atMainScreen)) {
+        back()
     }
 }
 
@@ -113,46 +115,95 @@ fun exitOperation(): Ops {
  * 开始于：关卡准备界面。
  * 结束于：主界面。
  */
-fun autoOperation(): OpsType<OperateResult> {
-    val strategy = props.sanityStrategy
-    return opsType {
-        log.info { "自动化代理指挥完成关卡，检测进入准备界面" }
+fun Device.doAutoDeploy(strategy: ArkOperateStrategy): ArkOperateResult {
+    log.info { "自动化代理指挥完成关卡，检测进入准备界面" }
 
-        assert(atPrepareScreen, isAutoDeployDisabled)
-        if (matched(isAutoDeployDisabled)) {
-            log.info { "检测到代理指挥关闭，自动开启代理指挥" }
-            tap(1067, 592) // 开启“代理指挥”
-        }
-
-        log.info { "开始行动，等待进入编队界面" }
-        tap(1078, 661)
-        await(atFormationScreen, popupSanityEmpty, popupSanityEmptyOriginite)
-
-        if (matched(popupSanityEmpty) && strategy.canUsePotion() ||
-            matched(popupSanityEmptyOriginite) && strategy.canUseOriginite()
-        ) {
-            log.info { "理智不足，恢复理智" }
-            tap(1088, 577) // 恢复理智
-            await(atPrepareScreen)
-            tap(1078, 661)
-            await(atFormationScreen)
-        }
-
-        if (matched(popupSanityEmpty, popupSanityEmptyOriginite)) {
-            log.info { "理智不足，返回准备界面" }
-            tap(783, 580)
-            await(atPrepareScreen)
-            return@opsType OperateResult.EMPTY_SANITY
-        }
-
-        log.info { "开始行动，等待行动结束" }
-        tap(1103, 522)
-        await(atCompleteScreen, popupLevelUp)
-        tap(640, 360, delay = 1000)
-
-        log.info { "行动结束，等待返回准备页面" }
-        tap(640, 360)
-        await(atPrepareScreen)
-        return@opsType OperateResult.SUCCESS
+    assert(atPrepareScreen, isAutoDeployDisabled)
+    if (matched(isAutoDeployDisabled)) {
+        log.info { "检测到代理指挥关闭，自动开启代理指挥" }
+        tap(1067, 592) // 开启“代理指挥”
     }
+
+    log.info { "开始行动，等待进入编队界面" }
+    tap(1078, 661)
+    await(atFormationScreen, popupSanityEmpty, popupSanityEmptyOriginite)
+
+    if (matched(popupSanityEmpty) && strategy.canUsePotion() ||
+        matched(popupSanityEmptyOriginite) && strategy.canUseOriginite()
+    ) {
+        log.info { "理智不足，恢复理智" }
+        tap(1088, 577) // 恢复理智
+        await(atPrepareScreen)
+        tap(1078, 661)
+        await(atFormationScreen)
+    }
+
+    if (matched(popupSanityEmpty, popupSanityEmptyOriginite)) {
+        log.info { "理智不足，返回准备界面" }
+        tap(783, 580)
+        await(atPrepareScreen)
+        return ArkOperateResult.EMPTY_SANITY
+    }
+
+    log.info { "开始行动，等待行动结束" }
+    tap(1103, 522)
+    await(atCompleteScreen, popupLevelUp)
+    tap(640, 360)
+    delay(1000)
+
+    log.info { "行动结束，等待返回准备页面" }
+    tap(640, 360)
+    await(atPrepareScreen)
+    return ArkOperateResult.SUCCESS
+}
+
+
+private fun Device.enterExp() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    tap(643, 363).nap()
+    tap(945, 177).nap() //LS-5
+}
+
+private fun Device.enterLmd() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    tap(14, 353).nap()
+    tap(945, 177).nap() //CE-5
+}
+
+private fun Device.enterSkill() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    tap(229, 357).nap()
+    tap(945, 177).nap() //CA-5
+}
+
+private fun Device.enterChipDefenderMedic() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    tap(842, 329).nap()
+    tap(830, 258).nap() //PR-X-2
+}
+
+private fun Device.enterChipSniperCaster() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    tap(1060, 353).nap()
+    tap(830, 258).nap() //PR-X-2
+}
+
+private fun Device.enterChipVanguardSupporter() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    tap(1269, 350).nap()
+    tap(830, 258).nap() //PR-X-2
+}
+
+private fun Device.enterChipGuardSpecialist() {
+    tap(970, 203).nap() //终端
+    tap(822, 670).nap() //Resource Collection
+    swipe(640, 360, 640, 640, duration = 1000).nap()
+    tap(1114, 355).nap()
+    tap(830, 258).nap() //PR-X-2
 }

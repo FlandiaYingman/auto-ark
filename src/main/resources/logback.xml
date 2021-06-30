@@ -1,26 +1,10 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
         <encoder>
             <pattern>%date{ISO8601} [%thread] %-5level %message%n</pattern>
         </encoder>
     </appender>
-
-    <timestamp key="time" datePattern="yyyy-MM-dd'T'HH-mm-ss"/>
-    <appender name="FILE-INFO" class="ch.qos.logback.core.FileAppender">
-        <file>./log/${time}.log</file>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-        <encoder>
-            <pattern>%date{ISO8601} [%thread] %-5level %message%n</pattern>
-        </encoder>
-    </appender>
-
-    <root level="ALL">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE-INFO"/>
     </root>
 </configuration>

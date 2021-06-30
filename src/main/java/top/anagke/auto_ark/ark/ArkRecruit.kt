@@ -5,35 +5,28 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.Ops
-import top.anagke.auto_ark.adb.OpsContext
-import top.anagke.auto_ark.adb.Tmpl
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.back
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.matchedAny
-import top.anagke.auto_ark.adb.ops
-import top.anagke.auto_ark.adb.tap
 import top.anagke.auto_ark.adb.which
 import top.anagke.auto_ark.ark.RecruitSlotStatus.*
-import top.anagke.auto_ark.autoProps
 import top.anagke.auto_ark.img.Img
+import top.anagke.auto_ark.img.Tmpl
 import top.anagke.auto_ark.img.crop
 import top.anagke.auto_ark.img.ocr
 import java.awt.Rectangle
 
 
 @Serializable
-data class RecruitProps(
+data class RecruitConfig(
     val retain6SOperators: Boolean = true,
     val retain5SOperators: Boolean = true,
     val retain4SOperators: Boolean = false,
 )
 
-private val props = arkProps.recruitProps
 private val log = KotlinLogging.logger {}
 
 
@@ -94,10 +87,6 @@ private enum class RecruitSlotStatus {
     COMPLETED,
 }
 
-fun main() {
-    Device(autoProps.adbHost, autoProps.adbPort)(autoRecruit())
-}
-
 
 /**
  * 自动化公开招募。
@@ -110,75 +99,74 @@ fun main() {
  * 开始于：主界面。
  * 结束于：主界面。
  */
-fun autoRecruit(): Ops {
-    return ops {
-        assert(atMainScreen)
+fun Device.autoRecruit(config: RecruitConfig) {
+    assert(atMainScreen)
 
-        tap(1002, 507)
-        await(atRecruitSlotsScreen)
+    tap(1002, 507)
+    await(atRecruitSlotsScreen)
 
-        var emptyRecruitmentPermit = false
-        var emptyExpeditedPlan = false
-        RecruitSlot.values().forEach { slot ->
-            var previousStatus: RecruitSlotStatus? = null
-            do {
-                val matched = which(slot.isAvailable, slot.isCompleted, slot.isRecruiting)
-                when (slot) {
-                    RecruitSlot.SLOT1 -> tap(475, 380)
-                    RecruitSlot.SLOT2 -> tap(1101, 380)
-                    RecruitSlot.SLOT3 -> tap(505, 664)
-                    RecruitSlot.SLOT4 -> tap(1103, 661)
+    var emptyRecruitmentPermit = false
+    var emptyExpeditedPlan = false
+    RecruitSlot.values().forEach { slot ->
+        var previousStatus: RecruitSlotStatus? = null
+        do {
+            val matched = which(slot.isAvailable, slot.isCompleted, slot.isRecruiting)
+            when (slot) {
+                RecruitSlot.SLOT1 -> tap(475, 380)
+                RecruitSlot.SLOT2 -> tap(1101, 380)
+                RecruitSlot.SLOT3 -> tap(505, 664)
+                RecruitSlot.SLOT4 -> tap(1103, 661)
+            }
+            delay(1000)
+            if (matched == slot.isAvailable) {
+                if (emptyRecruitmentPermit) {
+                    break
                 }
-                delay(1000)
-                if (matched == slot.isAvailable) {
-                    if (emptyRecruitmentPermit) {
-                        break
-                    }
-                    if (previousStatus == AVAILABLE) {
-                        log.info { "检测到招募许可不足，放弃招募" }
-                        emptyRecruitmentPermit = true
-                        break
-                    }
-                    startRecruit(slot)
-                    previousStatus = AVAILABLE
+                if (previousStatus == AVAILABLE) {
+                    log.info { "检测到招募许可不足，放弃招募" }
+                    emptyRecruitmentPermit = true
+                    break
                 }
-                if (matched == slot.isRecruiting) {
-                    if (emptyExpeditedPlan) {
-                        break
-                    }
-                    if (match(slot.isRecruiting)) {
-                        log.info { "检测到加急许可不足，放弃加急" }
-                        emptyExpeditedPlan = true
-                        break
-                    }
-                    expediteRecruit(slot)
-                    previousStatus = RECRUITING
+                startRecruit(slot, config)
+                previousStatus = AVAILABLE
+            }
+            if (matched == slot.isRecruiting) {
+                if (emptyExpeditedPlan) {
+                    break
                 }
-                if (matched == slot.isCompleted) {
-                    completeRecruit(slot)
-                    previousStatus = COMPLETED
+                if (match(slot.isRecruiting)) {
+                    log.info { "检测到加急许可不足，放弃加急" }
+                    emptyExpeditedPlan = true
+                    break
                 }
-            } while (matchedAny())
-        }
-
-        back()
-        await(atMainScreen)
+                expediteRecruit(slot)
+                previousStatus = RECRUITING
+            }
+            if (matched == slot.isCompleted) {
+                completeRecruit(slot)
+                previousStatus = COMPLETED
+            }
+        } while (matchedAny())
     }
+
+    back()
+    await(atMainScreen)
+
 }
 
-private fun OpsContext.startRecruit(slot: RecruitSlot) {
-    val parsed = parse(device.cap())
+private fun Device.startRecruit(slot: RecruitSlot, config: RecruitConfig) {
+    val parsed = parse(cap())
     val solved = solve(parsed.keys.toList())
     when {
-        solved.maxRarity() == 6 && props.retain6SOperators -> {
+        solved.maxRarity() == 6 && config.retain6SOperators -> {
             log.info { "检测到可公开招募六星干员！" }
             solved.operators6S.print()
         }
-        solved.maxRarity() == 5 && props.retain5SOperators -> {
+        solved.maxRarity() == 5 && config.retain5SOperators -> {
             log.info { "检测到可公开招募五星干员！" }
             solved.operators5S.print()
         }
-        solved.maxRarity() == 4 && props.retain4SOperators -> {
+        solved.maxRarity() == 4 && config.retain4SOperators -> {
             log.info { "检测到可公开招募四星干员！" }
             solved.operators4S.print()
         }
@@ -202,12 +190,13 @@ private fun OpsContext.startRecruit(slot: RecruitSlot) {
         tap(972, 408) //刷新TAG
         tap(877, 508) //确认刷新TAG
         delay(2000)
-        startRecruit(slot)
+        startRecruit(slot, config)
         return
     }
 
     tap(450, 300) //增加时限到”9：00：00“
-    tap(977, 588, delay = 1000) // 开始招募
+    tap(977, 588) // 开始招募
+    delay(1000)
     await(atRecruitSlotsScreen, atRecruitScreen)
     if (matched(atRecruitScreen)) {
         back()
@@ -215,14 +204,14 @@ private fun OpsContext.startRecruit(slot: RecruitSlot) {
     }
 }
 
-private fun OpsContext.expediteRecruit(slot: RecruitSlot) {
-    tap(955, 518, delay = 1000)
+private fun Device.expediteRecruit(slot: RecruitSlot) {
+    tap(955, 518).delay(1000)
     await(slot.isRecruiting, slot.isCompleted)
 }
 
-private fun OpsContext.completeRecruit(slot: RecruitSlot) {
-    tap(1221, 41, delay = 2000)
-    tap(1221, 41, delay = 1000)
+private fun Device.completeRecruit(slot: RecruitSlot) {
+    tap(1221, 41).delay(2500)
+    tap(1221, 41).delay(1500)
     await(slot.isAvailable)
 }
 
@@ -363,4 +352,9 @@ private fun Map<List<String>, List<RecruitOperator>>.print() {
         val names = possibleOperators.map { it.cn }
         log.info { "$tags: $names" }
     }
+}
+
+
+fun main() {
+    Device("localhost:7555").autoRecruit(RecruitConfig())
 }

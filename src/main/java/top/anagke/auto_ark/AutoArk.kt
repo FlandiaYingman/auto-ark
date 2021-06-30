@@ -1,62 +1,80 @@
 package top.anagke.auto_ark
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
+import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.Tmpl
-import top.anagke.auto_ark.ark.ArkProps
-import top.anagke.auto_ark.ark.dailyRoutine
-import top.anagke.auto_ark.native.executeElevated
-import top.anagke.auto_ark.native.stopProcess
+import top.anagke.auto_ark.adb.Emulator
+import top.anagke.auto_ark.adb.Nemu
+import top.anagke.auto_ark.ark.ArkLoginContext
+import top.anagke.auto_ark.ark.ArkOperateConfig
+import top.anagke.auto_ark.ark.RecruitConfig
+import top.anagke.auto_ark.ark.RiicConfig
+import top.anagke.auto_ark.ark.autoMission
+import top.anagke.auto_ark.ark.autoOperate
+import top.anagke.auto_ark.ark.autoRiic
+import top.anagke.auto_ark.ark.login
 import java.io.File
 import kotlin.system.exitProcess
 
 @Serializable
-data class AutoProps(
-    val arkLauncher: String = "C:/Program Files (x86)/MuMu/emulator/nemu/EmulatorShell/NemuLauncher.exe",
-    val arkPackage: String = "com.hypergryph.arknights",
-    val adbHost: String = "localhost",
-    val adbPort: Int = 7555,
-    val arkProps: ArkProps = ArkProps()
+data class AppConfig(
+    val DEBUG: Boolean = false,
+    val emulator: Emulator = Nemu(
+        "C:/Program Files (x86)/MuMu/emulator/nemu/EmulatorShell/NemuLauncher.exe",
+    ),
+    val arkConfig: ArkConfig = ArkConfig()
 )
 
-val autoProps: AutoProps by lazy {
-    val file = File("auto-ark-props.yaml")
-    if (file.exists()) {
-        Yaml.default.decodeFromString(AutoProps.serializer(), file.readText())
-    } else {
-        file.writeText(Yaml.default.encodeToString(AutoProps.serializer(), AutoProps()))
+@Serializable
+data class ArkConfig(
+    val loginType: ArkLoginContext = ArkLoginContext.OfficialLogin("<username>", "<password>"),
+    val riicConfig: RiicConfig = RiicConfig(),
+    val recruitConfig: RecruitConfig = RecruitConfig(),
+    val arkOperateConfig: ArkOperateConfig = ArkOperateConfig(),
+)
+
+
+private val log = KotlinLogging.logger {}
+val appConfig: AppConfig = run {
+    val file = File("config.yaml")
+    if (file.exists().not()) {
+        val configYaml = Yaml.default.encodeToString(AppConfig.serializer(), AppConfig())
+        file.writeText(configYaml)
+        log.error { "无法找到配置文件，创建配置文件模板" }
         exitProcess(-1)
     }
+    val configYaml = file.readText()
+    Yaml.default.decodeFromString(AppConfig.serializer(), configYaml)
 }
 
-fun testTemplate(tmpl: Tmpl) {
-    while (true) {
-        val diff = tmpl.diff(Device(autoProps.adbHost, autoProps.adbPort).cap())
-        println("'${tmpl.name}''s diff   = ${String.format("%.6f", diff)}")
-        println("'${tmpl.name}''s result = ${diff < tmpl.threshold}")
-        println("=".repeat(32))
+
+fun main() {
+    val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger
+    if (appConfig.DEBUG) {
+        rootLogger.level = Level.DEBUG
+    }
+
+    val device = appConfig.emulator.open(startupPackage(appConfig.arkConfig.loginType))
+
+    dailyRoutine(device, appConfig.arkConfig)
+}
+
+fun startupPackage(arkLoginContext: ArkLoginContext): String {
+    return when (arkLoginContext) {
+        is ArkLoginContext.OfficialLogin -> "com.hypergryph.arknights"
+        is ArkLoginContext.BilibiliLogin -> "com.hypergryph.arknights.bilibili"
     }
 }
 
-fun startNemu() {
-    //Ensure NEMU is not running
-    stopNemu()
-
-    executeElevated(autoProps.arkLauncher, "-p ${autoProps.arkPackage}")
-}
-
-fun stopNemu() {
-    stopProcess("NemuSVC.exe")
-    stopProcess("NemuPlayer.exe")
-    stopProcess("NemuHeadless.exe")
-}
-
-fun main() {
-    startNemu()
-
-    val device = Device(autoProps.adbHost, autoProps.adbPort)
-    dailyRoutine(device)
-
-    stopNemu()
+fun dailyRoutine(device: Device, config: ArkConfig) {
+    device.login(config.loginType)
+    device.autoRiic(config.riicConfig)
+//    device.autoRecruit(config.recruitConfig)
+    device.autoOperate(config.arkOperateConfig)
+    device.autoMission()
+//TODO:    device.autoCreditStore()
 }
