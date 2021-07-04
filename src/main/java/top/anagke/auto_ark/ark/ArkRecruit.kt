@@ -353,8 +353,3 @@ private fun Map<List<String>, List<RecruitOperator>>.print() {
         log.info { "$tags: $names" }
     }
 }
-
-
-fun main() {
-    Device("localhost:7555").autoRecruit(RecruitConfig())
-}

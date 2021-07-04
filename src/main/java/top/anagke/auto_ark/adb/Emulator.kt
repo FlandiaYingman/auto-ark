@@ -17,6 +17,8 @@ import kotlin.concurrent.thread
 
 private val log = mu.KotlinLogging.logger { }
 
+private const val adbPath = "adb.exe"
+
 
 class Device(val serial: String? = null) {
 
@@ -52,9 +54,9 @@ class Device(val serial: String? = null) {
 
     private fun adbProc(vararg adbCommands: String): Process {
         val commands = if (serial == null) {
-            listOf(listOf("adb"), adbCommands.toList()).flatten()
+            listOf(listOf(adbPath), adbCommands.toList()).flatten()
         } else {
-            listOf(listOf("adb", "-s", serial), adbCommands.toList()).flatten()
+            listOf(listOf(adbPath, "-s", serial), adbCommands.toList()).flatten()
         }
         return openProc(*commands.toTypedArray())
     }
@@ -68,22 +70,27 @@ sealed class Emulator : Closeable {
     abstract val adbHost: String
     abstract val adbPort: Int
 
-    abstract fun open(startup: String): Device
+    abstract fun open(startupPackage: String): Device
 
-    fun connect() {
-        openProc("adb", "reconnect").stdoutLog()
+    fun connect(): Device {
         val addr = "${adbHost}:${adbPort}"
         do {
-            val proc = openProc("adb", "connect", addr)
+            val proc = openProc(adbPath, "connect", addr)
             val stdout = proc.stdoutLog()
             val stderr = proc.stderrLog()
         } while (
             stdout.contains("no") ||
             stdout.contains("cannot") ||
             stdout.contains("failed") ||
-            stderr.contains("error") ||
-                    stderr.contains("no")
+            stderr.isNotBlank()
         )
+
+        val dev = Device(addr)
+        do {
+            val data = dev.cap().data
+        } while (data.isEmpty())
+
+        return dev
     }
 
 }
@@ -96,20 +103,19 @@ class Nemu(
     override val adbHost: String get() = "localhost"
     override val adbPort: Int get() = 7555
 
-    override fun open(startup: String): Device {
+    override fun open(startupPackage: String): Device {
         if (appConfig.DEBUG.not()) Runtime.getRuntime().addShutdownHook(thread(start = false) { stopNemu() })
-        startNemu(startup)
-        connect()
-        return Device("$adbHost:$adbPort")
+        startNemu(startupPackage)
+        return connect()
     }
 
     override fun close() {
         stopNemu()
     }
 
-    private fun startNemu(startup: String) {
+    private fun startNemu(startupPackage: String) {
         stopNemu() //Ensure Nemu is not running
-        executeElevated(location, "-p $startup")
+        executeElevated(location, "-p $startupPackage")
     }
 
     private fun stopNemu() {
@@ -122,8 +128,38 @@ class Nemu(
 
 }
 
-fun main() {
-    val dev = Device("localhost:7555")
-    dev.tap(1280 / 2, 720 / 2).delay(1000)
-    dev.cap().show()
+@Serializable
+class Memu(
+    val location: String,
+) : Emulator() {
+
+    override val adbHost: String = "127.0.0.1"
+
+    override val adbPort: Int = 21503
+
+
+    override fun open(startupPackage: String): Device {
+        if (appConfig.DEBUG.not()) {
+            Runtime.getRuntime().addShutdownHook(Thread { stopMemu() })
+        }
+        startMemu(startupPackage)
+        return connect()
+    }
+
+    override fun close() {
+        stopMemu()
+    }
+
+
+    private fun startMemu(startupPackage: String) {
+        stopMemu() //Ensure BlueStacks is not running
+        openProc(location, "MEmu", "applink", startupPackage)
+    }
+
+    private fun stopMemu() {
+        killProc("adb.exe").stdoutLog()
+        killProc("MEmu.exe").stdoutLog()
+        killProc("MEmuHeadless.exe").stdoutLog()
+    }
+
 }

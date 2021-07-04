@@ -1,11 +1,10 @@
 package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
-import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
+import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
-import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.nap
 
 @Serializable
@@ -77,11 +76,10 @@ private fun Device.riicCollect() {
 
 private fun Device.riicAssign() {
     RiicFacility.values().filter { it != RiicFacility.CONTROL_CENTER }.forEach { facility ->
-        tap(facility.riicScreenX, facility.riicScreenY) //进入房间
-        tap(640, 360) //确保“进驻信息”为非开启状态
-        tap(69, 297) //进驻信息
-        tap(919, 159) //第一进驻栏
-        delay(200)
+        tap(facility.riicScreenX, facility.riicScreenY).nap() //进入房间
+        tap(640, 360).nap() //确保“进驻信息”为非开启状态
+        tap(69, 297).nap() //进驻信息
+        tap(919, 159).nap() //第一进驻栏
 
         val operatorPos = listOf(
             490 to 253,

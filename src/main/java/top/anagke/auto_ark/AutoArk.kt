@@ -8,7 +8,7 @@ import mu.KotlinLogging
 import org.slf4j.LoggerFactory
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Emulator
-import top.anagke.auto_ark.adb.Nemu
+import top.anagke.auto_ark.adb.Memu
 import top.anagke.auto_ark.ark.ArkLoginContext
 import top.anagke.auto_ark.ark.ArkOperateConfig
 import top.anagke.auto_ark.ark.RecruitConfig
@@ -23,9 +23,7 @@ import kotlin.system.exitProcess
 @Serializable
 data class AppConfig(
     val DEBUG: Boolean = false,
-    val emulator: Emulator = Nemu(
-        "C:/Program Files (x86)/MuMu/emulator/nemu/EmulatorShell/NemuLauncher.exe",
-    ),
+    val emulator: Emulator = Memu("C:/Program Files/Microvirt/MEmu/Memu.exe"),
     val arkConfig: ArkConfig = ArkConfig()
 )
 
@@ -65,7 +63,7 @@ fun main() {
 
 fun startupPackage(arkLoginContext: ArkLoginContext): String {
     return when (arkLoginContext) {
-        is ArkLoginContext.OfficialLogin -> "com.hypergryph.arknights"
+        is ArkLoginContext.OfficialLogin -> "com.hypergryph.arknights/com.u8.sdk.U8UnityContext"
         is ArkLoginContext.BilibiliLogin -> "com.hypergryph.arknights.bilibili"
     }
 }

@@ -9,6 +9,8 @@ import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.notMatch
+import top.anagke.auto_ark.adb.sleep
+import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.ark.ArkOperateStrategy.WAIT
 import java.time.DayOfWeek.*
 import java.time.LocalDate
@@ -105,7 +107,7 @@ fun Device.lastOperation() {
 fun Device.exitOperation() {
     assert(atPrepareScreen, isAutoDeployDisabled)
     while (notMatch(atMainScreen)) {
-        back()
+        back().sleep()
     }
 }
 
@@ -159,51 +161,51 @@ fun Device.doAutoDeploy(strategy: ArkOperateStrategy): ArkOperateResult {
 
 
 private fun Device.enterExp() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    tap(643, 363).nap()
-    tap(945, 177).nap() //LS-5
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    tap(643, 363).sleep()
+    tap(945, 177).sleep() //LS-5
 }
 
 private fun Device.enterLmd() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    tap(14, 353).nap()
-    tap(945, 177).nap() //CE-5
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    tap(14, 353).sleep()
+    tap(945, 177).sleep() //CE-5
 }
 
 private fun Device.enterSkill() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    tap(229, 357).nap()
-    tap(945, 177).nap() //CA-5
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    tap(229, 357).sleep()
+    tap(945, 177).sleep() //CA-5
 }
 
 private fun Device.enterChipDefenderMedic() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    tap(842, 329).nap()
-    tap(830, 258).nap() //PR-X-2
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    tap(842, 329).sleep()
+    tap(830, 258).sleep() //PR-X-2
 }
 
 private fun Device.enterChipSniperCaster() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    tap(1060, 353).nap()
-    tap(830, 258).nap() //PR-X-2
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    tap(1060, 353).sleep()
+    tap(830, 258).sleep() //PR-X-2
 }
 
 private fun Device.enterChipVanguardSupporter() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    tap(1269, 350).nap()
-    tap(830, 258).nap() //PR-X-2
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    tap(1269, 350).sleep()
+    tap(830, 258).sleep() //PR-X-2
 }
 
 private fun Device.enterChipGuardSpecialist() {
-    tap(970, 203).nap() //终端
-    tap(822, 670).nap() //Resource Collection
-    swipe(640, 360, 640, 640, duration = 1000).nap()
-    tap(1114, 355).nap()
-    tap(830, 258).nap() //PR-X-2
+    tap(970, 203).sleep() //终端
+    tap(822, 670).sleep() //Resource Collection
+    swipe(640, 360, 640, 640, duration = 1000).sleep()
+    tap(1114, 355).sleep()
+    tap(830, 258).sleep() //PR-X-2
 }

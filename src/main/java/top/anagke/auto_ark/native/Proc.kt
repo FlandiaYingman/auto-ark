@@ -12,7 +12,37 @@ fun Process.await() {
 }
 
 fun Process.stdout(): ByteArray {
-    return inputStream.use { it.readBytes() }
+    inputStream.use { _ ->
+        val breakTime = System.currentTimeMillis() + 3000
+        do {
+            val available = inputStream.available()
+            if (available == -1) {
+                return byteArrayOf()
+            }
+        } while (available == 0 && System.currentTimeMillis() <= breakTime)
+        if (inputStream.available() == 0) {
+            this.destroyForcibly()
+            return byteArrayOf()
+        }
+        return inputStream.readBytes()
+    }
+}
+
+fun Process.stderr(): ByteArray {
+    errorStream.use { _ ->
+        val breakTime = System.currentTimeMillis() + 3000
+        do {
+            val available = errorStream.available()
+            if (available == -1) {
+                return byteArrayOf()
+            }
+        } while (available == 0 && System.currentTimeMillis() <= breakTime)
+        if (errorStream.available() == 0) {
+            this.destroyForcibly()
+            return byteArrayOf()
+        }
+        return errorStream.readBytes()
+    }
 }
 
 fun Process.stdoutStr(): String {
@@ -30,7 +60,7 @@ fun Process.stdoutStr(): String {
 fun Process.stderrStr(): String {
     return try {
         val ud = UniversalDetector()
-        val stderr = errorStream.use { it.readBytes() }
+        val stderr = stderr()
         ud.handleData(stderr)
         ud.dataEnd()
         String(stderr, charset(ud.detectedCharset ?: "GBK"))

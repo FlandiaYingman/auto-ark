@@ -1,5 +1,6 @@
 package top.anagke.auto_ark.img
 
+import mu.KotlinLogging
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
@@ -17,6 +18,8 @@ import javax.swing.ImageIcon
 import javax.swing.JFrame
 import javax.swing.JLabel
 import javax.swing.WindowConstants.DISPOSE_ON_CLOSE
+
+private val log = KotlinLogging.logger {}
 
 
 object OpenCV {
@@ -81,23 +84,21 @@ private fun extractAlpha(mat: Mat): Mat {
 }
 
 fun match(img: Img, tmpl: Img): Double {
-    val imgMat = img.toMat()
-    val tmplMat = tmpl.toMat()
+    if (img.data.isEmpty()) return 1.0
 
-    val resizedImg = Mat().also { Imgproc.resize(imgMat, it, Size(), 0.5, 0.5) }
-    val resizedTmpl = Mat().also { Imgproc.resize(tmplMat, it, Size(), 0.5, 0.5) }
-    val resizedMask = extractAlpha(resizedTmpl)
-
-    val result = Mat().also { Imgproc.matchTemplate(resizedImg, resizedTmpl, it, TM_CCORR_NORMED, resizedMask) }
     try {
+        val imgMat = img.toMat()
+        val tmplMat = tmpl.toMat()
+
+        val resizedImg = Mat().also { Imgproc.resize(imgMat, it, Size(), 0.5, 0.5) }
+        val resizedTmpl = Mat().also { Imgproc.resize(tmplMat, it, Size(), 0.5, 0.5) }
+        val resizedMask = extractAlpha(resizedTmpl)
+
+        val result = Mat().also { Imgproc.matchTemplate(resizedImg, resizedTmpl, it, TM_CCORR_NORMED, resizedMask) }
         return 1.0 - result[0, 0][0]
-    } finally {
-//        imgMat.release()
-//        tmplMat.release()
-//        resizedImg.release()
-//        resizedTmpl.release()
-//        resizedMask.release()
-//        result.release()
+    } catch (e: Exception) {
+        log.warn(e) { "Error in matching" }
+        return 1.0
     }
 }
 

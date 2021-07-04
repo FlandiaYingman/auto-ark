@@ -1,6 +1,6 @@
 DEBUG: true
-emulator: !<top.anagke.auto_ark.adb.Nemu>
-  location: "C:/Program Files (x86)/MuMu/emulator/nemu/EmulatorShell/NemuLauncher.exe"
+emulator: !<top.anagke.auto_ark.adb.Memu>
+  location: "C:/Program Files/Microvirt/MEmu/Memu.exe"
 arkConfig:
 #  loginType: !<top.anagke.auto_ark.ark.ArkLoginContext.BilibiliLogin> {}
   loginType: !<top.anagke.auto_ark.ark.ArkLoginContext.OfficialLogin>

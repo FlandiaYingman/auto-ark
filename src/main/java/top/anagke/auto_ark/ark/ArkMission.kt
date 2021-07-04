@@ -4,12 +4,11 @@ import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
-import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.adb.notMatch
+import top.anagke.auto_ark.adb.match
+import top.anagke.auto_ark.adb.sleep
 
-// 任务领取完毕
-private val ifRewardEmpty = template("mission/ifRewardEmpty.png")
-
+// 仍有任务奖励尚未领取
+private val hasReward = template("mission/hasReward.png")
 
 /**
  * 自动化领取所有任务奖励。
@@ -22,21 +21,17 @@ fun Device.autoMission() {
 
     tap(830, 603).delay(500) // 任务
     tap(665, 40) // 日常任务（防止进入见习任务）
-    while (notMatch(ifRewardEmpty)) {
-        tap(1115, 150) //领取奖励
+    if (match(hasReward)) {
+        tap(1115, 150).sleep() //领取所有奖励
+        tap(1115, 150).sleep() //确认
     }
-    delay(1000)
 
     tap(868, 36) //周常任务
-    while (notMatch(ifRewardEmpty)) {
-        tap(1115, 150) //领取奖励
+    if (match(hasReward)) {
+        tap(1115, 150).sleep() //领取所有奖励
+        tap(1115, 150).sleep() //确认
     }
-    delay(1000)
 
     back()
     await(atMainScreen)
-}
-
-fun main() {
-    Device().autoMission()
 }

@@ -94,5 +94,9 @@ fun Unit.nap() {
     delay(500)
 }
 
+fun Unit.sleep() {
+    delay(1000)
+}
+
 
 private fun Double.formatDiff() = "%.6f".format(this)

@@ -72,7 +72,7 @@ fun Device.loginOfficial(username: String, password: String) {
 
     log.info { "登录信息输入完毕，等待登录完成" }
     await(atMainScreen, popupDailyAnnounce, popupDailyBonus)
-    delay(2000) //等待日常公告/奖励弹出
+    delay(10000) //等待日常公告/奖励弹出
     while (notMatch(atMainScreen)) {
         back()
     }
