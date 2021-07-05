@@ -1,29 +1,30 @@
 package top.anagke.auto_ark.img
 
-import com.baidu.aip.ocr.AipOcr
 import mu.KotlinLogging
-import org.json.JSONException
-import org.json.JSONObject
-import top.anagke.auto_ark.dsl.Timer
+import top.anagke.auto_ark.native.openProc
+import top.anagke.auto_ark.native.stderrLog
+import top.anagke.auto_ark.native.stdoutLog
+import top.anagke.kio.util.TempFiles
+import top.anagke.kio.util.useTempFile
+import java.nio.file.Files
+
 
 private val log = KotlinLogging.logger { }
-private val aipOcr = AipOcr("24091627", "tWdUbMYCgkZ6pAULERS8iBOL", "INUscWQAl7o3AGT8u8dBRpAzzWAyffus")
-
-
-private const val QPS = 1
-private const val MSPQ = 1000 / QPS
-private val ocrScheduler = Timer(MSPQ.toLong())
 
 @Synchronized
-fun ocr(img: Img, retry: Int = 3): String = ocrScheduler.invoke {
-    log.info { "Calling OCR..." }
-    val json = aipOcr.basicGeneral(img.data, HashMap())
-    try {
-        val str = json.getJSONArray("words_result").joinToString("") { (it as JSONObject).getString("words") }
-        log.debug { "OCR string $str" }
-        str
-    } catch (e: JSONException) {
-        log.warn(e) { "Error occurs with $json" }
-        if (retry > 0) ocr(img, retry - 1) else ""
+fun ocrTesseract(img: Img, retry: Int = 3): String {
+    log.info { "OCRing using prebuilt-tesseract-x86 $img" }
+
+    var ocr = ""
+    TempFiles.useTempFile(TempFiles.LOCAL_TEMP_DIR) {
+        Files.write(it, img.data)
+
+        val proc = openProc("./tesseract/tesseract.exe", "$it", "-", "-l", "chi_sim")
+        val output = proc.stdoutLog()
+        proc.stderrLog()
+
+        ocr = output.trim().replace(Regex("\\s"), "")
+        log.info { "Ocr: '$ocr'" }
     }
+    return ocr
 }

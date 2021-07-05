@@ -8,7 +8,7 @@ plugins {
 
 
 application {
-    mainClass = 'top.anagke.auto_ark.AutoArkKt'
+    mainClass.set('top.anagke.auto_ark.AutoArkKt')
 }
 
 group 'top.anagke.auto_ark'
@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.32'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32'
 
     implementation 'ch.qos.logback:logback-classic:1.3.0-alpha5'
     implementation 'io.github.microutils:kotlin-logging:2.0.6'
@@ -31,6 +32,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0"
     implementation "com.charleskorn.kaml:kaml:0.31.0"
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'top.anagke:kio:1.1.0'
 
     implementation 'net.java.dev.jna:jna:5.8.0'
     implementation 'net.java.dev.jna:jna-platform:5.8.0'

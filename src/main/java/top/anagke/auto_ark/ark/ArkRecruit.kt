@@ -16,7 +16,7 @@ import top.anagke.auto_ark.ark.RecruitSlotStatus.*
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
 import top.anagke.auto_ark.img.crop
-import top.anagke.auto_ark.img.ocr
+import top.anagke.auto_ark.img.ocrTesseract
 import java.awt.Rectangle
 
 
@@ -269,7 +269,7 @@ private fun parse(img: Img): Map<String, RecruitTag> {
         Rectangle(375, 432, 144, 46),
         Rectangle(542, 432, 144, 46),
     ).map {
-        ocr(crop(img, it))
+        ocrTesseract(crop(img, it))
     }
     return listOf(
         tags[0] to RecruitTag.TAG1,
