@@ -91,11 +91,11 @@ fun Unit.delay(time: Int) {
 }
 
 fun Unit.nap() {
-    delay(500)
+    delay(1000)
 }
 
 fun Unit.sleep() {
-    delay(1000)
+    delay(1500)
 }
 
 

@@ -6,6 +6,7 @@ import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.nap
+import top.anagke.auto_ark.adb.sleep
 
 @Serializable
 data class RiicConfig(
@@ -66,20 +67,20 @@ fun Device.autoRiic(riicConfig: RiicConfig) {
 }
 
 private fun Device.riicCollect() {
-    tap(1203, 132) //打开基建提醒（下方位置）
-    repeat(3) { tap(239, 693).delay(1000) } //收取贸易站产物、制造站产物和干员信赖
-    tap(1136, 94) //关闭基建提醒
-    tap(1203, 92) //打开基建提醒（一般位置）
-    repeat(3) { tap(239, 693).delay(1000) } //收取贸易站产物、制造站产物和干员信赖
-    tap(1136, 94) //关闭基建提醒
+    tap(1203, 132).sleep() //打开基建提醒（下方位置）
+    repeat(3) { tap(239, 693).sleep() } //收取贸易站产物、制造站产物和干员信赖
+    tap(1136, 94).sleep() //关闭基建提醒
+    tap(1203, 92).sleep() //打开基建提醒（一般位置）
+    repeat(3) { tap(239, 693).sleep() } //收取贸易站产物、制造站产物和干员信赖
+    tap(1136, 94).sleep() //关闭基建提醒
 }
 
 private fun Device.riicAssign() {
     RiicFacility.values().filter { it != RiicFacility.CONTROL_CENTER }.forEach { facility ->
-        tap(facility.riicScreenX, facility.riicScreenY).nap() //进入房间
-        tap(640, 360).nap() //确保“进驻信息”为非开启状态
-        tap(69, 297).nap() //进驻信息
-        tap(919, 159).nap() //第一进驻栏
+        tap(facility.riicScreenX, facility.riicScreenY).sleep() //进入房间
+        tap(640, 360).sleep() //确保“进驻信息”为非开启状态
+        tap(69, 297).sleep() //进驻信息
+        tap(919, 159).sleep() //第一进驻栏
 
         val operatorPos = listOf(
             490 to 253,
@@ -94,12 +95,12 @@ private fun Device.riicAssign() {
             1033 to 454,
         )
         repeat(facility.operatorLimit * 2) {
-            tap(operatorPos[it].first, operatorPos[it].second).delay(100)
+            tap(operatorPos[it].first, operatorPos[it].second).delay(250)
         }
 
-        tap(1182, 677).nap() //确认
-        tap(1182, 677).nap() //确认
+        tap(1182, 677).sleep() //确认
+        tap(1182, 677).sleep() //确认
         delay(500)
-        back().nap() //退出房间
+        back().sleep() //退出房间
     }
 }

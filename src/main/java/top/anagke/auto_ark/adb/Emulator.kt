@@ -104,7 +104,7 @@ class Nemu(
     override val adbPort: Int get() = 7555
 
     override fun open(startupPackage: String): Device {
-        if (appConfig.DEBUG.not()) Runtime.getRuntime().addShutdownHook(thread(start = false) { stopNemu() })
+        if (appConfig.DEBUG.not()) Runtime.getRuntime().addShutdownHook(Thread { stopNemu() })
         startNemu(startupPackage)
         return connect()
     }

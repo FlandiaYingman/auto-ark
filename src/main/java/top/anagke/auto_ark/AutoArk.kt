@@ -15,6 +15,7 @@ import top.anagke.auto_ark.ark.RecruitConfig
 import top.anagke.auto_ark.ark.RiicConfig
 import top.anagke.auto_ark.ark.autoMission
 import top.anagke.auto_ark.ark.autoOperate
+import top.anagke.auto_ark.ark.autoRecruit
 import top.anagke.auto_ark.ark.autoRiic
 import top.anagke.auto_ark.ark.login
 import java.io.File
@@ -71,7 +72,7 @@ fun startupPackage(arkLoginContext: ArkLoginContext): String {
 fun dailyRoutine(device: Device, config: ArkConfig) {
     device.login(config.loginType)
     device.autoRiic(config.riicConfig)
-//    device.autoRecruit(config.recruitConfig)
+    device.autoRecruit(config.recruitConfig)
     device.autoOperate(config.arkOperateConfig)
     device.autoMission()
 //TODO:    device.autoCreditStore()

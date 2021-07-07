@@ -19,7 +19,7 @@ fun ocrTesseract(img: Img, retry: Int = 3): String {
     TempFiles.useTempFile(TempFiles.LOCAL_TEMP_DIR) {
         Files.write(it, img.data)
 
-        val proc = openProc("./tesseract/tesseract.exe", "$it", "-", "-l", "chi_sim")
+        val proc = openProc("./tesseract/tesseract.exe", "$it", "-", "-l", "chi_sim", "--dpi", "300")
         val output = proc.stdoutLog()
         proc.stderrLog()
 
