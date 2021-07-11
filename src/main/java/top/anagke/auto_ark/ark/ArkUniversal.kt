@@ -1,8 +1,12 @@
 package top.anagke.auto_ark.ark
 
-import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.ark.ArkLoginContext.OfficialLogin
+import top.anagke.auto_ark.adb.await
+import top.anagke.auto_ark.adb.match
+import top.anagke.auto_ark.adb.nap
+import top.anagke.auto_ark.adb.notMatch
+import top.anagke.auto_ark.adb.sleep
+import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
 import java.io.FileNotFoundException
@@ -37,3 +41,19 @@ fun template(name: String, diff: Double = 0.05): Tmpl {
 
 // 主界面
 val atMainScreen = template("atMainScreen.png", diff = 0.06)
+
+// 可跳回主界面
+val canJumpOut = template("canJumpOut.png")
+
+fun Device.jumpOut() {
+    if (match(canJumpOut)) {
+        tap(267, 36).nap()
+        tap(92, 169).nap()
+        await(atMainScreen)
+        sleep()
+    } else {
+        do {
+            back().sleep()
+        } while (notMatch(atMainScreen))
+    }
+}

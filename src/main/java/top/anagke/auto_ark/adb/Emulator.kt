@@ -17,7 +17,7 @@ import kotlin.concurrent.thread
 
 private val log = mu.KotlinLogging.logger { }
 
-private const val adbPath = "adb.exe"
+const val adbPath = "C:\\Program Files\\Microvirt\\MEmu\\adb.exe"
 
 
 class Device(val serial: String? = null) {

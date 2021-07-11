@@ -8,7 +8,7 @@ plugins {
 
 
 application {
-    mainClass.set('top.anagke.auto_ark.AutoArkKt')
+    mainClass.set('top.anagke.auto_ark.MainKt')
 }
 
 group 'top.anagke.auto_ark'

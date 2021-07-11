@@ -32,6 +32,6 @@ fun Device.autoMission() {
         tap(1115, 150).sleep() //确认
     }
 
-    back()
+    jumpOut()
     await(atMainScreen)
 }

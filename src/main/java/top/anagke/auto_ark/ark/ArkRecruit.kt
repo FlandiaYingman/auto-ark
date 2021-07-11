@@ -150,9 +150,8 @@ fun Device.autoRecruit(config: RecruitConfig) {
         } while (matchedAny())
     }
 
-    back()
+    jumpOut()
     await(atMainScreen)
-
 }
 
 private fun Device.startRecruit(slot: RecruitSlot, config: RecruitConfig) {

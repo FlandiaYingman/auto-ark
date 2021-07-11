@@ -1,11 +1,8 @@
 package top.anagke.auto_ark
 
-import ch.qos.logback.classic.Level
-import ch.qos.logback.classic.Logger
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
-import org.slf4j.LoggerFactory
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.Emulator
 import top.anagke.auto_ark.adb.Memu
@@ -48,18 +45,6 @@ val appConfig: AppConfig = run {
     }
     val configYaml = file.readText()
     Yaml.default.decodeFromString(AppConfig.serializer(), configYaml)
-}
-
-
-fun main() {
-    val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger
-    if (appConfig.DEBUG) {
-        rootLogger.level = Level.DEBUG
-    }
-
-    val device = appConfig.emulator.open(startupPackage(appConfig.arkConfig.loginType))
-
-    dailyRoutine(device, appConfig.arkConfig)
 }
 
 fun startupPackage(arkLoginContext: ArkLoginContext): String {

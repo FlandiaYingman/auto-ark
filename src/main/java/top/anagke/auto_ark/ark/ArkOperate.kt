@@ -13,7 +13,7 @@ import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.ark.ArkOperateStrategy.WAIT
 import java.time.DayOfWeek.*
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Serializable
 data class ArkOperateConfig(
@@ -70,7 +70,8 @@ private val popupLevelUp = template("operate/popupLevelUp.png")
 
 
 fun Device.autoOperate(config: ArkOperateConfig) {
-    val dayOfWeek = LocalDate.now().dayOfWeek
+    //明日方舟以4:00为一天的分界线
+    val dayOfWeek = LocalDateTime.now().minusHours(4).dayOfWeek
     if (config.isOnEvent) {
         lastOperation()
     } else {
@@ -106,9 +107,7 @@ fun Device.lastOperation() {
  */
 fun Device.exitOperation() {
     assert(atPrepareScreen, isAutoDeployDisabled)
-    while (notMatch(atMainScreen)) {
-        back().sleep()
-    }
+    jumpOut()
 }
 
 /**
@@ -208,4 +207,8 @@ private fun Device.enterChipGuardSpecialist() {
     swipe(640, 360, 640, 640, duration = 1000).sleep()
     tap(1114, 355).sleep()
     tap(830, 258).sleep() //PR-X-2
+}
+
+fun main() {
+    Device().autoOperate(appConfig.arkConfig.arkOperateConfig)
 }

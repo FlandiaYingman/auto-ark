@@ -5,7 +5,6 @@ import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
-import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.sleep
 
 @Serializable
@@ -42,7 +41,6 @@ private val atRiicScreen = template("riic/atRiicScreen.png")
 
 
 fun Device.autoRiic(riicConfig: RiicConfig) {
-
     assert(atMainScreen)
 
     tap(986, 624) //进入基建
@@ -52,8 +50,9 @@ fun Device.autoRiic(riicConfig: RiicConfig) {
     riicCollect()
     await(atRiicScreen)
 
-    back()
+    jumpOut()
     await(atMainScreen)
+
     tap(986, 624) //进入基建
     await(atRiicScreen)
     delay(2000)
@@ -61,9 +60,8 @@ fun Device.autoRiic(riicConfig: RiicConfig) {
     riicAssign()
     await(atRiicScreen)
 
-    back()
+    jumpOut()
     await(atMainScreen)
-
 }
 
 private fun Device.riicCollect() {

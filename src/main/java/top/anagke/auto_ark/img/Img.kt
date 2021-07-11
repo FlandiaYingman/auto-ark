@@ -130,6 +130,7 @@ fun invert(img: Img): Img {
     return Img(encode.toArray())
 }
 
+
 fun testTemplate(tmpl: Tmpl) {
     while (true) {
         val diff = tmpl.diff(Device().cap())

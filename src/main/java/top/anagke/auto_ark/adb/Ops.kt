@@ -95,7 +95,11 @@ fun Unit.nap() {
 }
 
 fun Unit.sleep() {
-    delay(1500)
+    delay(2000)
+}
+
+fun sleep() {
+    delay(2000)
 }
 
 
