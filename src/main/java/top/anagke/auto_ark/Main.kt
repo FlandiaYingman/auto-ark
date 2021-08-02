@@ -3,13 +3,14 @@ package top.anagke.auto_ark
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
-import java.util.concurrent.TimeUnit.MINUTES
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 fun main() {
-    thread {
-        threadTimeout()
+    thread(isDaemon = true) {
+        TimeUnit.HOURS.sleep(4)
+        exitProcess(1)
     }
 
     val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger
@@ -17,12 +18,8 @@ fun main() {
         rootLogger.level = Level.DEBUG
     }
 
-    val device = appConfig.emulator.open(startupPackage(appConfig.arkConfig.loginType))
-
-    dailyRoutine(device, appConfig.arkConfig)
-}
-
-fun threadTimeout() {
-    MINUTES.sleep(30)
-    exitProcess(100)
+    appConfig.emulator.use { emu ->
+        val device = emu.open(startupPackage(appConfig.arkConfig.loginType))
+        dailyRoutine(device, appConfig.arkConfig)
+    }
 }

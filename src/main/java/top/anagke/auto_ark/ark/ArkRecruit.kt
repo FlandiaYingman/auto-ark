@@ -210,8 +210,9 @@ private fun Device.expediteRecruit(slot: RecruitSlot) {
 }
 
 private fun Device.completeRecruit(slot: RecruitSlot) {
-    tap(1221, 41).delay(2500)
-    tap(1221, 41).delay(1500)
+    tap(1221, 41).delay(3000)
+    tap(1221, 41).delay(3000)
+    tap(1221, 41).delay(3000)
     await(slot.isAvailable)
 }
 
@@ -270,7 +271,6 @@ private fun parse(img: Img): Map<String, RecruitTag> {
         Rectangle(542, 432, 144, 46),
     ).map {
         val procImage = invert(crop(img, it))
-        procImage.show()
         ocrTesseract(procImage)
     }
     return listOf(

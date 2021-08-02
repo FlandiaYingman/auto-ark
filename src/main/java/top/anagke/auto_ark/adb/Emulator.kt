@@ -1,18 +1,15 @@
 package top.anagke.auto_ark.adb
 
 import kotlinx.serialization.Serializable
-import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.dsl.Timer
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.native.await
-import top.anagke.auto_ark.native.executeElevated
 import top.anagke.auto_ark.native.killProc
 import top.anagke.auto_ark.native.openProc
 import top.anagke.auto_ark.native.stderrLog
 import top.anagke.auto_ark.native.stdout
 import top.anagke.auto_ark.native.stdoutLog
 import java.io.Closeable
-import kotlin.concurrent.thread
 
 
 private val log = mu.KotlinLogging.logger { }
@@ -43,7 +40,9 @@ class Device(val serial: String? = null) {
 
     fun input(str: String) {
         log.debug { "Input '$str', serial='$serial'" }
-        return adbProc("shell", "input", "text", str).await()
+        str.forEach {
+            adbProc("shell", "input", "text", "$it").await()
+        }
     }
 
     fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int) {
@@ -96,39 +95,6 @@ sealed class Emulator : Closeable {
 }
 
 @Serializable
-class Nemu(
-    val location: String,
-) : Emulator() {
-
-    override val adbHost: String get() = "localhost"
-    override val adbPort: Int get() = 7555
-
-    override fun open(startupPackage: String): Device {
-        if (appConfig.DEBUG.not()) Runtime.getRuntime().addShutdownHook(Thread { stopNemu() })
-        startNemu(startupPackage)
-        return connect()
-    }
-
-    override fun close() {
-        stopNemu()
-    }
-
-    private fun startNemu(startupPackage: String) {
-        stopNemu() //Ensure Nemu is not running
-        executeElevated(location, "-p $startupPackage")
-    }
-
-    private fun stopNemu() {
-        listOf(
-            killProc("NemuSVC.exe"),
-            killProc("NemuPlayer.exe"),
-            killProc("NemuHeadless.exe"),
-        ).forEach(Process::stdoutLog)
-    }
-
-}
-
-@Serializable
 class Memu(
     val location: String,
 ) : Emulator() {
@@ -139,9 +105,6 @@ class Memu(
 
 
     override fun open(startupPackage: String): Device {
-        if (appConfig.DEBUG.not()) {
-            Runtime.getRuntime().addShutdownHook(Thread { stopMemu() })
-        }
         startMemu(startupPackage)
         return connect()
     }

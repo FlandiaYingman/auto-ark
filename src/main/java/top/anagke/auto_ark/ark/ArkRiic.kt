@@ -6,6 +6,7 @@ import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.sleep
+import top.anagke.auto_ark.ark.RiicFacility.*
 
 @Serializable
 data class RiicConfig(
@@ -74,7 +75,14 @@ private fun Device.riicCollect() {
 }
 
 private fun Device.riicAssign() {
-    RiicFacility.values().filter { it != RiicFacility.CONTROL_CENTER }.forEach { facility ->
+    listOf(
+        B104, B204, B304, B401,
+        B101, B102, B103,
+        B201, B202, B203,
+        B301, B302, B303,
+        HUMAN_RESOURCES_OFFICE,
+        RECEPTION_ROOM
+    ).forEach { facility ->
         tap(facility.riicScreenX, facility.riicScreenY).sleep() //进入房间
         tap(640, 360).sleep() //确保“进驻信息”为非开启状态
         tap(69, 297).sleep() //进驻信息
@@ -100,5 +108,6 @@ private fun Device.riicAssign() {
         tap(1182, 677).sleep() //确认
         delay(500)
         back().sleep() //退出房间
+        delay(1000)
     }
 }

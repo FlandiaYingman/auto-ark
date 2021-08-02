@@ -15,4 +15,4 @@ arkConfig:
     retain4SOperators: false
   arkOperateConfig:
     strategy: "WAIT"
-    isOnEvent: false
+    isOnEvent: true
