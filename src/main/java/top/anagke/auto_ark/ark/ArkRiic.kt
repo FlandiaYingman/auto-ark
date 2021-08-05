@@ -7,6 +7,7 @@ import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.ark.RiicFacility.*
+import java.time.LocalDateTime
 
 @Serializable
 data class RiicConfig(
@@ -41,28 +42,34 @@ enum class RiicFacility(
 private val atRiicScreen = template("riic/atRiicScreen.png")
 
 
-fun Device.autoRiic(riicConfig: RiicConfig) {
-    assert(atMainScreen)
+fun Device.autoRiic() {
+    if (appSave.lastAutoRiicTime.plusHours(8).isBefore(LocalDateTime.now())) {
+        assert(atMainScreen)
 
-    tap(986, 624) //进入基建
-    await(atRiicScreen)
-    delay(2000)
+        tap(986, 624) //进入基建
+        await(atRiicScreen)
+        delay(2000)
 
-    riicCollect()
-    await(atRiicScreen)
+        riicCollect()
+        await(atRiicScreen)
 
-    jumpOut()
-    await(atMainScreen)
+        jumpOut()
+        await(atMainScreen)
 
-    tap(986, 624) //进入基建
-    await(atRiicScreen)
-    delay(2000)
+        tap(986, 624) //进入基建
+        await(atRiicScreen)
+        delay(2000)
 
-    riicAssign()
-    await(atRiicScreen)
+        riicAssign()
+        await(atRiicScreen)
 
-    jumpOut()
-    await(atMainScreen)
+        jumpOut()
+        await(atMainScreen)
+
+        appSave.edit {
+            lastAutoRiicTime = LocalDateTime.now()
+        }
+    }
 }
 
 private fun Device.riicCollect() {

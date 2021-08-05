@@ -8,15 +8,16 @@ import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.adb.notMatch
 import top.anagke.auto_ark.adb.sleep
-import top.anagke.auto_ark.appConfig
+import top.anagke.auto_ark.ark.ArkOperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.ark.ArkOperateStrategy.WAIT
 import java.time.DayOfWeek.*
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Serializable
-data class ArkOperateConfig(
+data class OperateConfig(
     val strategy: ArkOperateStrategy = WAIT,
     val isOnEvent: Boolean = false,
 )
@@ -54,7 +55,7 @@ enum class ArkOperateResult {
 // 关卡准备页面，且代理指挥开启
 private val atPrepareScreen = template("operate/atPrepareScreen.png", diff = 0.01)
 // 关卡准备页面，且代理指挥关闭
-private val isAutoDeployDisabled = template("operate/isAutoDeployDisabled.png", diff = 0.01)
+private val isAutoDeployDisabled = template("operate/isAutoDeployDisabled.png", diff = 0.02)
 // 等待“开始行动”
 private val atFormationScreen = template("operate/atFormationScreen.png", diff = 0.01)
 
@@ -69,19 +70,30 @@ private val atCompleteScreen = template("operate/atCompleteScreen.png", diff = 0
 private val popupLevelUp = template("operate/popupLevelUp.png")
 
 
-fun Device.autoOperate(config: ArkOperateConfig) {
-    //明日方舟以4:00为一天的分界线
-    val dayOfWeek = LocalDateTime.now().minusHours(4).dayOfWeek
-    if (config.isOnEvent) {
-        lastOperation()
-    } else {
-        when (dayOfWeek) {
-            TUESDAY, THURSDAY, SATURDAY -> enterLmd()
-            WEDNESDAY, FRIDAY -> enterSkill()
-            else -> enterExp()
+fun Device.autoOperate() {
+    val config = appConfig.operateConfig
+
+    val dateBoundary = LocalDateTime.of(LocalDate.now(), LocalTime.parse("04:00"))
+    if (dateBoundary.isAfter(appSave.lastAnnihilationTime)) {
+        enterAnnihilation()
+        doAutoDeploy(config.strategy)
+        exitOperation()
+
+        appSave.edit {
+            lastAnnihilationTime = LocalDateTime.now()
         }
     }
-    while (doAutoDeploy(config.strategy) == ArkOperateResult.SUCCESS);
+
+    when (LocalDateTime.now().minusHours(4).dayOfWeek) {
+        TUESDAY, THURSDAY, SATURDAY -> enterLmd()
+        WEDNESDAY, FRIDAY -> enterSkill()
+        else -> enterExp()
+    }
+
+    do {
+        val result = doAutoDeploy(config.strategy)
+    } while (result != EMPTY_SANITY)
+
     exitOperation()
 }
 
@@ -92,7 +104,7 @@ fun Device.autoOperate(config: ArkOperateConfig) {
  * 开始于：主界面。
  * 结束于：关卡准备界面。
  */
-fun Device.lastOperation() {
+fun Device.enterLastOperation() {
     assert(atMainScreen)
     tap(970, 203).nap() //终端
     tap(1121, 597).nap() //前往上一次作战
@@ -143,7 +155,7 @@ fun Device.doAutoDeploy(strategy: ArkOperateStrategy): ArkOperateResult {
         log.info { "理智不足，返回准备界面" }
         tap(783, 580)
         await(atPrepareScreen)
-        return ArkOperateResult.EMPTY_SANITY
+        return EMPTY_SANITY
     }
 
     log.info { "开始行动，等待行动结束" }
@@ -180,6 +192,7 @@ private fun Device.enterSkill() {
     tap(945, 177).sleep() //CA-5
 }
 
+
 private fun Device.enterChipDefenderMedic() {
     tap(970, 203).sleep() //终端
     tap(822, 670).sleep() //Resource Collection
@@ -209,6 +222,8 @@ private fun Device.enterChipGuardSpecialist() {
     tap(830, 258).sleep() //PR-X-2
 }
 
-fun main() {
-    Device().autoOperate(appConfig.arkConfig.arkOperateConfig)
+
+private fun Device.enterAnnihilation() {
+    tap(970, 203).sleep() //终端
+    tap(1045, 165).sleep().sleep() //剿灭
 }

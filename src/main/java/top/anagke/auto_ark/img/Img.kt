@@ -5,15 +5,12 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
 import org.opencv.core.Rect
-import org.opencv.core.Scalar
 import org.opencv.core.Size
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.TM_CCORR_NORMED
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.appConfig
-import top.anagke.auto_ark.ark.autoRecruit
 import java.awt.Rectangle
 import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO

@@ -19,6 +19,7 @@ import top.anagke.auto_ark.img.crop
 import top.anagke.auto_ark.img.invert
 import top.anagke.auto_ark.img.ocrTesseract
 import java.awt.Rectangle
+import java.time.LocalDateTime
 
 
 @Serializable
@@ -100,58 +101,64 @@ private enum class RecruitSlotStatus {
  * 开始于：主界面。
  * 结束于：主界面。
  */
-fun Device.autoRecruit(config: RecruitConfig) {
-    assert(atMainScreen)
+fun Device.autoRecruit() {
+    if (appSave.lastAutoRecruitTime.plusHours(9).isBefore(LocalDateTime.now())) {
+        assert(atMainScreen)
 
-    tap(1002, 507)
-    await(atRecruitSlotsScreen)
+        tap(1002, 507)
+        await(atRecruitSlotsScreen)
 
-    var emptyRecruitmentPermit = false
-    var emptyExpeditedPlan = false
-    RecruitSlot.values().forEach { slot ->
-        var previousStatus: RecruitSlotStatus? = null
-        do {
-            val matched = which(slot.isAvailable, slot.isCompleted, slot.isRecruiting)
-            when (slot) {
-                RecruitSlot.SLOT1 -> tap(475, 380)
-                RecruitSlot.SLOT2 -> tap(1101, 380)
-                RecruitSlot.SLOT3 -> tap(505, 664)
-                RecruitSlot.SLOT4 -> tap(1103, 661)
-            }
-            delay(1000)
-            if (matched == slot.isAvailable) {
-                if (emptyRecruitmentPermit) {
-                    break
+        var emptyRecruitmentPermit = false
+        var emptyExpeditedPlan = false
+        RecruitSlot.values().forEach { slot ->
+            var previousStatus: RecruitSlotStatus? = null
+            do {
+                val matched = which(slot.isAvailable, slot.isCompleted, slot.isRecruiting)
+                when (slot) {
+                    RecruitSlot.SLOT1 -> tap(475, 380)
+                    RecruitSlot.SLOT2 -> tap(1101, 380)
+                    RecruitSlot.SLOT3 -> tap(505, 664)
+                    RecruitSlot.SLOT4 -> tap(1103, 661)
                 }
-                if (previousStatus == AVAILABLE) {
-                    log.info { "检测到招募许可不足，放弃招募" }
-                    emptyRecruitmentPermit = true
-                    break
+                delay(1000)
+                if (matched == slot.isAvailable) {
+                    if (emptyRecruitmentPermit) {
+                        break
+                    }
+                    if (previousStatus == AVAILABLE) {
+                        log.info { "检测到招募许可不足，放弃招募" }
+                        emptyRecruitmentPermit = true
+                        break
+                    }
+                    startRecruit(slot, appConfig.recruitConfig)
+                    previousStatus = AVAILABLE
                 }
-                startRecruit(slot, config)
-                previousStatus = AVAILABLE
-            }
-            if (matched == slot.isRecruiting) {
-                if (emptyExpeditedPlan) {
-                    break
+                if (matched == slot.isRecruiting) {
+                    if (emptyExpeditedPlan) {
+                        break
+                    }
+                    if (match(slot.isRecruiting)) {
+                        log.info { "检测到加急许可不足，放弃加急" }
+                        emptyExpeditedPlan = true
+                        break
+                    }
+                    expediteRecruit(slot)
+                    previousStatus = RECRUITING
                 }
-                if (match(slot.isRecruiting)) {
-                    log.info { "检测到加急许可不足，放弃加急" }
-                    emptyExpeditedPlan = true
-                    break
+                if (matched == slot.isCompleted) {
+                    completeRecruit(slot)
+                    previousStatus = COMPLETED
                 }
-                expediteRecruit(slot)
-                previousStatus = RECRUITING
-            }
-            if (matched == slot.isCompleted) {
-                completeRecruit(slot)
-                previousStatus = COMPLETED
-            }
-        } while (matchedAny())
+            } while (matchedAny())
+        }
+
+        jumpOut()
+        await(atMainScreen)
+
+        appSave.edit {
+            lastAutoRecruitTime = LocalDateTime.now()
+        }
     }
-
-    jumpOut()
-    await(atMainScreen)
 }
 
 private fun Device.startRecruit(slot: RecruitSlot, config: RecruitConfig) {

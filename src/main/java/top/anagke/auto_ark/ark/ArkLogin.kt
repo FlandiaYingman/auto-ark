@@ -8,8 +8,6 @@ import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.notMatch
-import top.anagke.auto_ark.ark.ArkLoginContext.BilibiliLogin
-import top.anagke.auto_ark.ark.ArkLoginContext.OfficialLogin
 
 private val log = KotlinLogging.logger { }
 
@@ -25,18 +23,23 @@ private val popupDailyBonus = template("login/popupDailyBonus.png", diff = 0.10)
 
 
 @Serializable
-sealed class ArkLoginContext {
-    @Serializable
-    class OfficialLogin(val username: String, val password: String) : ArkLoginContext()
-    @Serializable
-    class BilibiliLogin : ArkLoginContext()
+data class LoginConfig(
+    val loginType: LoginType = LoginType.OFFICIAL,
+    val username: String = "<username>",
+    val password: String = "<password>",
+) {
+    enum class LoginType {
+        OFFICIAL,
+        BILIBILI;
+    }
 }
 
 
-fun Device.login(context: ArkLoginContext) {
-    when (context) {
-        is OfficialLogin -> loginOfficial(context.username, context.password)
-        is BilibiliLogin -> loginBilibili()
+fun Device.login() {
+    val loginConfig = appConfig.loginConfig
+    when (loginConfig.loginType) {
+        LoginConfig.LoginType.OFFICIAL -> loginOfficial(loginConfig.username, loginConfig.password)
+        LoginConfig.LoginType.BILIBILI -> loginBilibili()
     }
 }
 

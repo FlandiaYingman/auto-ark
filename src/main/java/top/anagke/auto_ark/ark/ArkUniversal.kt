@@ -6,7 +6,6 @@ import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.notMatch
 import top.anagke.auto_ark.adb.sleep
-import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
 import java.io.FileNotFoundException
@@ -52,8 +51,8 @@ fun Device.jumpOut() {
         await(atMainScreen)
         sleep()
     } else {
-        do {
+        while (notMatch(atMainScreen)) {
             back().sleep()
-        } while (notMatch(atMainScreen))
+        }
     }
 }
