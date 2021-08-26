@@ -1,16 +1,12 @@
 package top.anagke.auto_ark.ark
 
 import kotlinx.serialization.Serializable
-import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.notMatch
-
-private val log = KotlinLogging.logger { }
-
 
 // 欢迎界面
 private val atSplashScreen = template("login/atSplashScreen.png", diff = 0.04)

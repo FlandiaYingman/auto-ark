@@ -1,6 +1,9 @@
+@file:Suppress("unused")
+
 package top.anagke.auto_ark.adb
 
 import top.anagke.auto_ark.img.Tmpl
+import java.util.concurrent.TimeoutException
 
 
 private val log = mu.KotlinLogging.logger { }
@@ -40,8 +43,9 @@ fun Device.which(vararg tmpls: Tmpl): Tmpl? {
 }
 
 
-fun Device.await(vararg tmpls: Tmpl): Tmpl {
+fun Device.await(vararg tmpls: Tmpl, timeout: Long = 30 * 1000): Tmpl {
     log.debug { "Await matching ${tmpls.toList()}" }
+    val deadline = System.currentTimeMillis() + timeout
     do {
         val screen = cap()
         val result = tmpls.find { tmpl ->
@@ -53,6 +57,9 @@ fun Device.await(vararg tmpls: Tmpl): Tmpl {
         }
         if (result != null) {
             return result
+        }
+        if (System.currentTimeMillis() > deadline) {
+            throw TimeoutException()
         }
     } while (result == null)
     throw InterruptedException()
@@ -68,7 +75,7 @@ fun Device.assert(vararg tmpls: Tmpl): Tmpl {
         log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
         result
     }
-    require(result != null) { "The screen is required to match ${tmpls.contentToString()}" }
+    check(result != null) { "The screen is required to match ${tmpls.contentToString()}" }
     return result
 }
 

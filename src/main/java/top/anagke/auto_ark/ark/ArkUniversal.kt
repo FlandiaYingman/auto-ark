@@ -45,6 +45,7 @@ val atMainScreen = template("atMainScreen.png", diff = 0.06)
 val canJumpOut = template("canJumpOut.png")
 
 fun Device.jumpOut() {
+    log.info { "退出到主界面" }
     if (match(canJumpOut)) {
         tap(267, 36).nap()
         tap(92, 169).nap()

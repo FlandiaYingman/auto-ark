@@ -3,7 +3,6 @@ package top.anagke.auto_ark.ark
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.serialization.Serializable
-import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
@@ -28,9 +27,6 @@ data class RecruitConfig(
     val retain5SOperators: Boolean = true,
     val retain4SOperators: Boolean = false,
 )
-
-private val log = KotlinLogging.logger {}
-
 
 // 公开招募界面
 private val atRecruitSlotsScreen = template("recruit/atRecruitSlotsScreen.png")

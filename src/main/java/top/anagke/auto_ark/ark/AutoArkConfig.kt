@@ -4,6 +4,7 @@ import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Emulator
 import top.anagke.auto_ark.adb.Memu
+import top.anagke.auto_ark.ark.operate.OperateConfig
 import top.anagke.kio.file.notExists
 import top.anagke.kio.file.text
 import java.io.File

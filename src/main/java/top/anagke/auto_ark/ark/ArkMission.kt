@@ -19,16 +19,19 @@ private val hasReward = template("mission/hasReward.png")
 fun Device.autoMission() {
     assert(atMainScreen)
 
-    tap(830, 603).delay(500) // 任务
-    tap(665, 40) // 日常任务（防止进入见习任务）
+    tap(830, 603).sleep() // 任务
+
+    tap(665, 40).sleep() // 日常任务（防止进入见习任务）
     if (match(hasReward)) {
         tap(1115, 150).sleep() //领取所有奖励
         tap(1115, 150).sleep() //确认
+        tap(1115, 150).sleep() //确认
     }
 
-    tap(868, 36) //周常任务
+    tap(868, 36).sleep() //周常任务
     if (match(hasReward)) {
         tap(1115, 150).sleep() //领取所有奖励
+        tap(1115, 150).sleep() //确认
         tap(1115, 150).sleep() //确认
     }
 
