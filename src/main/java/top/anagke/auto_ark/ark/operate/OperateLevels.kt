@@ -35,37 +35,35 @@ val CA_5 = OperateLevel("CA-5（技巧概要）") {
 
 //当期剿灭作战
 val annihilation = OperateLevel("剿灭作战", timeout = 30L * 60L * 1000L) {
+    tap(970, 203).sleep() //终端
     tap(1000, 665).sleep()
     tap(835, 400).sleep()
 }
 
-
-/*
-private fun Device.enterChipDefenderMedic() {
+val PR_A_2 = OperateLevel("PR-X-2（重装/医疗芯片）") {
     tap(970, 203).sleep() //终端
     tap(822, 670).sleep() //Resource Collection
     tap(842, 329).sleep()
     tap(830, 258).sleep() //PR-X-2
 }
 
-private fun Device.enterChipSniperCaster() {
+val PR_XX_2 = OperateLevel("PR-X-2（狙击/术士芯片）") {
     tap(970, 203).sleep() //终端
     tap(822, 670).sleep() //Resource Collection
-    tap(1060, 353).sleep()
+    tap(842, 329).sleep()
     tap(830, 258).sleep() //PR-X-2
 }
 
-private fun Device.enterChipVanguardSupporter() {
+val PR_XXX_2 = OperateLevel("PR-X-2（先锋/辅助芯片）") {
     tap(970, 203).sleep() //终端
     tap(822, 670).sleep() //Resource Collection
-    tap(1269, 350).sleep()
+    tap(842, 329).sleep()
     tap(830, 258).sleep() //PR-X-2
 }
 
-private fun Device.enterChipGuardSpecialist() {
+val PR_XXXX_2 = OperateLevel("PR-X-2（近卫/特种芯片）") {
     tap(970, 203).sleep() //终端
     tap(822, 670).sleep() //Resource Collection
-    swipe(640, 360, 640, 640, duration = 1000).sleep()
-    tap(1114, 355).sleep()
+    tap(842, 329).sleep()
     tap(830, 258).sleep() //PR-X-2
-}*/
+}

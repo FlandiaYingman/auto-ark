@@ -15,5 +15,5 @@ recruitConfig:
   retain5SOperators: true
   retain4SOperators: false
 operateConfig:
-  strategy: "WAIT"
+  strategy: "POTION"
   isOnEvent: false

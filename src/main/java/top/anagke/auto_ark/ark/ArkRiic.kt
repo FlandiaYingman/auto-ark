@@ -5,6 +5,7 @@ import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
+import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.ark.RiicFacility.*
 import java.time.LocalDateTime
@@ -36,49 +37,54 @@ enum class RiicFacility(
     B302(3, 275, 522),
     B303(3, 487, 522),
     B304(5, 821, 522),
-    B401(5, 904, 626),
+    B401(5, 904, 626);
+
+    fun isDorm() = when (this) {
+        B104, B204, B304, B401 -> true
+        else -> false
+    }
 }
 
 private val atRiicScreen = template("riic/atRiicScreen.png")
+val atRiicFacility = template("riic/atRiicFacility.png")
+val atRiicDorm = template("riic/atRiicDorm.png")
 
 
 fun Device.autoRiic() {
-    if (appSave.lastAutoRiicTime.plusHours(8).isBefore(LocalDateTime.now())) {
-        assert(atMainScreen)
+    assert(atMainScreen)
 
-        tap(986, 624) //进入基建
-        await(atRiicScreen)
-        delay(2000)
+    tap(985, 625) //进入基建
+    await(atRiicScreen)
+    sleep()
 
-        riicCollect()
-        await(atRiicScreen)
+    riicCollect()
+    await(atRiicScreen)
 
-        jumpOut()
-        await(atMainScreen)
+    jumpOut()
+    await(atMainScreen)
 
-        tap(986, 624) //进入基建
-        await(atRiicScreen)
-        delay(2000)
+    tap(986, 624) //进入基建
+    await(atRiicScreen)
+    delay(2000)
 
-        riicAssign()
-        await(atRiicScreen)
+    riicAssign()
+    await(atRiicScreen)
 
-        jumpOut()
-        await(atMainScreen)
+    jumpOut()
+    await(atMainScreen)
 
-        appSave.edit {
-            lastAutoRiicTime = LocalDateTime.now()
-        }
+    appSave.edit {
+        lastAutoRiicTime = LocalDateTime.now()
     }
 }
 
 private fun Device.riicCollect() {
-    tap(1203, 132).sleep() //打开基建提醒（下方位置）
-    repeat(3) { tap(239, 693).sleep() } //收取贸易站产物、制造站产物和干员信赖
-    tap(1136, 94).sleep() //关闭基建提醒
-    tap(1203, 92).sleep() //打开基建提醒（一般位置）
-    repeat(3) { tap(239, 693).sleep() } //收取贸易站产物、制造站产物和干员信赖
-    tap(1136, 94).sleep() //关闭基建提醒
+    tap(1203, 132).nap() //打开基建提醒（下方位置）
+    repeat(3) { tap(239, 693).nap() } //收取贸易站产物、制造站产物和干员信赖
+    tap(1136, 94).nap() //关闭基建提醒
+    tap(1203, 92).nap() //打开基建提醒（一般位置）
+    repeat(3) { tap(239, 693).nap() } //收取贸易站产物、制造站产物和干员信赖
+    tap(1136, 94).nap() //关闭基建提醒
 }
 
 private fun Device.riicAssign() {
@@ -90,10 +96,15 @@ private fun Device.riicAssign() {
         HUMAN_RESOURCES_OFFICE,
         RECEPTION_ROOM
     ).forEach { facility ->
-        tap(facility.riicScreenX, facility.riicScreenY).sleep() //进入房间
+        tap(facility.riicScreenX, facility.riicScreenY) //进入房间
+        if (facility.isDorm()) {
+            await(atRiicDorm)
+        } else {
+            await(atRiicFacility)
+        }
         tap(640, 360).sleep() //确保“进驻信息”为非开启状态
-        tap(69, 297).sleep() //进驻信息
-        tap(919, 159).sleep() //第一进驻栏
+        tap(70, 300).sleep() //进驻信息
+        tap(920, 160).sleep() //第一进驻栏
 
         val operatorPos = listOf(
             490 to 253,
@@ -111,10 +122,9 @@ private fun Device.riicAssign() {
             tap(operatorPos[it].first, operatorPos[it].second).delay(250)
         }
 
-        tap(1182, 677).sleep() //确认
-        tap(1182, 677).sleep() //确认
-        delay(500)
-        back().sleep() //退出房间
-        delay(1000)
+        tap(1180, 675).sleep() //确认
+        tap(1180, 675).sleep() //确认
+        back() //退出房间
+        await(atRiicScreen)
     }
 }

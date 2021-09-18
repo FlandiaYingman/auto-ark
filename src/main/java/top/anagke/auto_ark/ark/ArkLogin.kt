@@ -49,7 +49,7 @@ fun Device.login() {
  */
 fun Device.loginOfficial(username: String, password: String) {
     log.info { "登录明日方舟" }
-    await(atLoginScreen, atSplashScreen)
+    await(atLoginScreen, atSplashScreen, timeout = 30L * 60L * 1000L)
     if (matched(atSplashScreen)) {
         log.info { "检测到欢迎界面，跳过" }
         tap(640, 360).nap()

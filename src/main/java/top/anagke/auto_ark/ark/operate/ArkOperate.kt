@@ -5,7 +5,9 @@ import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.delay
+import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.matched
+import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.ark.appConfig
 import top.anagke.auto_ark.ark.arkToday
 import top.anagke.auto_ark.ark.atMainScreen
@@ -35,9 +37,11 @@ val dailyLevel = when (arkToday) {
 fun Device.autoOperate() {
     val config = appConfig.operateConfig
 
-//    enter(annihilation)
-//    operateOne(config.strategy)
-//    jumpOut()
+    if (hasAnnihilation()) {
+        enter(annihilation)
+        operateOne(config.strategy, timeout = annihilation.timeout)
+        jumpOut()
+    }
 
     enter(dailyLevel)
     operateAll(config.strategy, timeout = dailyLevel.timeout)
@@ -112,7 +116,15 @@ fun Device.operateOne(strategy: OperateStrategy, timeout: Long): OperateResult {
  * 开始于：准备界面。
  * 结束于：准备界面。
  */
-fun Device.operateAll(strategy: OperateStrategy, timeout: Long ){
+fun Device.operateAll(strategy: OperateStrategy, timeout: Long) {
     @Suppress("ControlFlowWithEmptyBody")
     while (operateOne(strategy, timeout = timeout) != EMPTY_SANITY);
+}
+
+
+fun Device.hasAnnihilation(): Boolean {
+    tap(970, 203).sleep() //终端
+    val ans = this.match(hasAnnihilation)
+    jumpOut()
+    return ans
 }
