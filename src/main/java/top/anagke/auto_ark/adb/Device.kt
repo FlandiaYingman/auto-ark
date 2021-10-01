@@ -5,7 +5,7 @@ import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.native.await
 import top.anagke.auto_ark.native.openProc
 import top.anagke.auto_ark.native.stdout
-import top.anagke.auto_ark.native.stdoutLog
+import top.anagke.auto_ark.native.stdoutStr
 
 private val log = mu.KotlinLogging.logger { }
 
@@ -43,16 +43,25 @@ class Device(val serial: String? = null) {
     }
 
 
-    fun launch(packageName: String, activityName: String) {
-        log.debug { "Launch $packageName" }
-        val pa = packageName + if (activityName.isNotEmpty()) "/$activityName" else ""
-        adbProc("shell", "am", "start", pa).await()
+    fun launch(activity: AndroidActivity) {
+        log.debug { "Launch $activity" }
+        adbProc("shell", "am", "start", "$activity").await()
     }
 
-    fun stop(packageName: String) {
-        log.debug { "Stop $packageName" }
-        adbProc("shell", "am", "force-stop", packageName).await()
+    fun stop(activity: AndroidActivity) {
+        log.debug { "Stop $activity" }
+        adbProc("shell", "am", "force-stop", activity.packageName).await()
     }
+
+    val focusedActivity: AndroidActivity?
+        get() {
+            val str = adbProc("shell", "dumpsys", "activity", "activities").stdoutStr()
+            return Regex("""mFocusedActivity: ActivityRecord\{.*? .*? (.*?) .*?}""")
+                .find(str)
+                ?.groupValues
+                ?.get(1)
+                ?.let { AndroidActivity.parse(it) }
+        }
 
 
     private fun adbProc(vararg adbCommands: String): Process {
@@ -64,4 +73,26 @@ class Device(val serial: String? = null) {
         return openProc(*commands.toTypedArray())
     }
 
+}
+
+data class AndroidActivity(
+    val packageName: String,
+    val activityName: String,
+) {
+    companion object {
+        fun parse(string: String): AndroidActivity {
+            val split = string.split("/")
+            require(split.size == 2)
+            val packageName = split[0]
+            val activityName = split[1]
+            return AndroidActivity(packageName, activityName)
+        }
+    }
+
+    override fun toString(): String {
+        if (activityName.isEmpty()) {
+            return packageName
+        }
+        return "$packageName/$activityName"
+    }
 }

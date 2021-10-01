@@ -18,6 +18,8 @@ internal val popupSanityEmptyOriginite = template("operate/popupSanityEmptyOrigi
 internal val atCompleteScreen = template("operate/atCompleteScreen.png", diff = 0.05)
 // 等待“升级”
 internal val popupLevelUp = template("operate/popupLevelUp.png")
+// 等待剿灭作战“作战结束”
+internal val atAnnihilationCompleteScreen = template("operate/atAnnihilationCompleteScreen.png", diff = 0.05)
 
 
 // 存在剿灭任务

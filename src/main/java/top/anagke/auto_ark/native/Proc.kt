@@ -12,7 +12,7 @@ fun Process.await() {
 }
 
 fun Process.stdout(): ByteArray {
-    inputStream.use { _ ->
+    inputStream.use {
         val breakTime = System.currentTimeMillis() + 3000
         do {
             val available = inputStream.available()
@@ -29,7 +29,7 @@ fun Process.stdout(): ByteArray {
 }
 
 fun Process.stderr(): ByteArray {
-    errorStream.use { _ ->
+    errorStream.use {
         val breakTime = System.currentTimeMillis() + 3000
         do {
             val available = errorStream.available()

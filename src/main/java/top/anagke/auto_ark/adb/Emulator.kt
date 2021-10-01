@@ -6,11 +6,10 @@ import top.anagke.auto_ark.native.openProc
 import top.anagke.auto_ark.native.stderrLog
 import top.anagke.auto_ark.native.stdoutLog
 import java.io.Closeable
+import java.io.File
 
 
-private val log = mu.KotlinLogging.logger { }
-
-const val adbPath = "C:\\Program Files\\Microvirt\\MEmu\\adb.exe"
+const val adbPath = "bin/adb/adb.exe"
 
 
 @Serializable
@@ -19,7 +18,7 @@ sealed class Emulator : Closeable {
     abstract val adbHost: String
     abstract val adbPort: Int
 
-    abstract fun open(startupPackage: String, startupActivity: String): Device
+    abstract fun open(): Device
     abstract fun isRunning(): Boolean
 
     fun connect(): Device {
@@ -47,29 +46,31 @@ sealed class Emulator : Closeable {
 
 @Serializable
 class Memu(
-    val location: String,
+    private val location: String,
 ) : Emulator() {
+
+    init {
+        File("bin/adb/")
+            .listFiles()
+            ?.forEach { it.copyTo(File(location).resolveSibling(it.name), overwrite = true) }
+    }
+
 
     override val adbHost: String = "127.0.0.1"
 
     override val adbPort: Int = 21503
 
 
-    override fun open(startupPackage: String, startupActivity: String): Device {
+    override fun open(): Device {
         val running = isRunning()
         if (running.not()) {
-            startMemu(startupPackage, startupActivity)
+            startMemu()
         }
-        val device = connect()
-        if (running) {
-            device.stop(startupPackage)
-            device.launch(startupPackage, startupActivity)
-        }
-        return device
+        return connect()
     }
 
     override fun isRunning(): Boolean {
-        return "MEmu.exe" in openProc("tasklist", "/fi", "Imagename eq MEmu.exe").stdoutLog()
+        return "MEmu.exe" in openProc("tasklist", "/fi", "Imagename eq MEmu.exe").stderrLog()
     }
 
     override fun close() {
@@ -77,9 +78,8 @@ class Memu(
     }
 
 
-    private fun startMemu(startupPackage: String, startupActivity: String) {
-        val pa = startupPackage + if (startupActivity.isNotEmpty()) "/$startupActivity" else ""
-        openProc(location, "MEmu", "applink", pa)
+    private fun startMemu() {
+        openProc("${File(location).resolve("MEmu.exe")}", "MEmu")
     }
 
     private fun stopMemu() {

@@ -2,8 +2,13 @@
 
 package top.anagke.auto_ark.adb
 
+import top.anagke.auto_ark.util.minutes
 import top.anagke.auto_ark.img.Tmpl
-import java.util.concurrent.TimeoutException
+import java.time.Duration
+import java.time.Instant
+
+class TimeoutException(message: String) : Exception(message)
+class AssertException(message: String) : Exception(message)
 
 
 private val log = mu.KotlinLogging.logger { }
@@ -18,74 +23,77 @@ private var Device.lastMatchedTmpl: Tmpl?
     }
 
 
-fun Device.match(tmpl: Tmpl): Boolean {
-    val diff = tmpl.diff(cap())
-    val result = diff <= tmpl.threshold
-    this.lastMatchedTmpl = if (result) tmpl else null
-    log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
-    return result
+fun Device.match(vararg tmpls: Tmpl): Boolean {
+    return which(*tmpls) != null
 }
 
-fun Device.notMatch(tmpl: Tmpl): Boolean {
-    return match(tmpl).not()
+fun Device.notMatch(vararg tmpls: Tmpl): Boolean {
+    return which(*tmpls) == null
 }
 
 fun Device.which(vararg tmpls: Tmpl): Tmpl? {
     val screen = cap()
-    tmpls.forEach { tmpl ->
+    for (tmpl in tmpls) {
         val diff = tmpl.diff(screen)
-        val result = diff <= tmpl.threshold
-        this.lastMatchedTmpl = if (result) tmpl else null
-        log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
-        if (result) return tmpl
+        val matched = diff <= tmpl.threshold
+        log.debug { "Matching $tmpl... result=$matched, difference=${diff.formatDiff()}" }
+        if (matched) {
+            this.lastMatchedTmpl = tmpl
+            return tmpl
+        } else {
+            this.lastMatchedTmpl = null
+        }
     }
     return null
 }
 
 
-fun Device.await(vararg tmpls: Tmpl, timeout: Long = 30 * 1000): Tmpl {
-    log.debug { "Await matching ${tmpls.toList()}" }
-    val deadline = System.currentTimeMillis() + timeout
-    do {
-        val screen = cap()
-        val result = tmpls.find { tmpl ->
-            val diff = tmpl.diff(screen)
-            val result = diff <= tmpl.threshold
-            this.lastMatchedTmpl = if (result) tmpl else null
-            log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
-            result
-        }
-        if (result != null) {
-            return result
-        }
-        if (System.currentTimeMillis() > deadline) {
-            throw TimeoutException()
-        }
-    } while (result == null)
+fun Device.await(vararg tmpls: Tmpl, timeout: Long = 1.minutes): Tmpl {
+    log.debug { "Awaiting ${tmpls.contentToString()}..." }
+    val deadline = Instant.now() + Duration.ofMillis(timeout)
+    while (!Thread.interrupted()) {
+        val matched = which(*tmpls)
+        if (matched != null) return matched
+        if (Instant.now().isAfter(deadline)) throw TimeoutException("timeout after $timeout ms")
+    }
     throw InterruptedException()
 }
 
 fun Device.assert(vararg tmpls: Tmpl): Tmpl {
-    log.debug { "Assert matching ${tmpls.toList()}" }
-    val screen = cap()
-    val result = tmpls.find { tmpl ->
-        val diff = tmpl.diff(screen)
-        val result = diff <= tmpl.threshold
-        this.lastMatchedTmpl = if (result) tmpl else null
-        log.debug { "Match, result=$result, diff=${diff.formatDiff()}, $tmpl" }
-        result
+    log.debug { "Asserting ${tmpls.toList()}..." }
+    val matched = which(*tmpls)
+    if (matched != null) {
+        return matched
+    } else {
+        throw AssertException("assert matching $tmpls")
     }
-    check(result != null) { "The screen is required to match ${tmpls.contentToString()}" }
-    return result
+}
+
+
+fun Device.whileMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
+    val begin = Instant.now()
+    while (which(*tmpls) != null) {
+        block()
+        if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
+            throw TimeoutException("timeout after $timeout ms")
+        }
+    }
+}
+
+fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
+    val begin = Instant.now()
+    while (which(*tmpls) == null) {
+        block()
+        if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
+            throw TimeoutException("timeout after $timeout ms")
+        }
+    }
 }
 
 
 fun Device.matched(vararg tmpls: Tmpl): Boolean {
+    if (tmpls.isEmpty()) return lastMatchedTmpl != null
     return lastMatchedTmpl in tmpls
-}
-
-fun Device.matchedAny(): Boolean {
-    return lastMatchedTmpl != null
 }
 
 

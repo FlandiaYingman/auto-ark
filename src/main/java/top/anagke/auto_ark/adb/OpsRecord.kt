@@ -11,14 +11,14 @@ fun main() {
 
     val proc = ProcessBuilder(adbPath, "shell", "getevent").start()
 
-    var tempX = 0
-    var tempY = 0
+    var tempX = 0L
+    var tempY = 0L
 
     proc.inputStream.bufferedReader(Charsets.US_ASCII).forEachLine {
         val xResult = xAxisRegex.matchEntire(it)
         val yResult = yAxisRegex.matchEntire(it)
-        if (xResult != null) tempX = xResult.groupValues[1].toInt(16)
-        if (yResult != null) tempY = yResult.groupValues[1].toInt(16)
+        if (xResult != null) tempX = xResult.groupValues[1].toLong(16)
+        if (yResult != null) tempY = yResult.groupValues[1].toLong(16)
         if (tapRegex.matches(it)) {
             log.info { "tap($tempX, $tempY).sleep()" }
         }

@@ -3,9 +3,10 @@ package top.anagke.auto_ark.ark
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.match
+import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.adb.notMatch
 import top.anagke.auto_ark.adb.sleep
+import top.anagke.auto_ark.adb.whileNotMatch
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
 import java.io.FileNotFoundException
@@ -42,18 +43,31 @@ fun template(name: String, diff: Double = 0.05): Tmpl {
 val atMainScreen = template("atMainScreen.png", diff = 0.06)
 
 // 可跳回主界面
-val canJumpOut = template("canJumpOut.png")
+val canJumpOut = template("canJumpOut.png", diff = 0.01)
+
+
 
 fun Device.jumpOut() {
-    log.info { "退出到主界面" }
     if (match(canJumpOut)) {
         tap(267, 36).nap()
         tap(92, 169).nap()
         await(atMainScreen)
         sleep()
     } else {
-        while (notMatch(atMainScreen)) {
+        whileNotMatch(atMainScreen, canJumpOut) {
             back().sleep()
         }
+        if (matched(canJumpOut)) {
+            tap(267, 36).nap()
+            tap(92, 169).nap()
+            await(atMainScreen)
+            sleep()
+        }
+    }
+}
+
+fun Device.hardJumpOut() {
+    whileNotMatch(atMainScreen) {
+        back().sleep()
     }
 }
