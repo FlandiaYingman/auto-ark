@@ -1,5 +1,6 @@
 package top.anagke.auto_ark.ark.operate
 
+import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
@@ -33,21 +34,24 @@ class ArkOperate(
     private val config: OperateConfig,
 ) {
 
+    private val logger = KotlinLogging.logger {}
+
     fun auto() {
-        if (config.doFarmAnnihilation) {
-            farmAnnihilation()
-        }
+        logger.info { "运行模块：刷副本" }
+        farmAnnihilation()
         farmPlan()
-        if (config.doFarmDaily) {
-            farmDaily()
-        }
+        farmDaily()
     }
 
-    fun farmPlan() {
+    private fun farmPlan() {
+        logger.info { "刷计划副本：${config.doFarmPlan}" }
+        if (!config.doFarmPlan) return
+
         for (entry in config.farmingPlan) {
             val levelName = entry.key
             val farmTimes = entry.value
             if (farmTimes <= 0) continue
+
             val level = OperateLevel.levelsMap[levelName]
             if (level != null) {
                 val actualFarmTimes = farm(level, farmTimes)
@@ -58,18 +62,29 @@ class ArkOperate(
         }
     }
 
-    fun farmDaily() {
+    private fun farmDaily() {
+        logger.info { "刷日常副本：${config.doFarmDaily}" }
+        if (!config.doFarmDaily) return
+
         farm(dailyLevel)
     }
 
     private fun farmAnnihilation() {
+        logger.info { "刷剿灭委托：${config.doFarmAnnihilation}" }
+        if (!config.doFarmAnnihilation) return
+
         farm(annihilation, 1)
     }
 
 
-    fun farm(level: OperateLevel, farmTimes: Int = Int.MAX_VALUE): Int = device.run {
+    private fun farm(level: OperateLevel, farmTimes: Int = Int.MAX_VALUE): Int = device.run {
+        logger.info { "刷副本：$level，预计刷 $farmTimes 次" }
+
         val successful = enterLevel(level)
-        if (!successful) return@run 0
+        if (!successful) {
+            logger.info { "刷副本：$level，完毕，实际刷 ${0} 次" }
+            return@run 0
+        }
 
         var actualTimes = 0
         for (i in 0 until farmTimes) {
@@ -79,38 +94,39 @@ class ArkOperate(
         }
         jumpOut()
 
+        logger.info { "刷副本：$level，完毕，实际刷 $actualTimes 次" }
         actualTimes
     }
 
     private fun Device.enterLevel(level: OperateLevel): Boolean {
-        log.info { "进入关卡：${level}" }
+        log.info { "进入关卡：$level" }
         assert(atMainScreen)
         val successful = level.entry(this)
         if (!successful) {
-            log.info { "无法进入关卡：${level}" }
+            log.info { "进入关卡：$level，无法进入，退出" }
             return false
         }
 
         assert(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
+        log.info { "进入关卡：$level，完毕" }
         return true
     }
 
     private fun Device.operateLevel(level: OperateLevel): OperateResult {
-        log.info { "代理指挥关卡，检测进入准备界面" }
+        log.info { "代理指挥关卡：$level，理智策略：${config.strategy}" }
         assert(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
         if (matched(atPrepareScreen_autoDeployDisabled)) {
-            log.info { "代理指挥关闭，开启代理指挥" }
+            log.info { "代理指挥关卡：$level，代理指挥关闭，开启" }
             tap(1067, 592) // 开启“代理指挥”
         }
 
-        log.info { "开始行动，等待进入编队界面" }
         tap(1078, 661)
         await(atFormationScreen, popupSanityEmpty, popupSanityEmptyOriginite)
 
         if (matched(popupSanityEmpty) && config.strategy.canUsePotion() ||
             matched(popupSanityEmptyOriginite) && config.strategy.canUseOriginite()
         ) {
-            log.info { "理智不足，恢复理智" }
+            log.info { "代理指挥关卡：$level，理智不足，恢复" }
             tap(1088, 577) // 恢复理智
             await(atPrepareScreen)
             tap(1078, 661)
@@ -118,13 +134,12 @@ class ArkOperate(
         }
 
         if (matched(popupSanityEmpty, popupSanityEmptyOriginite)) {
-            log.info { "理智不足，返回准备界面" }
+            log.info { "代理指挥关卡：$level，理智不足，退出" }
             tap(783, 580)
             await(atPrepareScreen)
             return EMPTY_SANITY
         }
 
-        log.info { "开始行动，等待行动结束" }
         tap(1103, 522)
         await(atCompleteScreen, popupLevelUp, atAnnihilationCompleteScreen, timeout = level.timeout)
         if (matched(atAnnihilationCompleteScreen)) {
@@ -133,9 +148,9 @@ class ArkOperate(
         }
         tap(640, 360).nap()
 
-        log.info { "行动结束，等待返回准备页面" }
         tap(640, 360).nap()
         await(atPrepareScreen)
+        log.info { "代理指挥关卡：$level，完毕" }
         return OperateResult.SUCCESS
     }
 

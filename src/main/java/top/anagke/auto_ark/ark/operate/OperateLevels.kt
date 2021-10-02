@@ -107,7 +107,7 @@ private constructor(
         }
 
         //当期剿灭作战
-        val annihilation = operateLevel("剿灭作战", timeout = 30L * 60L * 1000L) {
+        val annihilation = operateLevel("剿灭作战", "当期", timeout = 30L * 60L * 1000L) {
             tap(970, 203).sleep() //终端
             if (match(hasAnnihilation)) {
                 tap(1000, 665).sleep()
@@ -137,7 +137,9 @@ private constructor(
     }
 
     override fun toString(): String {
-        return "$name（$description）"
+        val name = this.name
+        val description = if (this.description.isNotEmpty()) "（$description）" else ""
+        return "$name$description"
     }
 
 }
