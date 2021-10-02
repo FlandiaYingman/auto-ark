@@ -1,22 +1,17 @@
 package top.anagke.auto_ark.adb
 
-import top.anagke.auto_ark.dsl.Timer
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.native.await
 import top.anagke.auto_ark.native.openProc
-import top.anagke.auto_ark.native.stdout
-import top.anagke.auto_ark.native.stdoutStr
+import top.anagke.auto_ark.native.stdOut
+import top.anagke.auto_ark.native.stdOutStr
 
 private val log = mu.KotlinLogging.logger { }
 
 class Device(val serial: String? = null) {
 
-    private val capScheduler = Timer(1000)
-
     fun cap(): Img {
-        return capScheduler.invoke {
-            Img(adbProc("exec-out", "screencap -p").stdout())
-        }
+        return Img(adbProc("exec-out", "screencap -p").stdOut())
     }
 
 
@@ -55,7 +50,7 @@ class Device(val serial: String? = null) {
 
     val focusedActivity: AndroidActivity?
         get() {
-            val str = adbProc("shell", "dumpsys", "activity", "activities").stdoutStr()
+            val str = adbProc("shell", "dumpsys", "activity", "activities").stdOutStr()
             return Regex("""mFocusedActivity: ActivityRecord\{.*? .*? (.*?) .*?}""")
                 .find(str)
                 ?.groupValues

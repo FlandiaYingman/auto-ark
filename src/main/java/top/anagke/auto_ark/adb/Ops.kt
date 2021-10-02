@@ -2,8 +2,8 @@
 
 package top.anagke.auto_ark.adb
 
-import top.anagke.auto_ark.util.minutes
 import top.anagke.auto_ark.img.Tmpl
+import top.anagke.auto_ark.util.minutes
 import java.time.Duration
 import java.time.Instant
 
@@ -65,7 +65,7 @@ fun Device.assert(vararg tmpls: Tmpl): Tmpl {
     if (matched != null) {
         return matched
     } else {
-        throw AssertException("assert matching $tmpls")
+        throw AssertException("assert matching ${tmpls.contentToString()}")
     }
 }
 

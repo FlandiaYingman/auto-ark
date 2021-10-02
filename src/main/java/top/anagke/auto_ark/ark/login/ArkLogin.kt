@@ -9,6 +9,7 @@ package top.anagke.auto_ark.ark.login
 import mu.KotlinLogging
 import top.anagke.auto_ark.adb.AndroidActivity
 import top.anagke.auto_ark.adb.Device
+import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.whileNotMatch
@@ -71,6 +72,7 @@ class ArkLogin(
         log.info { "等待登录完成" }
         hardJumpOut()
         hardJumpOut()
+        await(atMainScreen)
 
         log.info { "登录完成" }
     }

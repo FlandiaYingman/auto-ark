@@ -10,7 +10,6 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.TM_CCORR_NORMED
-import top.anagke.auto_ark.adb.Device
 import java.awt.Rectangle
 import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
@@ -125,14 +124,4 @@ fun invert(img: Img): Img {
 
     val encode = MatOfByte().also { Imgcodecs.imencode(".png", gray, it) }
     return Img(encode.toArray())
-}
-
-
-fun testTemplate(tmpl: Tmpl) {
-    while (true) {
-        val diff = tmpl.diff(Device().cap())
-        println("'${tmpl.name}''s diff   = ${String.format("%.6f", diff)}")
-        println("'${tmpl.name}''s result = ${diff < tmpl.threshold}")
-        println("=".repeat(32))
-    }
 }

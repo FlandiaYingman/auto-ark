@@ -3,8 +3,8 @@ package top.anagke.auto_ark.adb
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.native.killProc
 import top.anagke.auto_ark.native.openProc
-import top.anagke.auto_ark.native.stderrLog
-import top.anagke.auto_ark.native.stdoutLog
+import top.anagke.auto_ark.native.stdErrStrLog
+import top.anagke.auto_ark.native.stdOutStrLog
 import java.io.Closeable
 import java.io.File
 
@@ -25,8 +25,8 @@ sealed class Emulator : Closeable {
         val addr = "${adbHost}:${adbPort}"
         do {
             val proc = openProc(adbPath, "connect", addr)
-            val stdout = proc.stdoutLog()
-            val stderr = proc.stderrLog()
+            val stdout = proc.stdOutStrLog()
+            val stderr = proc.stdErrStrLog()
         } while (
             stdout.contains("no") ||
             stdout.contains("cannot") ||
@@ -70,7 +70,7 @@ class Memu(
     }
 
     override fun isRunning(): Boolean {
-        return "MEmu.exe" in openProc("tasklist", "/fi", "Imagename eq MEmu.exe").stderrLog()
+        return "MEmu.exe" in openProc("tasklist", "/fi", "Imagename eq MEmu.exe").stdErrStrLog()
     }
 
     override fun close() {
@@ -83,9 +83,9 @@ class Memu(
     }
 
     private fun stopMemu() {
-        killProc("adb.exe").stdoutLog()
-        killProc("MEmu.exe").stdoutLog()
-        killProc("MEmuHeadless.exe").stdoutLog()
+        killProc("adb.exe").stdOutStrLog()
+        killProc("MEmu.exe").stdOutStrLog()
+        killProc("MEmuHeadless.exe").stdOutStrLog()
     }
 
 }

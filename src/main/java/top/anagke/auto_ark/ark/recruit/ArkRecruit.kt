@@ -1,20 +1,21 @@
 package top.anagke.auto_ark.ark.recruit
 
 import kotlinx.serialization.Serializable
+import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.sleep
-import top.anagke.auto_ark.adb.which
 import top.anagke.auto_ark.adb.whileNotMatch
+import top.anagke.auto_ark.ark.AutoArk
+import top.anagke.auto_ark.ark.appConfig
 import top.anagke.auto_ark.ark.atMainScreen
 import top.anagke.auto_ark.ark.jumpOut
 import top.anagke.auto_ark.ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.ark.recruit.RecruitTag.*
 import top.anagke.auto_ark.ark.template
-import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
 import top.anagke.auto_ark.img.crop
 import top.anagke.auto_ark.img.invert
@@ -81,8 +82,9 @@ private enum class RecruitSlot(
     ),
 }
 
-
-private enum class RecruitTag(val screenRect: Rectangle) {
+private enum class RecruitTag(
+    val screenRect: Rectangle,
+) {
     TAG1(Rectangle(375, 360, 144, 46)),
     TAG2(Rectangle(542, 360, 144, 46)),
     TAG3(Rectangle(709, 360, 144, 46)),
@@ -90,24 +92,23 @@ private enum class RecruitTag(val screenRect: Rectangle) {
     TAG5(Rectangle(542, 432, 144, 46)),
 }
 
-private fun parse(cap: Img): Map<RecruitTag, String> {
-    return RecruitTag.values().toList()
-        .parallelStream()
-        .map { it to ocrTesseract(invert(crop(cap, it.screenRect))) }
-        .collect(Collectors.toList())
-        .toMap()
-}
 
 class ArkRecruit(
     private val device: Device,
     private val config: RecruitConfig,
 ) {
 
+    private val logger = KotlinLogging.logger { }
+
     private var hasRecruitmentPermit = true
 
     private var hasExpeditedPlan = true
 
+    private val skippingSlotList: MutableList<RecruitSlot> = mutableListOf()
+
+
     fun auto() = device.apply {
+        logger.info { "运行模块：公开招募" }
         assert(atMainScreen)
 
         tap(1000, 510) //公开招募
@@ -118,31 +119,22 @@ class ArkRecruit(
         }
 
         jumpOut()
+        logger.info { "结束模块：公开招募" }
     }
 
     private fun autoSlot(slot: RecruitSlot) = device.apply {
         while (true) {
-            when (which(slot.isAvailable, slot.isRecruiting, slot.isCompleted)) {
-                slot.isAvailable -> {
-                    if (!hasRecruitmentPermit) break
-                    tapSlot(slot)
-                    startRecruit(config)
-                    if (!hasExpeditedPlan) break
-                }
-                slot.isRecruiting -> {
-                    if (!hasExpeditedPlan) break
-                    tapSlot(slot)
-                    expediteRecruit(slot)
-                    if (!hasExpeditedPlan) break
-                }
-                slot.isCompleted -> {
-                    tapSlot(slot)
-                    completeRecruit(slot)
-                    if (!hasRecruitmentPermit) break
-                }
+            if (slot in skippingSlotList) break
+            val slotStatus = assert(slot.isAvailable, slot.isRecruiting, slot.isCompleted)
+            logger.info { "检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasExpeditedPlan}，存在加急许可：$hasRecruitmentPermit" }
+            when (slotStatus) {
+                slot.isAvailable -> if (hasRecruitmentPermit) startRecruit(slot) else break
+                slot.isRecruiting -> if (hasExpeditedPlan) expediteRecruit(slot) else break
+                slot.isCompleted -> completeRecruit(slot)
             }
         }
     }
+
 
     private fun Device.tapSlot(slot: RecruitSlot) {
         when (slot) {
@@ -154,58 +146,92 @@ class ArkRecruit(
         sleep()
     }
 
+    private fun Device.parseTags(): Map<RecruitTag, String> {
+        val cap = cap()
+        return RecruitTag.values().toList()
+            .parallelStream()
+            .map { it to ocrTesseract(invert(crop(cap, it.screenRect))) }
+            .collect(Collectors.toList())
+            .toMap()
+    }
 
-    private fun Device.startRecruit(config: RecruitConfig) {
-        val tags = parse(cap())
-        val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
-        val maximumRarity = possibleOperators.maxOf(RecruitOperator::rarity)
-        when (maximumRarity) {
-            5, 4 -> {
-            }
-            else -> {
-                if (tags[TAG1] in tagCombination) tap(438, 383)
-                if (tags[TAG2] in tagCombination) tap(613, 379)
-                if (tags[TAG3] in tagCombination) tap(771, 383)
-                if (tags[TAG4] in tagCombination) tap(452, 456)
-                if (tags[TAG5] in tagCombination) tap(601, 451)
-            }
-        }
-        if (maximumRarity <= 2 && match(canRefreshTag)) {
-            tap(972, 408) //刷新TAG
-            tap(877, 508) //确认刷新TAG
-            sleep()
-            startRecruit(config)
-            return
-        }
 
-        tap(450, 300) //增加时限到”9：00：00“
-        tap(977, 588) // 开始招募
-        sleep()
-
-        await(atRecruitSlotsScreen, atRecruitScreen)
-        if (matched(atRecruitScreen)) {
-            hasRecruitmentPermit = false
-
+    private fun startRecruit(slot: RecruitSlot) = device.apply {
+        logger.info { "开始招募槽位：${slot.name}" }
+        val exitRecruit = {
             back()
             await(atRecruitSlotsScreen)
         }
-    }
+        tapSlot(slot)
+        while (true) {
+            val tags = parseTags()
+            val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
+            logger.info { "标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators" }
 
-    private fun Device.expediteRecruit(slot: RecruitSlot) {
-        tap(955, 518).sleep()
-        await(slot.isCompleted, slot.isRecruiting)
-        if (matched(slot.isRecruiting)) {
-            hasExpeditedPlan = false
-            return
+            val minimumRarity = possibleOperators.minOf(RecruitOperator::rarity)
+            logger.info { "最低可能星级：$minimumRarity" }
+            if (minimumRarity >= 4) {
+                logger.info { "最低可能星级大于等于五星，退出" }
+                skippingSlotList += slot
+                exitRecruit()
+                break
+            }
+            if (minimumRarity <= 2 && match(canRefreshTag)) {
+                logger.info { "最低可能星级小于等于三星且可刷新，刷新" }
+                tap(972, 408) //刷新TAG
+                tap(877, 508) //确认刷新TAG
+                sleep()
+                continue
+            }
+
+            if (tags[TAG1] in tagCombination) tap(438, 383)
+            if (tags[TAG2] in tagCombination) tap(613, 379)
+            if (tags[TAG3] in tagCombination) tap(771, 383)
+            if (tags[TAG4] in tagCombination) tap(452, 456)
+            if (tags[TAG5] in tagCombination) tap(601, 451)
+
+            tap(450, 300) //增加时限到”9：00：00“
+            tap(977, 588) // 开始招募
+            sleep()
+
+            await(atRecruitSlotsScreen, atRecruitScreen)
+            if (matched(atRecruitScreen)) {
+                hasRecruitmentPermit = false
+                logger.info { "招募许可不足，完成招募槽位：${slot.name}" }
+                exitRecruit()
+                break
+            } else {
+                logger.info { "开始招募槽位：${slot.name}，完毕" }
+                break
+            }
         }
     }
 
-    private fun Device.completeRecruit(slot: RecruitSlot) {
+    private fun expediteRecruit(slot: RecruitSlot) = device.apply {
+        logger.info { "立即招募槽位：${slot.name}" }
+        tapSlot(slot)
+        if (match(slot.isRecruiting)) {
+            hasExpeditedPlan = false
+            logger.info { "加急许可不足，跳过加急槽位：${slot.name}" }
+        } else {
+            tap(955, 518).sleep()
+            await(slot.isCompleted)
+            logger.info { "立即招募槽位：${slot.name}，完毕" }
+        }
+    }
+
+    private fun completeRecruit(slot: RecruitSlot) = device.apply {
+        logger.info { "完成招募：${slot.name}" }
+        tapSlot(slot)
         whileNotMatch(slot.isAvailable) {
             tap(1221, 41).sleep()
         }
-
         await(slot.isAvailable)
+        logger.info { "完成招募：${slot.name}，完毕" }
     }
 
+}
+
+fun main() {
+    AutoArk(appConfig).autoRecruit()
 }

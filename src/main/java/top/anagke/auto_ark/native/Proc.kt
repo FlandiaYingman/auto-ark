@@ -4,14 +4,13 @@ import mu.KotlinLogging
 import org.mozilla.universalchardet.UniversalDetector
 import java.io.IOException
 
-
 private val log = KotlinLogging.logger { }
 
 fun Process.await() {
     waitFor().let { }
 }
 
-fun Process.stdout(): ByteArray {
+fun Process.stdOut(): ByteArray {
     inputStream.use {
         val breakTime = System.currentTimeMillis() + 3000
         do {
@@ -28,7 +27,7 @@ fun Process.stdout(): ByteArray {
     }
 }
 
-fun Process.stderr(): ByteArray {
+fun Process.stdErr(): ByteArray {
     errorStream.use {
         val breakTime = System.currentTimeMillis() + 3000
         do {
@@ -45,10 +44,10 @@ fun Process.stderr(): ByteArray {
     }
 }
 
-fun Process.stdoutStr(): String {
+fun Process.stdOutStr(): String {
     return try {
         val ud = UniversalDetector()
-        val stdout = stdout()
+        val stdout = stdOut()
         ud.handleData(stdout)
         ud.dataEnd()
         String(stdout, charset(ud.detectedCharset ?: "GBK"))
@@ -57,10 +56,10 @@ fun Process.stdoutStr(): String {
     }
 }
 
-fun Process.stderrStr(): String {
+fun Process.stdErrStr(): String {
     return try {
         val ud = UniversalDetector()
-        val stderr = stderr()
+        val stderr = stdErr()
         ud.handleData(stderr)
         ud.dataEnd()
         String(stderr, charset(ud.detectedCharset ?: "GBK"))
@@ -69,14 +68,14 @@ fun Process.stderrStr(): String {
     }
 }
 
-fun Process.stdoutLog(): String {
-    return stdoutStr().also { str ->
+fun Process.stdOutStrLog(): String {
+    return stdOutStr().also { str ->
         str.lines().forEach { if (it.isNotBlank()) log.info { "> $it" } }
     }
 }
 
-fun Process.stderrLog(): String {
-    return stderrStr().also { str ->
+fun Process.stdErrStrLog(): String {
+    return stdErrStr().also { str ->
         str.lines().forEach { if (it.isNotBlank()) log.info { "ERR> $it" } }
     }
 }
