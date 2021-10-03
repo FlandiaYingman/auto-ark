@@ -81,8 +81,6 @@ class ArkRiic(
     }
 
     private fun collect() = device.apply {
-        enterRiic()
-
         tap(1203, 132).nap() //打开基建提醒（下方位置）
         repeat(3) { tap(239, 693).nap() } //收取贸易站产物、制造站产物和干员信赖
         tap(1136, 94).nap() //关闭基建提醒
@@ -101,9 +99,7 @@ class ArkRiic(
         back().sleep() // 返回会客室
         tap(1196, 180).sleep() //进入收集线索
         tap(805, 574).sleep() //领取会客室线索
-        back()
-
-        jumpOut()
+        back().sleep()
     }
 
     private fun assign() = device.apply {
