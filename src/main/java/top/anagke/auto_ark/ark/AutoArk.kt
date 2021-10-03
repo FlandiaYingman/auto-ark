@@ -1,13 +1,13 @@
 package top.anagke.auto_ark.ark
 
 import mu.KotlinLogging
-import top.anagke.auto_ark.adb.AndroidActivity
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.ark.login.ArkLogin
 import top.anagke.auto_ark.ark.mission.ArkMission
 import top.anagke.auto_ark.ark.operate.ArkOperate
 import top.anagke.auto_ark.ark.recruit.ArkRecruit
 import top.anagke.auto_ark.ark.riic.ArkRiic
+import top.anagke.auto_ark.ark.store.ArkStore
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 
@@ -29,6 +29,8 @@ class AutoArk(
         autoRecruit()
         autoOperate()
         autoRiic()
+        //TODO: test, and do
+        //autoStore()
         autoMission()
     }
 
@@ -47,6 +49,10 @@ class AutoArk(
 
     fun autoRiic() = runModule {
         ArkRiic(device).auto()
+    }
+
+    fun autoStore() = runModule {
+        ArkStore(device).auto()
     }
 
     fun autoMission() = runModule {
@@ -77,5 +83,5 @@ class AutoArk(
 }
 
 fun main() {
-    AutoArk(appConfig).autoRecruit()
+    AutoArk(appConfig).routine()
 }

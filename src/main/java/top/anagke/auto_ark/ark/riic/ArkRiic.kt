@@ -99,6 +99,8 @@ class ArkRiic(
         back().sleep() // 返回会客室
         tap(1196, 180).sleep() //进入收集线索
         tap(805, 574).sleep() //领取会客室线索
+        back().nap()
+        back().nap()
         back().sleep()
     }
 
@@ -158,8 +160,16 @@ class ArkRiic(
             tap(operatorPos[it].first, operatorPos[it].second)
         }
 
-        tap(1180, 675) //确认
         tap(1180, 675).nap() //确认
+        tap(1180, 675).nap() //确认
+    }
+
+}
+
+fun main() {
+    AutoArk(appConfig).apply {
+        this.autoLogin()
+        this.autoRiic()
     }
 
 }

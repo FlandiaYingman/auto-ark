@@ -89,8 +89,8 @@ class ArkOperate(
         var actualTimes = 0
         for (i in 0 until farmTimes) {
             val result = operateLevel(level)
-            actualTimes++
             if (result == EMPTY_SANITY) break
+            actualTimes++
         }
         jumpOut()
 

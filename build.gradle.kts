@@ -1,20 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    java
-    application
-
     kotlin("jvm") version "1.5.31"
     kotlin("plugin.serialization") version "1.5.31"
+
+    application
 }
 
 
 application {
-    mainClass.set("top.anagke.auto_ark.MainKt")
+    mainClass.set("top.anagke.auto_ark.ark.AutoArkKt")
 }
 
-group "top.anagke.auto_ark"
-version "0.1"
+group = "top.anagke.auto_ark"
+version = "0.1"
 
 repositories {
     mavenCentral()
@@ -34,8 +33,6 @@ dependencies {
     implementation("com.charleskorn.kaml:kaml:0.36.0")
     implementation("com.google.code.gson:gson:2.8.8")
 
-    implementation("net.java.dev.jna:jna:5.9.0")
-    implementation("net.java.dev.jna:jna-platform:5.9.0")
     implementation("com.github.albfernandez:juniversalchardet:2.4.0")
 }
 
