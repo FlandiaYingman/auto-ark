@@ -2,12 +2,14 @@ package top.anagke.auto_ark.ark.riic
 
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Device
+import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.adb.whileNotMatch
 import top.anagke.auto_ark.ark.AutoArk
 import top.anagke.auto_ark.ark.appConfig
+import top.anagke.auto_ark.ark.atMainScreen
 import top.anagke.auto_ark.ark.jumpOut
 import top.anagke.auto_ark.ark.template
 
@@ -63,10 +65,13 @@ class ArkRiic(
     }
 
     fun auto() = device.apply {
-        //   assert(atMainScreen)
+        assert(atMainScreen)
+        enterRiic()
 
-        //     collect()
+        collect()
         assign()
+
+        jumpOut()
     }
 
     private fun Device.enterRiic() {
