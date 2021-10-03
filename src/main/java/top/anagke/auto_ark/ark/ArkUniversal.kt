@@ -40,7 +40,7 @@ fun template(name: String, diff: Double = 0.05): Tmpl {
 }
 
 // 主界面
-val atMainScreen = template("atMainScreen.png", diff = 0.06)
+val atMainScreen = template("atMainScreen.png")
 
 // 可跳回主界面
 val canJumpOut = template("canJumpOut.png", diff = 0.01)

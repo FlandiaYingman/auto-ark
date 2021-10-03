@@ -2,15 +2,13 @@ package top.anagke.auto_ark.ark.riic
 
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.adb.whileNotMatch
-import top.anagke.auto_ark.ark.atMainScreen
+import top.anagke.auto_ark.ark.AutoArk
+import top.anagke.auto_ark.ark.appConfig
 import top.anagke.auto_ark.ark.jumpOut
-import top.anagke.auto_ark.ark.riic.RiicFacility.*
 import top.anagke.auto_ark.ark.template
 
 @Serializable
@@ -54,13 +52,20 @@ val atRiicDorm = template("riic/atRiicDorm.png")
 val isClueEmpty = template("riic/isClueEmpty.png")
 
 class ArkRiic(
-    private val device: Device
+    private val device: Device,
 ) {
 
-    fun auto() = device.apply {
-        assert(atMainScreen)
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            AutoArk(appConfig).autoRiic()
+        }
+    }
 
-        collect()
+    fun auto() = device.apply {
+        //   assert(atMainScreen)
+
+        //     collect()
         assign()
     }
 
@@ -97,47 +102,63 @@ class ArkRiic(
     }
 
     private fun assign() = device.apply {
-        enterRiic()
-        listOf(
-            B104, B204, B304, B401,
-            B101, B102, B103,
-            B201, B202, B203,
-            B301, B302, B303,
-            HUMAN_RESOURCES_OFFICE,
-            RECEPTION_ROOM
-        ).forEach { facility ->
-            tap(facility.riicScreenX, facility.riicScreenY) //进入房间
-            if (facility.isDorm()) {
-                await(atRiicDorm)
-            } else {
-                await(atRiicFacility)
-            }
-            tap(640, 360).sleep() //确保“进驻信息”为非开启状态
-            tap(70, 300).sleep() //进驻信息
-            tap(920, 160).sleep() //第一进驻栏
+        tap(74, 118).sleep() //进驻总览
 
-            val operatorPos = listOf(
-                490 to 253,
-                478 to 446,
-                597 to 249,
-                607 to 464,
-                732 to 256,
-                775 to 501,
-                931 to 266,
-                913 to 445,
-                1042 to 235,
-                1033 to 454,
-            )
-            repeat(facility.operatorLimit * 2) {
-                tap(operatorPos[it].first, operatorPos[it].second).delay(250)
-            }
-
-            tap(1180, 675).sleep() //确认
-            tap(1180, 675).sleep() //确认
-            back() //退出房间
-            await(atRiicScreen)
+        //前两个宿舍
+        repeat(2) {
+            nswipe(1200, 415, 1200, 415 - 880, 2000, 500) //一个宿舍距离
+            tap(670, 200).sleep() //第一个房间
+            shift(5)
         }
-        jumpOut()
+
+        //后两个宿舍
+        nswipe(1200, 415, 1200, 415 - 880, 2000, 500) //一个宿舍距离
+        tap(670, 240).sleep() //第三个宿舍
+        shift(5)
+        tap(670, 600).sleep() //第四个宿舍
+        shift(5)
+
+        swipe(1200, 415, 1200, 415 + 2048, 1000).sleep()
+
+        nswipe(1200, 415, 1200, 415 - 190, 1000, 500) //一个房间距离
+        tap(670, 200).nap() //第一个房间
+        shift(2)
+
+        repeat(3) {
+            nswipe(1200, 415, 1200, 415 - 245, 1000, 500) //一层距离
+            repeat(3) {
+                tap(670, 200).nap() //第一个房间
+                shift(3) //贸易站、制造站或发电站
+                nswipe(1200, 415, 1200, 415 - 190, 1000, 500) //一个房间距离
+            }
+            if (it < 3 - 1) {
+                nswipe(1200, 415, 1200, 415 - 190, 1000, 500) //一个房间距离
+                tap(670, 200).nap() //第一个房间
+                shift(1) //辅助设施
+            }
+        }
+    }
+
+
+    private fun shift(limit: Int) = device.apply {
+        val operatorPos = listOf(
+            490 to 253,
+            478 to 446,
+            597 to 249,
+            607 to 464,
+            732 to 256,
+            775 to 501,
+            931 to 266,
+            913 to 445,
+            1042 to 235,
+            1033 to 454,
+        )
+        repeat(limit * 2) {
+            tap(operatorPos[it].first, operatorPos[it].second)
+        }
+
+        tap(1180, 675) //确认
+        tap(1180, 675).nap() //确认
     }
 
 }

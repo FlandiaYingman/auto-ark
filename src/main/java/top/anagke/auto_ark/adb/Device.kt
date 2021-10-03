@@ -34,7 +34,12 @@ class Device(val serial: String? = null) {
 
     fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int) {
         log.debug { "Swipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
-        adbProc("shell", "input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").await()
+        adbShell("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").await()
+    }
+
+    fun nswipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int, tail: Int) {
+        log.debug { "NSwipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
+        adbShell("/data/ninput", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration", "$tail").await()
     }
 
 
@@ -66,6 +71,10 @@ class Device(val serial: String? = null) {
             listOf(listOf(adbPath, "-s", serial), adbCommands.toList()).flatten()
         }
         return openProc(*commands.toTypedArray())
+    }
+
+    private fun adbShell(vararg shellCommands: String): Process {
+        return adbProc("shell", *shellCommands)
     }
 
 }

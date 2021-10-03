@@ -76,7 +76,9 @@ object ArkRecruitCalculator {
             .associateWith {
                 recruitOperators
                     .filter { op -> op.canRecruitBy(it) }
+                    .filter { op -> op.rarity > 1 } //暂时不支持二星（支援机械）
                     .sortedBy(RecruitOperator::rarity)
+//                TODO("支持二星（支援机械）")
             }
             .filterValues { it.isNotEmpty() }
         return result

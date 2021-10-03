@@ -126,7 +126,7 @@ class ArkRecruit(
         while (true) {
             if (slot in skippingSlotList) break
             val slotStatus = assert(slot.isAvailable, slot.isRecruiting, slot.isCompleted)
-            logger.info { "检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasExpeditedPlan}，存在加急许可：$hasRecruitmentPermit" }
+            logger.info { "检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasRecruitmentPermit}，存在加急许可：$hasExpeditedPlan" }
             when (slotStatus) {
                 slot.isAvailable -> if (hasRecruitmentPermit) startRecruit(slot) else break
                 slot.isRecruiting -> if (hasExpeditedPlan) expediteRecruit(slot) else break
