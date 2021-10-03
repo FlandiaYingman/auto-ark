@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     java
     application
@@ -35,4 +37,19 @@ dependencies {
     implementation("net.java.dev.jna:jna:5.9.0")
     implementation("net.java.dev.jna:jna-platform:5.9.0")
     implementation("com.github.albfernandez:juniversalchardet:2.4.0")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+tasks.wrapper {
+    gradleVersion = "7.2"
 }

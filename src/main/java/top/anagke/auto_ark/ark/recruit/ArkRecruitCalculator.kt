@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY")
+
 package top.anagke.auto_ark.ark.recruit
 
 import com.google.gson.Gson
