@@ -35,9 +35,14 @@ sealed class Emulator : Closeable {
         )
 
         val dev = Device(addr)
-        do {
-            val data = dev.cap().data
-        } while (data.isEmpty())
+
+        while (true) {
+            try {
+                dev.cap()
+                break
+            } catch (e: IllegalStateException) {
+            }
+        }
 
         return dev
     }

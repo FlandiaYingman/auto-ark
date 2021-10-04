@@ -32,10 +32,10 @@ fun template(name: String, diff: Double = 0.05): Tmpl {
         if (urlList.isEmpty()) {
             throw FileNotFoundException("resource '$name' not found by '${ArkRes.javaClass.packageName}'")
         } else {
-            return Tmpl(name, diff, urlList.map { Img(it.readBytes()) })
+            return Tmpl(name, diff, urlList.map { Img.decode(it.readBytes())!! })
         }
     } else {
-        return Tmpl(name, diff, listOf(Img(url.readBytes())))
+        return Tmpl(name, diff, listOf(Img.decode(url.readBytes())!!))
     }
 }
 
@@ -44,7 +44,6 @@ val atMainScreen = template("atMainScreen.png")
 
 // 可跳回主界面
 val canJumpOut = template("canJumpOut.png", diff = 0.01)
-
 
 
 fun Device.jumpOut() {
@@ -68,6 +67,6 @@ fun Device.jumpOut() {
 
 fun Device.hardJumpOut() {
     whileNotMatch(atMainScreen) {
-        back().sleep()
+        back()
     }
 }

@@ -17,8 +17,6 @@ import top.anagke.auto_ark.ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.ark.recruit.RecruitTag.*
 import top.anagke.auto_ark.ark.template
 import top.anagke.auto_ark.img.Tmpl
-import top.anagke.auto_ark.img.crop
-import top.anagke.auto_ark.img.invert
 import top.anagke.auto_ark.img.ocrTesseract
 import java.awt.Rectangle
 import java.util.stream.Collectors
@@ -150,7 +148,7 @@ class ArkRecruit(
         val cap = cap()
         return RecruitTag.values().toList()
             .parallelStream()
-            .map { it to ocrTesseract(invert(crop(cap, it.screenRect))) }
+            .map { it to ocrTesseract(cap.crop(it.screenRect).invert()) }
             .collect(Collectors.toList())
             .toMap()
     }

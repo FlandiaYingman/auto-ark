@@ -11,7 +11,8 @@ private val log = mu.KotlinLogging.logger { }
 class Device(val serial: String? = null) {
 
     fun cap(): Img {
-        return Img(adbProc("exec-out", "screencap -p").stdOut())
+        return Img.decode(adbProc("exec-out", "screencap -p").stdOut())
+            ?: throw IllegalStateException("empty screencap")
     }
 
 

@@ -2,10 +2,12 @@
 
 package top.anagke.auto_ark.adb
 
+import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
 import top.anagke.auto_ark.util.minutes
 import java.time.Duration
 import java.time.Instant
+import kotlin.system.measureTimeMillis
 
 class TimeoutException(message: String) : Exception(message)
 class AssertException(message: String) : Exception(message)
@@ -32,11 +34,16 @@ fun Device.notMatch(vararg tmpls: Tmpl): Boolean {
 }
 
 fun Device.which(vararg tmpls: Tmpl): Tmpl? {
-    val screen = cap()
+    val screen: Img
+    val capTime = measureTimeMillis { screen = cap() }
     for (tmpl in tmpls) {
-        val diff = tmpl.diff(screen)
-        val matched = diff <= tmpl.threshold
-        log.debug { "Matching $tmpl... result=$matched, difference=${diff.formatDiff()}" }
+        val diff: Double
+        val matched: Boolean
+        val diffTime = measureTimeMillis {
+            diff = tmpl.diff(screen)
+            matched = diff <= tmpl.threshold
+        }
+        log.debug { "Matching $tmpl... result=$matched, difference=${diff.formatDiff()}, diffTime=$diffTime ms, capTime=$capTime ms" }
         if (matched) {
             this.lastMatchedTmpl = tmpl
             return tmpl

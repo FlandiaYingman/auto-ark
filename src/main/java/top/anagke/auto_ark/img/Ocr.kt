@@ -15,7 +15,7 @@ fun ocrTesseract(img: Img): String {
 
     var ocr = ""
     TempFiles.useTempFile(TempFiles.LOCAL_TEMP_DIR) {
-        Files.write(it, img.data)
+        Files.write(it, Img.encode(img))
 
         val proc = openProc("bin/tesseract/tesseract.exe", "$it", "-", "-l", "chi_sim", "--dpi", "300")
         val output = proc.stdOutStr()
