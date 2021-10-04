@@ -67,6 +67,6 @@ fun Device.jumpOut() {
 
 fun Device.hardJumpOut() {
     whileNotMatch(atMainScreen) {
-        back()
+        back().nap()
     }
 }
