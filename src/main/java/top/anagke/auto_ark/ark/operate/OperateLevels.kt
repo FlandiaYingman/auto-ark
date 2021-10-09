@@ -141,7 +141,7 @@ private constructor(
             tap(959, 435).sleep() //进入“大竞技场”
             swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
             nswipe(640, 360, 640 + 1000, 360, 5000, 5000).sleep() //划到MN-6
-            tap(333, 300).sleep() //MN-6
+            tap(276, 295).sleep() //MN-6
             val entered = match(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
             if (entered.not()) {
                 jumpOut()

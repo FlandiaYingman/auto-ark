@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.native.killProc
 import top.anagke.auto_ark.native.openProc
 import top.anagke.auto_ark.native.stdErrStrLog
+import top.anagke.auto_ark.native.stdOutStr
 import top.anagke.auto_ark.native.stdOutStrLog
 import java.io.Closeable
 import java.io.File
@@ -22,29 +23,21 @@ sealed class Emulator : Closeable {
     abstract fun isRunning(): Boolean
 
     fun connect(): Device {
-        val addr = "${adbHost}:${adbPort}"
-        do {
-            val proc = openProc(adbPath, "connect", addr)
-            val stdout = proc.stdOutStrLog()
-            val stderr = proc.stdErrStrLog()
-        } while (
-            stdout.contains("no") ||
-            stdout.contains("cannot") ||
-            stdout.contains("failed") ||
-            stderr.isNotBlank()
-        )
-
-        val dev = Device(addr)
-
-        while (true) {
-            try {
-                dev.cap()
-                break
-            } catch (e: IllegalStateException) {
-            }
+        val adbAddress = "${adbHost}:${adbPort}"
+        while (adbAddress !in adbProc("devices").stdOutStr()) {
+            adbProc("connect", adbAddress)
         }
 
-        return dev
+        val device = Device(adbAddress)
+        while (true) {
+            try {
+                device.cap()
+                break
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            }
+        }
+        return device
     }
 
 }
@@ -91,6 +84,31 @@ class Memu(
         killProc("adb.exe").stdOutStrLog()
         killProc("MEmu.exe").stdOutStrLog()
         killProc("MEmuHeadless.exe").stdOutStrLog()
+    }
+
+}
+
+@Serializable
+class BlueStacks(
+    private val blueStacksHome: String = "C:/Program Files/BlueStacks_nxt",
+) : Emulator() {
+
+    override val adbHost: String = "localhost"
+    override val adbPort: Int = 5555
+
+    override fun open(): Device {
+        if (isRunning().not()) {
+            openProc(File(blueStacksHome).resolve("HD-Player.exe").canonicalPath, "--instance", "Nougat32")
+        }
+        return connect()
+    }
+
+    override fun isRunning(): Boolean {
+        return "HD-Player.exe" in openProc("tasklist", "/fi", "Imagename eq HD-Player.exe").stdErrStrLog()
+    }
+
+    override fun close() {
+        killProc("HD-Player.exe")
     }
 
 }

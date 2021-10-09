@@ -2,6 +2,6 @@
 # shell.
 #
 base=/system
-export CLASSPATH=/data/ninput.jar
+export CLASSPATH=/mnt/sdcard/ninput.jar
 exec app_process $base/bin com.example.n_input.Input "$@"
 

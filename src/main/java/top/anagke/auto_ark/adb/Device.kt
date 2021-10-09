@@ -8,7 +8,26 @@ import top.anagke.auto_ark.native.stdOutStr
 
 private val log = mu.KotlinLogging.logger { }
 
+
+fun adbProc(vararg adbCommands: String, serial: String = ""): Process {
+    val commands = if (serial.isEmpty()) {
+        listOf(listOf(adbPath), adbCommands.toList()).flatten()
+    } else {
+        listOf(listOf(adbPath, "-s", serial), adbCommands.toList()).flatten()
+    }
+    return openProc(*commands.toTypedArray())
+}
+
+fun adbShell(vararg shellCommands: String, serial: String = ""): Process {
+    return adbProc("shell", *shellCommands, serial = serial)
+}
+
+
 class Device(val serial: String? = null) {
+
+    private fun adbProc(vararg adbCommands: String): Process = adbProc(*adbCommands, serial = serial.orEmpty())
+
+    private fun adbShell(vararg shellCommands: String): Process = adbShell(*shellCommands, serial = serial.orEmpty())
 
     fun cap(): Img {
         return Img.decode(adbProc("exec-out", "screencap -p").stdOut())
@@ -40,7 +59,7 @@ class Device(val serial: String? = null) {
 
     fun nswipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int, tail: Int) {
         log.debug { "NSwipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
-        adbShell("/data/ninput", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration", "$tail").await()
+        adbShell("sh", "/mnt/sdcard/ninput", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").await()
     }
 
 
@@ -63,20 +82,6 @@ class Device(val serial: String? = null) {
                 ?.get(1)
                 ?.let { AndroidActivity.parse(it) }
         }
-
-
-    private fun adbProc(vararg adbCommands: String): Process {
-        val commands = if (serial == null) {
-            listOf(listOf(adbPath), adbCommands.toList()).flatten()
-        } else {
-            listOf(listOf(adbPath, "-s", serial), adbCommands.toList()).flatten()
-        }
-        return openProc(*commands.toTypedArray())
-    }
-
-    private fun adbShell(vararg shellCommands: String): Process {
-        return adbProc("shell", *shellCommands)
-    }
 
 }
 
