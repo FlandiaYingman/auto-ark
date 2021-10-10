@@ -4,7 +4,9 @@ package top.anagke.auto_ark.adb
 
 import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.img.Tmpl
+import top.anagke.auto_ark.util.FrequencyLimiter
 import top.anagke.auto_ark.util.minutes
+import top.anagke.auto_ark.util.seconds
 import java.time.Duration
 import java.time.Instant
 import kotlin.system.measureTimeMillis
@@ -57,13 +59,16 @@ fun Device.which(vararg tmpls: Tmpl): Tmpl? {
 
 fun Device.await(vararg tmpls: Tmpl, timeout: Long = 1.minutes): Tmpl {
     log.debug { "Awaiting ${tmpls.contentToString()}..." }
-    val deadline = Instant.now() + Duration.ofMillis(timeout)
-    while (!Thread.interrupted()) {
-        val matched = which(*tmpls)
-        if (matched != null) return matched
-        if (Instant.now().isAfter(deadline)) throw TimeoutException("timeout after $timeout ms")
-    }
-    throw InterruptedException()
+    val frequencyLimiter = FrequencyLimiter(1.seconds)
+    val begin = Instant.now()
+    var tmpl: Tmpl?
+    do {
+        tmpl = frequencyLimiter.run { which(*tmpls) }
+        if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
+            throw TimeoutException("timeout after $timeout ms")
+        }
+    } while (tmpl == null)
+    return tmpl
 }
 
 fun Device.assert(vararg tmpls: Tmpl): Tmpl {
@@ -78,9 +83,10 @@ fun Device.assert(vararg tmpls: Tmpl): Tmpl {
 
 
 fun Device.whileMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
+    val frequencyLimiter = FrequencyLimiter(1.seconds)
     val begin = Instant.now()
-    while (which(*tmpls) != null) {
-        block()
+    while (frequencyLimiter.run { which(*tmpls) } != null) {
+        block.invoke()
         if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
             throw TimeoutException("timeout after $timeout ms")
         }
@@ -88,9 +94,10 @@ fun Device.whileMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -
 }
 
 fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
+    val frequencyLimiter = FrequencyLimiter(1.seconds)
     val begin = Instant.now()
-    while (which(*tmpls) == null) {
-        block()
+    while (frequencyLimiter.run { which(*tmpls) } == null) {
+        block.invoke()
         if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
             throw TimeoutException("timeout after $timeout ms")
         }

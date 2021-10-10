@@ -3,9 +3,7 @@ package top.anagke.auto_ark.adb
 import kotlinx.serialization.Serializable
 import top.anagke.auto_ark.native.killProc
 import top.anagke.auto_ark.native.openProc
-import top.anagke.auto_ark.native.stdErrStrLog
-import top.anagke.auto_ark.native.stdOutStr
-import top.anagke.auto_ark.native.stdOutStrLog
+import top.anagke.auto_ark.native.readText
 import java.io.Closeable
 import java.io.File
 
@@ -24,8 +22,9 @@ sealed class Emulator : Closeable {
 
     fun connect(): Device {
         val adbAddress = "${adbHost}:${adbPort}"
-        while (adbAddress !in adbProc("devices").stdOutStr()) {
-            adbProc("connect", adbAddress)
+        val regex = Regex("""$adbAddress\s*device""")
+        while (regex !in adbProc("devices").readText().stdout) {
+            adbProc("connect", adbAddress).readText()
         }
 
         val device = Device(adbAddress)
@@ -68,7 +67,7 @@ class Memu(
     }
 
     override fun isRunning(): Boolean {
-        return "MEmu.exe" in openProc("tasklist", "/fi", "Imagename eq MEmu.exe").stdErrStrLog()
+        return "MEmu.exe" in openProc("tasklist", "/fi", "Imagename eq MEmu.exe").readText().stdout
     }
 
     override fun close() {
@@ -81,9 +80,9 @@ class Memu(
     }
 
     private fun stopMemu() {
-        killProc("adb.exe").stdOutStrLog()
-        killProc("MEmu.exe").stdOutStrLog()
-        killProc("MEmuHeadless.exe").stdOutStrLog()
+        killProc("adb.exe").readText()
+        killProc("MEmu.exe").readText()
+        killProc("MEmuHeadless.exe").readText()
     }
 
 }
@@ -104,7 +103,7 @@ class BlueStacks(
     }
 
     override fun isRunning(): Boolean {
-        return "HD-Player.exe" in openProc("tasklist", "/fi", "Imagename eq HD-Player.exe").stdErrStrLog()
+        return "HD-Player.exe" in openProc("tasklist", "/fi", "Imagename eq HD-Player.exe").readText().stdout
     }
 
     override fun close() {

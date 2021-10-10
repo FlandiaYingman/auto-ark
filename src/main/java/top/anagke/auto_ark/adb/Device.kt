@@ -1,10 +1,9 @@
 package top.anagke.auto_ark.adb
 
 import top.anagke.auto_ark.img.Img
-import top.anagke.auto_ark.native.await
 import top.anagke.auto_ark.native.openProc
-import top.anagke.auto_ark.native.stdOut
-import top.anagke.auto_ark.native.stdOutStr
+import top.anagke.auto_ark.native.readRaw
+import top.anagke.auto_ark.native.readText
 
 private val log = mu.KotlinLogging.logger { }
 
@@ -23,59 +22,62 @@ fun adbShell(vararg shellCommands: String, serial: String = ""): Process {
 }
 
 
-class Device(val serial: String? = null) {
+class Device(
+    private val serial: String? = null,
+) {
 
     private fun adbProc(vararg adbCommands: String): Process = adbProc(*adbCommands, serial = serial.orEmpty())
 
     private fun adbShell(vararg shellCommands: String): Process = adbShell(*shellCommands, serial = serial.orEmpty())
 
+
     fun cap(): Img {
-        return Img.decode(adbProc("exec-out", "screencap -p").stdOut())
+        return Img.decode(adbProc("exec-out", "screencap -p").readRaw().stdout)
             ?: throw IllegalStateException("empty screencap")
     }
 
 
     fun tap(x: Int, y: Int) {
         log.debug { "Tap ($x, $y), serial='$serial'" }
-        adbProc("shell", "input", "tap", "$x", "$y").await()
+        adbShell("input", "tap", "$x", "$y").readText()
     }
 
     fun back() {
         log.debug { "Back, serial='$serial'" }
-        return adbProc("shell", "input", "keyevent", "4").await()
+        adbShell("input", "keyevent", "4").readText()
     }
 
     fun input(str: String) {
         log.debug { "Input '$str', serial='$serial'" }
         str.forEach {
-            adbProc("shell", "input", "text", "$it").await()
+            adbShell("input", "text", "$it").readText()
         }
     }
 
     fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int) {
         log.debug { "Swipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
-        adbShell("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").await()
+        adbShell("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").readText()
     }
 
     fun nswipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int, tail: Int) {
         log.debug { "NSwipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
-        adbShell("sh", "/mnt/sdcard/ninput", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").await()
+        adbShell("sh", "/mnt/sdcard/ninput", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").readText()
     }
 
 
     fun launch(activity: AndroidActivity) {
         log.debug { "Launch $activity" }
-        adbProc("shell", "am", "start", "$activity").await()
+        adbShell("am", "start", "$activity").readText()
     }
 
     fun stop(activity: AndroidActivity) {
         log.debug { "Stop $activity" }
-        adbProc("shell", "am", "force-stop", activity.packageName).await()
+        adbShell("am", "force-stop", activity.packageName).readText()
     }
 
     val focusedActivity: AndroidActivity?
         get() {
-            val str = adbProc("shell", "dumpsys", "activity", "activities").stdOutStr()
+            val str = adbShell("dumpsys", "activity", "activities").readText().stdout
             return Regex("""mFocusedActivity: ActivityRecord\{.*? .*? (.*?) .*?}""")
                 .find(str)
                 ?.groupValues

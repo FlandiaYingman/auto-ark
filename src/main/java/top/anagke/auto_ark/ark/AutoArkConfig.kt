@@ -2,8 +2,8 @@ package top.anagke.auto_ark.ark
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
+import top.anagke.auto_ark.adb.BlueStacks
 import top.anagke.auto_ark.adb.Emulator
-import top.anagke.auto_ark.adb.Memu
 import top.anagke.auto_ark.ark.operate.OperateConfig
 import top.anagke.auto_ark.ark.recruit.RecruitConfig
 import top.anagke.auto_ark.ark.riic.RiicConfig
@@ -13,7 +13,7 @@ import java.io.File
 
 @Serializable
 data class AutoArkConfig(
-    val emulator: Emulator = Memu("C:/Program Files/Microvirt/MEmu/Memu.exe"),
+    val emulator: Emulator = BlueStacks(),
     val riicConfig: RiicConfig = RiicConfig(),
     val recruitConfig: RecruitConfig = RecruitConfig(),
     val operateConfig: OperateConfig = OperateConfig(),

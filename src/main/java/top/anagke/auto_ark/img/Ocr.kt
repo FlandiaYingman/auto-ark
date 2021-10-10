@@ -2,8 +2,7 @@ package top.anagke.auto_ark.img
 
 import mu.KotlinLogging
 import top.anagke.auto_ark.native.openProc
-import top.anagke.auto_ark.native.stdErrStrLog
-import top.anagke.auto_ark.native.stdOutStr
+import top.anagke.auto_ark.native.readText
 import top.anagke.kio.util.TempFiles
 import top.anagke.kio.util.useTempFile
 import java.nio.file.Files
@@ -18,8 +17,7 @@ fun ocrTesseract(img: Img): String {
         Files.write(it, Img.encode(img))
 
         val proc = openProc("bin/tesseract/tesseract.exe", "$it", "-", "-l", "chi_sim", "--dpi", "300")
-        val output = proc.stdOutStr()
-        proc.stdErrStrLog()
+        val output = proc.readText().stdout
 
         ocr = output.trim().replace(Regex("\\s"), "")
         log.debug { "Ocr $img: '$ocr'" }
