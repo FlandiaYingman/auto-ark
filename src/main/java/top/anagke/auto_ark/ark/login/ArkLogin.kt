@@ -1,16 +1,10 @@
-@file:Suppress("SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection",
-    "SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection",
-    "SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection",
-    "SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection", "SpellCheckingInspection",
-    "SpellCheckingInspection")
-
 package top.anagke.auto_ark.ark.login
 
 import mu.KotlinLogging
 import top.anagke.auto_ark.adb.AndroidActivity
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.match
+import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.whileNotMatch
 import top.anagke.auto_ark.ark.atMainScreen
@@ -24,7 +18,7 @@ class ArkLogin(
 ) {
 
     companion object {
-        val log = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
         // 登录界面
         private val atLoginScreen = template("login/atLoginScreen.png", diff = 0.01)
 
@@ -39,42 +33,40 @@ class ArkLogin(
     }
 
     private fun launch() = device.apply {
-        val focusedActivity = this.focusedActivity
-        if (focusedActivity != arkActivity) {
-            if (focusedActivity != null) stop(focusedActivity)
-            launch(arkActivity)
-            login()
-        } else {
-            when {
-                match(atMainScreen) -> {
-                }
-                match(canJumpOut) -> {
-                    jumpOut()
-                }
-                else -> {
-                    stop(focusedActivity)
-                    launch(arkActivity)
-                    login()
-                }
+        logger.info { "启动明日方舟" }
+        if (focusedActivity == arkActivity) {
+            logger.info { "明日方舟已启动" }
+            if (matched(atMainScreen)) {
+                logger.info { "明日方舟位于主界面" }
+                return@apply
             }
+            if (matched(canJumpOut)) {
+                logger.info { "明日方舟非位于主界面，可跳转到主界面，跳转" }
+                jumpOut()
+                return@apply
+            }
+            logger.info { "明日方舟无法跳转到主界面，尝试重新启动" }
         }
+        stop(arkActivity)
+        launch(arkActivity)
+        login()
     }
 
     private fun login() = device.apply {
-        log.info { "登录明日方舟" }
+        logger.info { "登录明日方舟" }
         whileNotMatch(atLoginScreen) {
             tap(640, 360).nap()
         }
 
-        log.info { "检测到登录界面，登录" }
+        logger.info { "检测到登录界面，登录" }
         tap(639, 507).nap() // 开始唤醒
 
-        log.info { "等待登录完成" }
+        logger.info { "等待登录完成" }
         hardJumpOut()
         hardJumpOut()
         await(atMainScreen)
 
-        log.info { "登录完成" }
+        logger.info { "登录完成" }
     }
 
 }
