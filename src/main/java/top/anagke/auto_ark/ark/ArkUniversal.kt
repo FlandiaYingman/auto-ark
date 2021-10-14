@@ -45,6 +45,8 @@ val atMainScreen = template("atMainScreen.png")
 // 可跳回主界面
 val canJumpOut = template("canJumpOut.png", diff = 0.01)
 
+// 可跳回主界面
+val atExitConfirmPopup = template("atExitConfirmPopup.png", diff = 0.01)
 
 fun Device.jumpOut() {
     if (match(canJumpOut)) {

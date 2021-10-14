@@ -66,11 +66,13 @@ class ArkRiic(
 
     fun auto() = device.apply {
         assert(atMainScreen)
+
         enterRiic()
-
         collect()
-        assign()
+        jumpOut()
 
+        enterRiic()
+        assign()
         jumpOut()
     }
 
@@ -89,7 +91,7 @@ class ArkRiic(
         repeat(3) { tap(239, 693).nap() } //收取贸易站产物、制造站产物和干员信赖
         tap(1136, 94).nap() //关闭基建提醒
 
-        tap(1047, 234).sleep() //打开会客室
+        tap(1047, 234).sleep().sleep() //打开会客室
         tap(414, 617).sleep() //进入详情
         tap(1197, 388).sleep() //进入传递线索
         whileNotMatch(isClueEmpty) {
@@ -168,8 +170,6 @@ class ArkRiic(
 
 fun main() {
     AutoArk(appConfig).apply {
-        this.autoLogin()
         this.autoRiic()
     }
-
 }

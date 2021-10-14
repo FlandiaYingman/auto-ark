@@ -9,7 +9,6 @@ import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.whileNotMatch
 import top.anagke.auto_ark.ark.atMainScreen
 import top.anagke.auto_ark.ark.canJumpOut
-import top.anagke.auto_ark.ark.hardJumpOut
 import top.anagke.auto_ark.ark.jumpOut
 import top.anagke.auto_ark.ark.template
 
@@ -62,8 +61,11 @@ class ArkLogin(
         tap(639, 507).nap() // 开始唤醒
 
         logger.info { "等待登录完成" }
-        hardJumpOut()
-        hardJumpOut()
+        whileNotMatch(atMainScreen) {
+            back().nap()
+            tap(130, 489).nap() //防止卡在返回界面
+        }
+        jumpOut()
         await(atMainScreen)
 
         logger.info { "登录完成" }
