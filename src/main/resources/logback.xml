@@ -4,7 +4,7 @@
             <pattern>%date{ISO8601} [%thread] %-5level %message%n</pattern>
         </encoder>
     </appender>
-    <root level="DEBUG">
+    <root level="TRACE">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

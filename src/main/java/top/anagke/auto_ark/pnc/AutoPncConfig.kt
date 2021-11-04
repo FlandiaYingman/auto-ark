@@ -1,4 +1,4 @@
-package top.anagke.auto_ark.ark
+package top.anagke.auto_ark.pnc
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
@@ -12,9 +12,8 @@ import top.anagke.kio.file.text
 import java.io.File
 
 @Serializable
-data class AutoArkConfig(
+data class AutoPncConfig(
     val emulator: Emulator = BlueStacks(),
-    var arkVersion: String = "",
     val riicConfig: RiicConfig = RiicConfig(),
     val recruitConfig: RecruitConfig = RecruitConfig(),
     val operateConfig: OperateConfig = OperateConfig(),
@@ -25,13 +24,13 @@ private val appConfigFile = File("config.yaml")
 val appConfig = loadAppConfig()
 
 
-fun loadAppConfig(): AutoArkConfig {
+fun loadAppConfig(): AutoPncConfig {
     if (appConfigFile.notExists()) {
-        saveAppConfig(AutoArkConfig())
+        saveAppConfig(AutoPncConfig())
     }
-    return Yaml.default.decodeFromString(AutoArkConfig.serializer(), appConfigFile.text)
+    return Yaml.default.decodeFromString(AutoPncConfig.serializer(), appConfigFile.text)
 }
 
-fun saveAppConfig(autoArkConfig: AutoArkConfig) {
-    appConfigFile.text = Yaml.default.encodeToString(AutoArkConfig.serializer(), autoArkConfig)
+fun saveAppConfig(autoPncConfig: AutoPncConfig) {
+    appConfigFile.text = Yaml.default.encodeToString(AutoPncConfig.serializer(), autoPncConfig)
 }

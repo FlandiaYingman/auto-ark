@@ -149,6 +149,46 @@ private constructor(
             return@operateLevel entered
         }
 
+
+        val NL_8 = operateLevel("NL-8", description = "糖组，长夜临光") {
+            tap(970, 203).sleep() //终端
+            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
+            tap(1012, 446).sleep() //进入“大骑士领”
+            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
+            tap(242, 350).sleep() //NL-8
+            val entered = match(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
+            if (entered.not()) {
+                jumpOut()
+            }
+            return@operateLevel entered
+        }
+
+        val NL_9 = operateLevel("NL-9", description = "晶体元件，长夜临光") {
+            tap(970, 203).sleep() //终端
+            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
+            tap(1012, 446).sleep() //进入“大骑士领”
+            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
+            tap(439, 241).sleep() //NL-9
+            val entered = match(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
+            if (entered.not()) {
+                jumpOut()
+            }
+            return@operateLevel entered
+        }
+
+        val NL_10 = operateLevel("NL-10", description = "扭转醇，长夜临光") {
+            tap(970, 203).sleep() //终端
+            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
+            tap(1012, 446).sleep() //进入“大骑士领”
+            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
+            tap(515, 498).sleep() //NL-8
+            val entered = match(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
+            if (entered.not()) {
+                jumpOut()
+            }
+            return@operateLevel entered
+        }
+
     }
 
     override fun toString(): String {

@@ -38,9 +38,9 @@ class ArkOperate(
 
     fun auto() {
         logger.info { "运行模块：刷副本" }
-        farmAnnihilation()
+//        farmAnnihilation()
         farmPlan()
-        farmDaily()
+//        farmDaily()
     }
 
     private fun farmPlan() {

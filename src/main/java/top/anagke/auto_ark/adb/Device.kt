@@ -4,6 +4,8 @@ import top.anagke.auto_ark.img.Img
 import top.anagke.auto_ark.native.openProc
 import top.anagke.auto_ark.native.readRaw
 import top.anagke.auto_ark.native.readText
+import top.anagke.auto_ark.util.minutes
+import java.nio.file.Path
 
 private val log = mu.KotlinLogging.logger { }
 
@@ -84,6 +86,13 @@ class Device(
                 ?.get(1)
                 ?.let { AndroidActivity.parse(it) }
         }
+
+
+    fun install(apk: Path) {
+        val realApk = apk.toRealPath()
+        log.debug { "Install ($realApk), serial='$serial'" }
+        adbProc("install", "-r", "$realApk").readText(5.minutes)
+    }
 
 }
 

@@ -43,7 +43,7 @@ private class ProcessReader(val stream: InputStream, val type: Type) {
     private fun String.logLine() {
         when (type) {
             STDOUT -> log.trace { "STDOUT> $this" }
-            Type.STDERR -> log.debug { "STDERR> $this" }
+            STDERR -> log.debug { "STDERR> $this" }
         }
     }
 
@@ -55,9 +55,14 @@ fun Process.readRaw(timeout: Long = 15.seconds): ProcessOutput<ByteArray, String
     val stderrFuture = readerExecutor.submit(ProcessReader(errorStream, STDERR).attachText())
 
     val exited = waitFor(timeout, MILLISECONDS)
-    if (exited.not()) destroyForcibly()
+    if (exited.not()) {
+        destroyForcibly()
+        log.warn { "process $this timed out after $timeout ms" }
+    }
     val eventuallyExited = waitFor(5.seconds, MILLISECONDS)
-    if (eventuallyExited.not()) throw IOException("process $this not exited after destroying")
+    if (eventuallyExited.not()) {
+        throw IOException("process $this not exited after destroying")
+    }
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
     return ProcessOutput(stdout, stderr)
@@ -68,9 +73,14 @@ fun Process.readText(timeout: Long = 15.seconds): ProcessOutput<String, String> 
     val stderrFuture = readerExecutor.submit(ProcessReader(errorStream, STDERR).attachText())
 
     val exited = waitFor(timeout, MILLISECONDS)
-    if (exited.not()) destroyForcibly()
+    if (exited.not()) {
+        destroyForcibly()
+        log.warn { "process $this timed out after $timeout ms" }
+    }
     val eventuallyExited = waitFor(5.seconds, MILLISECONDS)
-    if (eventuallyExited.not()) throw IOException("process $this not exited after destroying")
+    if (eventuallyExited.not()) {
+        throw IOException("process $this not exited after destroying")
+    }
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
     return ProcessOutput(stdout, stderr)

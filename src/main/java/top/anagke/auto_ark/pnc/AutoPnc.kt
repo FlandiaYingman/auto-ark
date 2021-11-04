@@ -1,4 +1,4 @@
-package top.anagke.auto_ark.ark
+package top.anagke.auto_ark.pnc
 
 import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
@@ -11,8 +11,8 @@ import top.anagke.auto_ark.ark.store.ArkStore
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 
-class AutoArk(
-    val config: AutoArkConfig,
+class AutoPnc(
+    val config: AutoPncConfig,
     val device: Device = config.emulator.open(),
 ) {
 
@@ -25,19 +25,15 @@ class AutoArk(
     }
 
     fun routine() {
-        autoUpdate()
         autoLogin()
         autoRecruit()
         autoOperate()
         autoRiic()
-        autoStore()
+        //TODO: test, and do
+        //autoStore()
         autoMission()
     }
 
-
-    fun autoUpdate() = runModule {
-        ArkUpdate(device, config).auto()
-    }
 
     fun autoLogin() = runModule {
         ArkLogin(device).auto()
@@ -81,11 +77,10 @@ class AutoArk(
 
     private fun onModuleError(e: Exception) = device.apply {
         log.error("错误发生，尝试退出到主界面", e)
-        jumpOut()
     }
 
 }
 
 fun main() {
-    AutoArk(appConfig).routine()
+    AutoPnc(appConfig).routine()
 }

@@ -4,13 +4,14 @@ import mu.KotlinLogging
 import top.anagke.auto_ark.adb.AndroidActivity
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.matched
+import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.whileNotMatch
 import top.anagke.auto_ark.ark.atMainScreen
 import top.anagke.auto_ark.ark.canJumpOut
 import top.anagke.auto_ark.ark.jumpOut
 import top.anagke.auto_ark.ark.template
+import top.anagke.auto_ark.util.minutes
 
 class ArkLogin(
     private val device: Device,
@@ -35,11 +36,11 @@ class ArkLogin(
         logger.info { "启动明日方舟" }
         if (focusedActivity == arkActivity) {
             logger.info { "明日方舟已启动" }
-            if (matched(atMainScreen)) {
+            if (match(atMainScreen)) {
                 logger.info { "明日方舟位于主界面" }
                 return@apply
             }
-            if (matched(canJumpOut)) {
+            if (match(canJumpOut)) {
                 logger.info { "明日方舟非位于主界面，可跳转到主界面，跳转" }
                 jumpOut()
                 return@apply
@@ -53,7 +54,7 @@ class ArkLogin(
 
     private fun login() = device.apply {
         logger.info { "登录明日方舟" }
-        whileNotMatch(atLoginScreen) {
+        whileNotMatch(atLoginScreen, timeout = 5.minutes) {
             tap(640, 360).nap()
         }
 
