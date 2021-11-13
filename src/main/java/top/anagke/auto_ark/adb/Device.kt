@@ -28,10 +28,23 @@ class Device(
     private val serial: String? = null,
 ) {
 
-    private fun adbProc(vararg adbCommands: String): Process = adbProc(*adbCommands, serial = serial.orEmpty())
+    init {
+        initCustomTool()
+    }
 
-    private fun adbShell(vararg shellCommands: String): Process = adbShell(*shellCommands, serial = serial.orEmpty())
+    private fun initCustomTool() {
+        push("bin/adb/swiper.jar", "/sdcard/swiper.jar")
+    }
 
+
+    private fun adbProc(vararg adbCommands: String): Process =
+        adbProc(*adbCommands, serial = serial.orEmpty())
+
+    private fun adbShell(vararg shellCommands: String): Process =
+        adbShell(*shellCommands, serial = serial.orEmpty())
+
+    private fun adbAppProcess(classpath: String, classname: String, vararg args: String): Process =
+        adbShell("app_process", "-Djava.class.path=$classpath", "/system/bin", classname, *args)
 
     fun cap(): Img {
         return Img.decode(adbProc("exec-out", "screencap -p").readRaw().stdout)
@@ -61,9 +74,13 @@ class Device(
         adbShell("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").readText()
     }
 
-    fun nswipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int, tail: Int) {
-        log.debug { "NSwipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
-        adbShell("sh", "/mnt/sdcard/ninput", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").readText()
+    fun upless(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5) {
+        log.debug { "Upless ($sx, $sy, $ex, $ey, $speed), serial='$serial'" }
+        adbAppProcess(
+            "/sdcard/swiper.jar",
+            "top.anagke.Input",
+            "upless-exact", "$sx", "$sy", "$ex", "$ey", "$speed"
+        ).readText()
     }
 
 
@@ -92,6 +109,12 @@ class Device(
         val realApk = apk.toRealPath()
         log.debug { "Install ($realApk), serial='$serial'" }
         adbProc("install", "-r", "$realApk").readText(5.minutes)
+    }
+
+
+    fun push(local: String, remote: String) {
+        log.debug { "Push $local to $remote" }
+        adbProc("push", local, remote).readText()
     }
 
 }

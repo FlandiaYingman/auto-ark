@@ -36,21 +36,21 @@ private val canRefreshTag = template("recruit/canRefreshTag.png", diff = 0.01)
 private val atRecruitScreen = template("recruit/atRecruitScreen.png")
 
 // 公开招募1号栏位可用
-private val isRecruitSlot1Available = template("recruit/isRecruitSlot1Available.png", diff = 0.01)
-private val isRecruitSlot1Completed = template("recruit/isRecruitSlot1Completed.png", diff = 0.01)
-private val isRecruitSlot1Recruiting = template("recruit/isRecruitSlot1Recruiting.png", diff = 0.01)
+private val isRecruitSlot1Available = template("recruit/isRecruitSlot1Available.png", diff = 0.02)
+private val isRecruitSlot1Completed = template("recruit/isRecruitSlot1Completed.png", diff = 0.02)
+private val isRecruitSlot1Recruiting = template("recruit/isRecruitSlot1Recruiting.png", diff = 0.02)
 // 公开招募2号栏位可用
-private val isRecruitSlot2Available = template("recruit/isRecruitSlot2Available.png", diff = 0.01)
-private val isRecruitSlot2Completed = template("recruit/isRecruitSlot2Completed.png", diff = 0.01)
-private val isRecruitSlot2Recruiting = template("recruit/isRecruitSlot2Recruiting.png", diff = 0.01)
+private val isRecruitSlot2Available = template("recruit/isRecruitSlot2Available.png", diff = 0.02)
+private val isRecruitSlot2Completed = template("recruit/isRecruitSlot2Completed.png", diff = 0.02)
+private val isRecruitSlot2Recruiting = template("recruit/isRecruitSlot2Recruiting.png", diff = 0.02)
 // 公开招募3号栏位可用
-private val isRecruitSlot3Available = template("recruit/isRecruitSlot3Available.png", diff = 0.01)
-private val isRecruitSlot3Completed = template("recruit/isRecruitSlot3Completed.png", diff = 0.01)
-private val isRecruitSlot3Recruiting = template("recruit/isRecruitSlot3Recruiting.png", diff = 0.01)
+private val isRecruitSlot3Available = template("recruit/isRecruitSlot3Available.png", diff = 0.02)
+private val isRecruitSlot3Completed = template("recruit/isRecruitSlot3Completed.png", diff = 0.02)
+private val isRecruitSlot3Recruiting = template("recruit/isRecruitSlot3Recruiting.png", diff = 0.02)
 // 公开招募4号栏位可用
-private val isRecruitSlot4Available = template("recruit/isRecruitSlot4Available.png", diff = 0.01)
-private val isRecruitSlot4Completed = template("recruit/isRecruitSlot4Completed.png", diff = 0.01)
-private val isRecruitSlot4Recruiting = template("recruit/isRecruitSlot4Recruiting.png", diff = 0.01)
+private val isRecruitSlot4Available = template("recruit/isRecruitSlot4Available.png", diff = 0.02)
+private val isRecruitSlot4Completed = template("recruit/isRecruitSlot4Completed.png", diff = 0.02)
+private val isRecruitSlot4Recruiting = template("recruit/isRecruitSlot4Recruiting.png", diff = 0.02)
 
 
 private enum class RecruitSlot(
