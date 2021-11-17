@@ -9,7 +9,7 @@ plugins {
 
 
 application {
-    mainClass.set("top.anagke.auto_ark.ark.AutoArkKt")
+    mainClass.set("top.anagke.auto_ark.AutoArkKt")
 }
 
 group = "top.anagke.auto_ark"

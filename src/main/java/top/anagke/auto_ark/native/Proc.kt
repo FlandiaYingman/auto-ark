@@ -4,7 +4,7 @@ import mu.KotlinLogging
 import org.mozilla.universalchardet.UniversalDetector
 import top.anagke.auto_ark.native.ProcessReader.Type.STDERR
 import top.anagke.auto_ark.native.ProcessReader.Type.STDOUT
-import top.anagke.auto_ark.util.seconds
+import top.anagke.auto_android.util.seconds
 import java.io.IOException
 import java.io.InputStream
 import java.nio.charset.Charset
