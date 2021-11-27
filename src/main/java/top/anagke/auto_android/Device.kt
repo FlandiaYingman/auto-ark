@@ -1,10 +1,10 @@
 package top.anagke.auto_ark.adb
 
 import top.anagke.auto_android.img.Img
+import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.native.openProc
 import top.anagke.auto_ark.native.readRaw
 import top.anagke.auto_ark.native.readText
-import top.anagke.auto_android.util.minutes
 import java.nio.file.Path
 
 private val log = mu.KotlinLogging.logger { }
@@ -57,6 +57,11 @@ class Device(
         adbShell("input", "tap", "$x", "$y").readText()
     }
 
+    fun doubleTap(x: Int, y: Int) {
+        log.debug { "Double Tap ($x, $y), serial='$serial'" }
+        adbShell("input", "tap", "$x", "$y", ";", "input", "tap", "$x", "$y").readText()
+    }
+
     fun back() {
         log.debug { "Back, serial='$serial'" }
         adbShell("input", "keyevent", "4").readText()
@@ -64,9 +69,7 @@ class Device(
 
     fun input(str: String) {
         log.debug { "Input '$str', serial='$serial'" }
-        str.forEach {
-            adbShell("input", "text", "$it").readText()
-        }
+        adbShell("input", "text", str).readText()
     }
 
     fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int) {
@@ -74,7 +77,7 @@ class Device(
         adbShell("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").readText()
     }
 
-    fun upless(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5) {
+    fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5) {
         log.debug { "Upless ($sx, $sy, $ex, $ey, $speed), serial='$serial'" }
         adbAppProcess(
             "/sdcard/swiper.jar",
@@ -83,10 +86,15 @@ class Device(
         ).readText()
     }
 
+    fun tap(sx: Int, sy: Int, ex: Int, ey: Int, x: Int, y: Int) {
+        drag(sx, sy, ex, ey)
+        tap(x, y)
+    }
+
 
     fun launch(activity: AndroidActivity) {
         log.debug { "Launch $activity" }
-        adbShell("am", "start", "$activity").readText()
+        adbShell("monkey", "-p", activity.packageName, "1").readText()
     }
 
     fun stop(activity: AndroidActivity) {

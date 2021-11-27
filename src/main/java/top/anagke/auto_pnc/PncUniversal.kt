@@ -1,11 +1,11 @@
 package top.anagke.auto_pnc
 
+import top.anagke.auto_android.img.Img
+import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_ark.adb.BlueStacks
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
-import top.anagke.auto_android.img.Img
-import top.anagke.auto_android.img.Tmpl
 import java.io.FileNotFoundException
 import java.net.URL
 
@@ -37,7 +37,7 @@ fun template(name: String, diff: Double = 0.05): Tmpl {
 }
 
 // 主界面
-val atMainScreen = template("atMainScreen.png")
+val 主界面 = template("atMainScreen.png")
 
 // 可跳回主界面
 val canJumpOut = template("canJumpOut.png")
@@ -45,7 +45,7 @@ val canJumpOut = template("canJumpOut.png")
 fun Device.jumpOut() {
     assert(canJumpOut)
     tap(250, 50)
-    await(atMainScreen)
+    await(主界面)
 }
 
 fun main() {

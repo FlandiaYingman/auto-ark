@@ -1,14 +1,14 @@
 package top.anagke.auto_ark.operate
 
 import mu.KotlinLogging
+import top.anagke.auto_ark.AutoArk
+import top.anagke.auto_ark.AutoArk.Companion.arkToday
+import top.anagke.auto_ark.AutoArk.Companion.log
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.AutoArk.Companion.arkToday
-import top.anagke.auto_ark.AutoArk.Companion.log
 import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
@@ -101,10 +101,19 @@ class ArkOperate(
     private fun Device.enterLevel(level: OperateLevel): Boolean {
         log.info { "进入关卡：$level" }
         assert(atMainScreen)
-        val successful = level.entry(this)
-        if (!successful) {
-            log.info { "进入关卡：$level，无法进入，退出" }
-            return false
+
+        val state = level.enter(this)
+        when (state) {
+            LevelEntryState.UNOPENED -> {
+                log.info { "进入关卡：$level，关卡未开放，退出" }
+                return false
+            }
+            LevelEntryState.FAILED -> {
+                log.info { "进入关卡：$level，进入失败，退出" }
+                return false
+            }
+            LevelEntryState.SUCCESSFUL -> {
+            }
         }
 
         assert(atPrepareScreen, atPrepareScreen_autoDeployDisabled)

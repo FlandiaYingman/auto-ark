@@ -2,14 +2,9 @@ package top.anagke.auto_pnc
 
 import mu.KotlinLogging
 import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.login.ArkLogin
-import top.anagke.auto_ark.mission.ArkMission
-import top.anagke.auto_ark.operate.ArkOperate
-import top.anagke.auto_ark.recruit.ArkRecruit
-import top.anagke.auto_ark.riic.ArkRiic
-import top.anagke.auto_ark.store.ArkStore
-import java.time.DayOfWeek
-import java.time.LocalDateTime
+import top.anagke.auto_pnc.factory.PncFactory
+import top.anagke.auto_pnc.login.PncLogin
+import top.anagke.auto_pnc.oasis.PncOasis
 
 class AutoPnc(
     val config: AutoPncConfig,
@@ -17,46 +12,25 @@ class AutoPnc(
 ) {
 
     companion object {
-
         val log = KotlinLogging.logger {}
-
-        val arkToday: DayOfWeek get() = LocalDateTime.now().minusHours(4).dayOfWeek
-
     }
 
     fun routine() {
         autoLogin()
-        autoRecruit()
-        autoOperate()
-        autoRiic()
-        //TODO: test, and do
-        //autoStore()
-        autoMission()
+        autoOasis()
+        autoFactory()
     }
 
-
-    fun autoLogin() = runModule {
-        ArkLogin(device).auto()
+    fun autoLogin() {
+        PncLogin(device, config).auto()
     }
 
-    fun autoRecruit() = runModule {
-        ArkRecruit(device, config.recruitConfig).auto()
+    fun autoOasis() {
+        PncOasis(device).auto()
     }
 
-    fun autoOperate() = runModule {
-        ArkOperate(device, config.operateConfig).auto()
-    }
-
-    fun autoRiic() = runModule {
-        ArkRiic(device).auto()
-    }
-
-    fun autoStore() = runModule {
-        ArkStore(device).auto()
-    }
-
-    fun autoMission() = runModule {
-        ArkMission(device).auto()
+    fun autoFactory() {
+        PncFactory(device).auto()
     }
 
 
@@ -82,5 +56,5 @@ class AutoPnc(
 }
 
 fun main() {
-    AutoPnc(appConfig).routine()
+    AutoPnc(pncConfig).routine()
 }

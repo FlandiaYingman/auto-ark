@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.5.31"
     kotlin("plugin.serialization") version "1.5.31"
 
+    id("org.openjfx.javafxplugin") version "0.0.10"
     application
 }
 
@@ -34,6 +35,20 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
 
     implementation("com.github.albfernandez:juniversalchardet:2.4.0")
+
+    implementation("org.openjfx:javafx:11")
+    implementation("org.openjfx:javafx-base:11")
+    implementation("org.openjfx:javafx-graphics:11")
+    implementation("org.openjfx:javafx-controls:11")
+    implementation("org.openjfx:javafx-fxml:11")
+    implementation("org.openjfx:javafx-swing:11")
+    implementation("org.openjfx:javafx-media:11")
+    implementation("org.openjfx:javafx-web:11")
+}
+
+javafx {
+    version = "11.0.+"
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
 java {

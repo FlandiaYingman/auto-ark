@@ -5,6 +5,7 @@ package top.anagke.auto_ark.adb
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.util.FrequencyLimiter
+import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.minutes
 import top.anagke.auto_android.util.seconds
 import java.time.Duration
@@ -108,6 +109,15 @@ fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: (
 fun Device.matched(vararg tmpls: Tmpl): Boolean {
     if (tmpls.isEmpty()) return lastMatchedTmpl != null
     return lastMatchedTmpl in tmpls
+}
+
+
+fun Device.find(tmpl: Tmpl): Pos? {
+    val screen = cap()
+    val (pos, diff) = tmpl.find(screen)
+    val result = if (diff <= tmpl.threshold) pos else null
+    log.debug { "Finding $tmpl... result=$result, difference=${diff.formatDiff()}" }
+    return result
 }
 
 

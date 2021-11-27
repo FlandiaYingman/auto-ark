@@ -1,15 +1,15 @@
 package top.anagke.auto_pnc.explore
 
+import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.adb.whileNotMatch
-import top.anagke.auto_pnc.atMainScreen
 import top.anagke.auto_pnc.canJumpOut
 import top.anagke.auto_pnc.template
-import top.anagke.auto_android.util.minutes
+import top.anagke.auto_pnc.主界面
 
 class AutoExplore(
     val device: Device,
@@ -28,15 +28,15 @@ class AutoExplore(
 
     }
 
-    fun explore() = device.apply {
-        assert(atMainScreen)
+    fun enterExplore() = device.apply {
+        assert(主界面)
         tap(1085, 230) //探索
         await(canJumpOut)
     }
 
     fun farmFragments() = device.apply {
-        explore()
-        tap(610, 175) //碎片搜索
+        enterExplore()
+        tap(458, 43) //碎片搜索
 
     }
 

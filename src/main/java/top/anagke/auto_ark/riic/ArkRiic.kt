@@ -1,13 +1,13 @@
 package top.anagke.auto_ark.riic
 
 import kotlinx.serialization.Serializable
+import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.adb.whileNotMatch
-import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
@@ -69,9 +69,6 @@ class ArkRiic(
 
         enterRiic()
         collect()
-        jumpOut()
-
-        enterRiic()
         assign()
         jumpOut()
     }
@@ -111,13 +108,13 @@ class ArkRiic(
 
         //前两个宿舍
         repeat(2) {
-            upless(1200, 415, 1200, 415 - 880) //一个宿舍距离
+            drag(1200, 415, 1200, 415 - 880) //一个宿舍距离
             tap(670, 200).sleep() //第一个房间
             shift(5)
         }
 
         //后两个宿舍
-        upless(1200, 415, 1200, 415 - 880) //一个宿舍距离
+        drag(1200, 415, 1200, 415 - 880) //一个宿舍距离
         tap(670, 240).sleep() //第三个宿舍
         shift(5)
         tap(670, 600).sleep() //第四个宿舍
@@ -125,19 +122,19 @@ class ArkRiic(
 
         swipe(1200, 415, 1200, 415 + 2048, 1000).sleep()
 
-        upless(1200, 415, 1200, 415 - 190) //一个房间距离
+        drag(1200, 415, 1200, 415 - 190) //一个房间距离
         tap(670, 200).nap() //第一个房间
         shift(2)
 
         repeat(3) {
-            upless(1200, 415, 1200, 415 - 245) //一层距离
+            drag(1200, 415, 1200, 415 - 245) //一层距离
             repeat(3) {
                 tap(670, 200).nap() //第一个房间
                 shift(3) //贸易站、制造站或发电站
-                upless(1200, 415, 1200, 415 - 190) //一个房间距离
+                drag(1200, 415, 1200, 415 - 190) //一个房间距离
             }
             if (it < 3 - 1) {
-                upless(1200, 415, 1200, 415 - 190) //一个房间距离
+                drag(1200, 415, 1200, 415 - 190) //一个房间距离
                 tap(670, 200).nap() //第一个房间
                 shift(1) //辅助设施
             }
@@ -162,15 +159,14 @@ class ArkRiic(
             tap(operatorPos[it].first, operatorPos[it].second)
         }
 
-        tap(1180, 675).nap() //确认
-        tap(1180, 675).nap() //确认
+        tap(1180, 675).sleep() //确认
+        tap(1180, 675).sleep() //确认
     }
 
 }
 
 fun main() {
     AutoArk(appConfig).apply {
-        this.autoLogin()
         this.autoRiic()
     }
 }
