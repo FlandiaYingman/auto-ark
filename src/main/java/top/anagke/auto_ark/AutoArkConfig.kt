@@ -15,6 +15,7 @@ import java.io.File
 data class AutoArkConfig(
     val emulator: Emulator = BlueStacks(),
     var arkVersion: String = "",
+    val forceLogin: Boolean = true,
     val riicConfig: RiicConfig = RiicConfig(),
     val recruitConfig: RecruitConfig = RecruitConfig(),
     val operateConfig: OperateConfig = OperateConfig(),

@@ -1,6 +1,8 @@
 package top.anagke.auto_ark.login
 
 import mu.KotlinLogging
+import top.anagke.auto_android.util.minutes
+import top.anagke.auto_ark.AutoArkConfig
 import top.anagke.auto_ark.adb.AndroidActivity
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
@@ -11,10 +13,10 @@ import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.canJumpOut
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.template
-import top.anagke.auto_android.util.minutes
 
 class ArkLogin(
     private val device: Device,
+    private val config: AutoArkConfig,
 ) {
 
     companion object {
@@ -34,7 +36,7 @@ class ArkLogin(
 
     private fun launch() = device.apply {
         logger.info { "启动明日方舟" }
-        if (focusedActivity == arkActivity) {
+        if (focusedActivity == arkActivity && !config.forceLogin) {
             logger.info { "明日方舟已启动" }
             if (match(atMainScreen)) {
                 logger.info { "明日方舟位于主界面" }
