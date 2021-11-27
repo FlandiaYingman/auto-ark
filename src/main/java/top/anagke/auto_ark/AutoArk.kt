@@ -40,7 +40,7 @@ class AutoArk(
     }
 
     fun autoLogin() = runModule {
-        ArkLogin(device).auto()
+        ArkLogin(device, config).auto()
     }
 
     fun autoRecruit() = runModule {
