@@ -35,7 +35,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
 
     implementation("com.github.albfernandez:juniversalchardet:2.4.0")
-
+    implementation("info.debatty:java-string-similarity:2.0.0")
     implementation("org.openjfx:javafx:11")
     implementation("org.openjfx:javafx-base:11")
     implementation("org.openjfx:javafx-graphics:11")

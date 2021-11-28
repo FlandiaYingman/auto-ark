@@ -5,7 +5,6 @@ import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
 import org.opencv.core.Point
-import org.opencv.core.Rect
 import org.opencv.core.Size
 import org.opencv.highgui.HighGui
 import org.opencv.imgcodecs.Imgcodecs
@@ -13,8 +12,8 @@ import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.*
 import top.anagke.auto_android.util.Pos
+import top.anagke.auto_android.util.Rect
 import java.awt.FlowLayout
-import java.awt.Rectangle
 import java.io.File
 import javax.swing.ImageIcon
 import javax.swing.JFrame
@@ -80,8 +79,8 @@ private constructor(private val mat: Mat) {
         return loc.maxLoc.toPos() to (1.0 - loc.maxVal)
     }
 
-    fun crop(rect: Rectangle): Img {
-        val rectMat = Rect(rect.x, rect.y, rect.width, rect.height)
+    fun crop(rect: Rect): Img {
+        val rectMat = org.opencv.core.Rect(rect.pos.x, rect.pos.y, rect.size.width, rect.size.height)
         val crop = this.mat.submat(rectMat)
         return Img(crop)
     }

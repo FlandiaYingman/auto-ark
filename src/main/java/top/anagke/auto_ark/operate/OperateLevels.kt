@@ -1,15 +1,26 @@
 package top.anagke.auto_ark.operate
 
+import top.anagke.auto_android.img.Img
+import top.anagke.auto_android.img.ocr
+import top.anagke.auto_android.util.Pos
+import top.anagke.auto_android.util.Rect
+import top.anagke.auto_android.util.Size
 import top.anagke.auto_android.util.minutes
-import top.anagke.auto_ark.AutoArk.Companion.arkToday
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.notMatch
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.operate.LevelEntryState.*
+import top.anagke.auto_ark.operate.LevelEntryState.FAILED
+import top.anagke.auto_ark.operate.LevelEntryState.SUCCESSFUL
 import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_A_1
-import java.time.DayOfWeek.*
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_A_2
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_B_1
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_B_2
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_C_1
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_C_2
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_D_1
+import top.anagke.auto_ark.operate.OperateLevel.Companion.PR_D_2
 
 typealias LevelEntry = Device.(LevelEntryController) -> Unit
 
@@ -58,20 +69,12 @@ private constructor(
             tap(945, 177).sleep() //LS-5
         }
         val CE_5 = operateLevel("CE-5", "龙门币") {
-            if (arkToday !in listOf(TUESDAY, THURSDAY, SATURDAY, SUNDAY)) {
-                it.state = UNOPENED
-                return@operateLevel
-            }
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //资源收集
             tap(438, 349).sleep()
             tap(945, 177).sleep() //CE-5
         }
         val CA_5 = operateLevel("CA-5", "技巧概要") {
-            if (arkToday !in listOf(TUESDAY, WEDNESDAY, FRIDAY, SUNDAY)) {
-                it.state = UNOPENED
-                return@operateLevel
-            }
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //资源收集
             tap(229, 357).sleep()
@@ -81,56 +84,81 @@ private constructor(
         val PR_A_1 = operateLevel("PR-A-1", "重装/医疗芯片") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(1062, 368, 840, 363, 1272, 365).sleep() //摧枯拉朽
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "固若金汤")
+            tap(pos.x, pos.y).sleep() //固若金汤
             tap(403, 438).sleep() //PR-X-1
         }
         val PR_B_1 = operateLevel("PR-B-1", "狙击/术士芯片") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(848, 364).sleep() //势不可挡
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "摧枯拉朽")
+            tap(pos.x, pos.y).sleep() //摧枯拉朽
             tap(403, 438).sleep() //PR-X-1
         }
         val PR_C_1 = operateLevel("PR-C-1", "先锋/辅助芯片") {
-            if (arkToday !in listOf(MONDAY, TUESDAY, FRIDAY, SATURDAY)) {
-                it.state = UNOPENED
-                return@operateLevel
-            }
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(1062, 364).sleep() //身先士卒
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "势不可挡")
+            tap(pos.x, pos.y).sleep() //势不可挡
             tap(403, 438).sleep() //PR-X-1
         }
         val PR_D_1 = operateLevel("PR-D-1", "近卫/特种芯片") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(1272, 365).sleep() //固若金汤
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "身先士卒")
+            tap(pos.x, pos.y).sleep() //身先士卒
             tap(403, 438).sleep() //PR-X-1
         }
 
         val PR_A_2 = operateLevel("PR-A-2", "重装/医疗芯片组") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(1062, 368, 840, 363, 1272, 365).sleep() //摧枯拉朽
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "固若金汤")
+            tap(pos.x, pos.y).sleep() //固若金汤
             tap(830, 258).sleep() //PR-X-2
         }
         val PR_B_2 = operateLevel("PR-B-2", "狙击/术士芯片组") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(848, 364).sleep() //势不可挡
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "摧枯拉朽")
+            tap(pos.x, pos.y).sleep() //摧枯拉朽
             tap(830, 258).sleep() //PR-X-2
         }
         val PR_C_2 = operateLevel("PR-C-2", "先锋/辅助芯片组") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(1062, 364).sleep() //身先士卒
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "势不可挡")
+            tap(pos.x, pos.y).sleep() //势不可挡
             tap(830, 258).sleep() //PR-X-2
         }
         val PR_D_2 = operateLevel("PR-D-2", "近卫/特种芯片组") {
             tap(970, 203).sleep() //终端
             tap(822, 670).sleep() //Resource Collection
-            tap(1272, 365).sleep() //固若金汤
+            swipe(920, 360, 360, 360).sleep()
+            val pos = findChipLevel(cap(), "身先士卒")
+            tap(pos.x, pos.y).sleep() //身先士卒
             tap(830, 258).sleep() //PR-X-2
         }
+
+        private fun findChipLevel(cap: Img, name: String): Pos {
+            return listOf(
+                Rect(Pos(397 + 208 * 0, 463), Size(190, 31)),
+                Rect(Pos(397 + 208 * 1, 463), Size(190, 31)),
+                Rect(Pos(397 + 208 * 2, 463), Size(190, 31)),
+                Rect(Pos(397 + 208 * 3, 463), Size(190, 31))
+            )
+                .find { cap.crop(it).invert().ocr(listOf("固若金汤", "势不可挡", "身先士卒", "摧枯拉朽")) == name }
+                ?.center()
+                ?: Pos(-1, -1)
+        }
+
 
         val annihilation = operateLevel("剿灭作战", "当期", timeout = 30L * 60L * 1000L) {
             tap(970, 203).sleep() //终端
@@ -198,5 +226,18 @@ fun OperateLevel.enter(device: Device): LevelEntryState {
 }
 
 fun main() {
-    PR_A_1.enter(Device())
+    listOf(
+        PR_A_1,
+        PR_B_1,
+        PR_C_1,
+        PR_D_1,
+        PR_A_2,
+        PR_B_2,
+        PR_C_2,
+        PR_D_2
+    ).forEach {
+        val dev = Device()
+        it.enter(dev)
+        dev.jumpOut()
+    }
 }

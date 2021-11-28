@@ -2,6 +2,10 @@ package top.anagke.auto_ark.recruit
 
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
+import top.anagke.auto_android.img.Tmpl
+import top.anagke.auto_android.img.ocrTesseract
+import top.anagke.auto_android.util.Rect
+import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
@@ -9,16 +13,12 @@ import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.sleep
 import top.anagke.auto_ark.adb.whileNotMatch
-import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.appConfig
 import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.recruit.RecruitTag.*
 import top.anagke.auto_ark.template
-import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.img.ocrTesseract
-import java.awt.Rectangle
 import java.util.stream.Collectors
 
 
@@ -81,13 +81,13 @@ private enum class RecruitSlot(
 }
 
 private enum class RecruitTag(
-    val screenRect: Rectangle,
+    val screenRect: Rect,
 ) {
-    TAG1(Rectangle(375, 360, 144, 46)),
-    TAG2(Rectangle(542, 360, 144, 46)),
-    TAG3(Rectangle(709, 360, 144, 46)),
-    TAG4(Rectangle(375, 432, 144, 46)),
-    TAG5(Rectangle(542, 432, 144, 46)),
+    TAG1(Rect(375, 360, 144, 46)),
+    TAG2(Rect(542, 360, 144, 46)),
+    TAG3(Rect(709, 360, 144, 46)),
+    TAG4(Rect(375, 432, 144, 46)),
+    TAG5(Rect(542, 432, 144, 46)),
 }
 
 

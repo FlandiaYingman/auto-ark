@@ -72,13 +72,13 @@ class Device(
         adbShell("input", "text", str).readText()
     }
 
-    fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int) {
+    fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, duration: Int = 500) {
         log.debug { "Swipe ($sx, $sy, $ex, $ey, $duration), serial='$serial'" }
         adbShell("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").readText()
     }
 
     fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5) {
-        log.debug { "Upless ($sx, $sy, $ex, $ey, $speed), serial='$serial'" }
+        log.debug { "Drag ($sx, $sy, $ex, $ey, $speed), serial='$serial'" }
         adbAppProcess(
             "/sdcard/swiper.jar",
             "top.anagke.Input",
@@ -87,7 +87,7 @@ class Device(
     }
 
     fun tap(sx: Int, sy: Int, ex: Int, ey: Int, x: Int, y: Int) {
-        drag(sx, sy, ex, ey)
+        drag(sx, sy, ex, ey).nap()
         tap(x, y)
     }
 
