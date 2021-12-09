@@ -206,6 +206,22 @@ private constructor(
             tap(515, 498).sleep() //NL-8
         }
 
+        val MB_8 = operateLevel("MB-8", description = "孤岛风云，异铁组") {
+            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
+            tap(1140, 157).sleep() //进入“越狱计划”
+            tap(1139, 521).sleep() //进入“MB-8”
+        }
+        val MB_7 = operateLevel("MB-7", description = "孤岛风云，酮凝集组") {
+            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
+            tap(1140, 157).sleep() //进入“越狱计划”
+            tap(840, 521).sleep() //进入“MB-7”
+        }
+        val MB_6 = operateLevel("MB-6", description = "孤岛风云，酮凝集组") {
+            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
+            tap(1140, 157).sleep() //进入“越狱计划”
+            tap(840, 392).sleep() //进入“MB-6”
+        }
+
     }
 
     override fun toString(): String {
