@@ -2,8 +2,8 @@ package top.anagke.auto_ark
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
-import top.anagke.auto_ark.adb.BlueStacks
-import top.anagke.auto_ark.adb.Emulator
+import top.anagke.auto_android.BlueStacks
+import top.anagke.auto_android.Emulator
 import top.anagke.auto_ark.operate.OperateConfig
 import top.anagke.auto_ark.recruit.RecruitConfig
 import top.anagke.auto_ark.riic.RiicConfig
@@ -14,6 +14,7 @@ import java.io.File
 @Serializable
 data class AutoArkConfig(
     val emulator: Emulator = BlueStacks(),
+    val isBilibili: Boolean = false,
     var arkVersion: String = "",
     val forceLogin: Boolean = true,
     val riicConfig: RiicConfig = RiicConfig(),

@@ -12,9 +12,9 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import top.anagke.auto_android.BlueStacks
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_ark.adb.BlueStacks
 import top.anagke.auto_ark.native.openProc
 import java.io.ByteArrayInputStream
 import java.io.File

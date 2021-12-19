@@ -30,6 +30,9 @@ dependencies {
     implementation("org.openpnp:opencv:4.5.1-2")
     implementation("top.anagke:kio:1.1.0")
 
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    implementation("org.jsoup:jsoup:1.14.3")
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.0")
     implementation("com.charleskorn.kaml:kaml:0.36.0")
     implementation("com.google.code.gson:gson:2.8.8")

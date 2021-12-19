@@ -1,7 +1,6 @@
 package top.anagke.auto_ark.operate
 
 import mu.KotlinLogging
-import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.AutoArk.Companion.arkToday
 import top.anagke.auto_ark.AutoArk.Companion.log
 import top.anagke.auto_ark.adb.Device
@@ -10,12 +9,12 @@ import top.anagke.auto_ark.adb.await
 import top.anagke.auto_ark.adb.matched
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.appConfig
-import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.OperateLevel.Companion.CA_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.CE_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.LS_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.annihilation
+import top.anagke.auto_ark.operate.OperateLevel.Companion.operateLevel
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import java.time.DayOfWeek.*
 
@@ -26,7 +25,7 @@ val dailyLevel = when (arkToday) {
     THURSDAY -> CE_5
     FRIDAY -> CA_5
     SATURDAY -> CE_5
-    SUNDAY -> LS_5
+    SUNDAY -> CE_5
 }
 
 class ArkOperate(
@@ -100,7 +99,6 @@ class ArkOperate(
 
     private fun Device.enterLevel(level: OperateLevel): Boolean {
         log.info { "进入关卡：$level" }
-        assert(atMainScreen)
 
         val state = level.enter(this)
         when (state) {
@@ -163,8 +161,14 @@ class ArkOperate(
         return OperateResult.SUCCESS
     }
 
+
+    fun farmThis(farmTimes: Int) {
+        val level = operateLevel("本关卡") {}
+        farm(level, farmTimes)
+    }
+
 }
 
 fun main() {
-    AutoArk(appConfig).autoOperate()
+    ArkOperate(appConfig.emulator.open(), appConfig.operateConfig).farmThis(6)
 }

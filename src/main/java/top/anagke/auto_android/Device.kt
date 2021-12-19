@@ -1,5 +1,6 @@
 package top.anagke.auto_ark.adb
 
+import top.anagke.auto_android.adbPath
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.native.openProc

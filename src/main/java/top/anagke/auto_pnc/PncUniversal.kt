@@ -2,7 +2,6 @@ package top.anagke.auto_pnc
 
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_ark.adb.BlueStacks
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.assert
 import top.anagke.auto_ark.adb.await
@@ -46,9 +45,4 @@ fun Device.jumpOut() {
     assert(canJumpOut)
     tap(250, 50)
     await(主界面)
-}
-
-fun main() {
-    val device = BlueStacks().connect()
-    device.jumpOut()
 }

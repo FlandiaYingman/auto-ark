@@ -1,6 +1,7 @@
 package top.anagke.auto_ark.adb
 
 import mu.KotlinLogging
+import top.anagke.auto_android.adbPath
 
 private val log = KotlinLogging.logger {}
 

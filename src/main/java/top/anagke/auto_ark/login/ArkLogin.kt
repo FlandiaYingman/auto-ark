@@ -6,6 +6,7 @@ import top.anagke.auto_ark.AutoArkConfig
 import top.anagke.auto_ark.adb.AndroidActivity
 import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.adb.await
+import top.anagke.auto_ark.adb.delay
 import top.anagke.auto_ark.adb.match
 import top.anagke.auto_ark.adb.nap
 import top.anagke.auto_ark.adb.whileNotMatch
@@ -28,15 +29,32 @@ class ArkLogin(
             "com.hypergryph.arknights",
             "com.u8.sdk.U8UnityContext"
         )
+        private val arkBilibiliActivity = AndroidActivity(
+            "com.hypergryph.arknights.bilibili",
+            ""
+        )
     }
 
     fun auto() {
-        launch()
+        when {
+            config.isBilibili -> {
+                launchBilibili()
+                loginBilibili()
+            }
+            else -> {
+                launch()
+                login()
+            }
+        }
     }
 
-    private fun launch() = device.apply {
+    private fun launch() = launch(arkActivity)
+    private fun launchBilibili() = launch(arkBilibiliActivity)
+
+
+    private fun launch(activity: AndroidActivity) = device.apply {
         logger.info { "启动明日方舟" }
-        if (focusedActivity == arkActivity && !config.forceLogin) {
+        if (focusedActivity == arkBilibiliActivity && !config.forceLogin) {
             logger.info { "明日方舟已启动" }
             if (match(atMainScreen)) {
                 logger.info { "明日方舟位于主界面" }
@@ -49,9 +67,8 @@ class ArkLogin(
             }
             logger.info { "明日方舟无法跳转到主界面，尝试重新启动" }
         }
-        stop(arkActivity)
-        launch(arkActivity)
-        login()
+        stop(activity)
+        launch(activity)
     }
 
     private fun login() = device.apply {
@@ -71,6 +88,18 @@ class ArkLogin(
         jumpOut()
         await(atMainScreen)
 
+        logger.info { "登录完成" }
+    }
+
+    private fun loginBilibili() = device.apply {
+        logger.info { "登录明日方舟（B服）" }
+        delay(5000)
+        whileNotMatch(atMainScreen) {
+            back().nap()
+            tap(130, 489).nap() //防止卡在返回界面
+        }
+        jumpOut()
+        await(atMainScreen)
         logger.info { "登录完成" }
     }
 
