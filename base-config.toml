@@ -1,0 +1,20 @@
+server = "OFFICIAL"
+cacheLocation = "cache.yaml"
+forceLogin = true
+
+[emulator]
+blueStacksHome = "C:/Program Files/BlueStacks_nxt"
+blueStacksData = "C:/ProgramData/BlueStacks_nxt"
+instance = "Nougat32"
+adbHost = "localhost"
+adbPort = 0
+
+[riicConfig]
+autoAssigning = true
+autoAssignControlCenter = false
+
+[operateConfig]
+strategy = "WAIT"
+doFarmAnnihilation = true
+doFarmPlan = false
+doFarmDaily = true
