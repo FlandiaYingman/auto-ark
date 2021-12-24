@@ -7,8 +7,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import mu.KotlinLogging
 import top.anagke.auto_android.AutoModule
+import top.anagke.auto_android.Device
 import top.anagke.auto_android.Emulator
-import top.anagke.auto_ark.adb.Device
 import top.anagke.auto_ark.login.ArkLogin
 import top.anagke.auto_ark.mission.ArkMission
 import top.anagke.auto_ark.operate.ArkOperate

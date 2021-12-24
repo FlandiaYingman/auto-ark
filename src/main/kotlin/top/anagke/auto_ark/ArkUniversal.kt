@@ -1,16 +1,16 @@
 package top.anagke.auto_ark
 
 import com.google.gson.Gson
+import top.anagke.auto_android.AndroidActivity
+import top.anagke.auto_android.Device
+import top.anagke.auto_android.await
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_ark.adb.AndroidActivity
-import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.match
-import top.anagke.auto_ark.adb.matched
-import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.adb.sleep
-import top.anagke.auto_ark.adb.whileNotMatch
+import top.anagke.auto_android.match
+import top.anagke.auto_android.matched
+import top.anagke.auto_android.nap
+import top.anagke.auto_android.sleep
+import top.anagke.auto_android.whileNotMatch
 import java.io.FileNotFoundException
 import java.net.URI
 import java.net.URL

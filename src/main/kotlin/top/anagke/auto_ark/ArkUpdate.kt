@@ -3,7 +3,7 @@ package top.anagke.auto_ark
 import com.google.gson.Gson
 import mu.KotlinLogging
 import top.anagke.auto_android.AutoModule
-import top.anagke.auto_ark.adb.Device
+import top.anagke.auto_android.Device
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest

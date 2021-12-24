@@ -9,6 +9,9 @@
 config.toml
 cache.yaml
 
+# Extracted Binaries
+./bin
+
 ### Java ###
 # Compiled class file
 *.class

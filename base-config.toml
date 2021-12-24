@@ -6,7 +6,7 @@ forceLogin = true
 blueStacksHome = "C:/Program Files/BlueStacks_nxt"
 blueStacksData = "C:/ProgramData/BlueStacks_nxt"
 instance = "Nougat32"
-adbHost = "localhost"
+adbHost = "127.0.0.1"
 adbPort = 0
 
 [riicConfig]

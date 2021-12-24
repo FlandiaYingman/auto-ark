@@ -1,15 +1,15 @@
 package top.anagke.auto_ark.store
 
 import top.anagke.auto_android.AutoModule
+import top.anagke.auto_android.Device
+import top.anagke.auto_android.assert
+import top.anagke.auto_android.await
 import top.anagke.auto_android.img.Tmpl
+import top.anagke.auto_android.match
+import top.anagke.auto_android.nap
+import top.anagke.auto_android.sleep
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.assert
-import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.match
-import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.adb.sleep
-import top.anagke.auto_ark.adb.whileNotMatch
+import top.anagke.auto_android.whileNotMatch
 import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.template

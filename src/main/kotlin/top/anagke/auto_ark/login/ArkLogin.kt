@@ -2,15 +2,15 @@ package top.anagke.auto_ark.login
 
 import mu.KotlinLogging
 import top.anagke.auto_android.AutoModule
+import top.anagke.auto_android.Device
+import top.anagke.auto_android.await
+import top.anagke.auto_android.delay
+import top.anagke.auto_android.match
+import top.anagke.auto_android.nap
 import top.anagke.auto_android.util.minutes
+import top.anagke.auto_android.whileNotMatch
 import top.anagke.auto_ark.ArkServer
 import top.anagke.auto_ark.AutoArkConfig
-import top.anagke.auto_ark.adb.Device
-import top.anagke.auto_ark.adb.await
-import top.anagke.auto_ark.adb.delay
-import top.anagke.auto_ark.adb.match
-import top.anagke.auto_ark.adb.nap
-import top.anagke.auto_ark.adb.whileNotMatch
 import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.canJumpOut
 import top.anagke.auto_ark.jumpOut
