@@ -14,7 +14,7 @@ autoAssigning = true
 autoAssignControlCenter = false
 
 [operateConfig]
-strategy = "WAIT"
+strategy = "IFF_EXPIRE_SOON"
 doFarmAnnihilation = true
 doFarmPlan = false
 doFarmDaily = true

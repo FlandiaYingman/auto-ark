@@ -11,7 +11,6 @@ import top.anagke.auto_android.matched
 import top.anagke.auto_android.nap
 import top.anagke.auto_android.sleep
 import top.anagke.auto_android.whileNotMatch
-import java.io.FileNotFoundException
 import java.net.URI
 import java.net.URL
 import java.net.http.HttpClient
@@ -29,22 +28,7 @@ object ArkRes {
 
 fun template(name: String, diff: Double = 0.05): Tmpl {
     val url = ArkRes(name)
-    var count = 0
-
-    if (url == null) {
-        val urlList = mutableListOf<URL>()
-        do {
-            val varUrl = ArkRes("${name.substringBeforeLast(".")}_${count++}.${name.substringAfterLast(".")}")
-            if (varUrl != null) urlList.add(varUrl)
-        } while (varUrl != null)
-        if (urlList.isEmpty()) {
-            throw FileNotFoundException("resource '$name' not found by '${ArkRes.javaClass.packageName}'")
-        } else {
-            return Tmpl(name, diff, urlList.map { Img.decode(it.readBytes())!! })
-        }
-    } else {
-        return Tmpl(name, diff, listOf(Img.decode(url.readBytes())!!))
-    }
+    return Tmpl(name, diff, Img.decode(url!!.readBytes())!!)
 }
 
 

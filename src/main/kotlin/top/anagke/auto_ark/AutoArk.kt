@@ -67,7 +67,7 @@ class AutoArk(
     }
 
     private fun onModuleError(module: AutoModule, tried: Int, e: Exception) = device.apply {
-        logger.warn(e) { "在运行 ${module.moduleName} 时错误发生，尝试退回到主界面，已尝试 $tried/$maxTryTimes" }
+        logger.warn(e) { "在运行 ${module.name} 时错误发生，尝试退回到主界面，已尝试 $tried/$maxTryTimes" }
         jumpOut()
     }
 
@@ -113,7 +113,6 @@ data class AutoArkConfig(
 
 @Serializable
 data class AutoArkCache(
-    var arkVersion: String = "",
     var farmingPlan: Map<String, Int> = mapOf(),
 ) {
 

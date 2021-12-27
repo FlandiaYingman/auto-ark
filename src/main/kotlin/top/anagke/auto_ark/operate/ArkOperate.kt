@@ -5,6 +5,7 @@ import top.anagke.auto_android.AutoModule
 import top.anagke.auto_android.Device
 import top.anagke.auto_android.assert
 import top.anagke.auto_android.await
+import top.anagke.auto_android.match
 import top.anagke.auto_android.matched
 import top.anagke.auto_android.nap
 import top.anagke.auto_ark.AutoArkCache
@@ -16,6 +17,7 @@ import top.anagke.auto_ark.operate.OperateLevel.Companion.LS_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.annihilation
 import top.anagke.auto_ark.operate.OperateLevel.Companion.operateLevel
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
+import top.anagke.auto_ark.operate.OperateStrategy.IFF_EXPIRE_SOON
 import java.time.DayOfWeek.*
 
 val dailyLevel = when (arkDayOfWeek) {
@@ -139,7 +141,8 @@ class ArkOperate(
         await(atFormationScreen, popupSanityEmpty, popupSanityEmptyOriginite)
 
         if (matched(popupSanityEmpty) && config.strategy.canUsePotion() ||
-            matched(popupSanityEmptyOriginite) && config.strategy.canUseOriginite()
+            matched(popupSanityEmptyOriginite) && config.strategy.canUseOriginite() ||
+            match(popupSanityEmptyExpireSoon) && config.strategy == IFF_EXPIRE_SOON
         ) {
             logger.info { "代理指挥关卡：$level，理智不足，恢复" }
             tap(1088, 577) // 恢复理智

@@ -11,6 +11,8 @@ internal val atFormationScreen = template("operate/atFormationScreen.png", diff 
 
 // 理智不足
 internal val popupSanityEmpty = template("operate/popupSanityEmpty.png", diff = 0.01)
+// 理智不足，且即将过期
+internal val popupSanityEmptyExpireSoon = template("operate/popupSanityEmptyExpireSoon.png", diff = 0.01)
 // 理智不足，且仅能使用源石补充
 internal val popupSanityEmptyOriginite = template("operate/popupSanityEmptyOriginite.png", diff = 0.01)
 
