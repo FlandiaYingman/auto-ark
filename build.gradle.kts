@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation("top.anagke:auto-android:1.0.0")
+    implementation("top.anagke:auto-android")
 
     implementation(kotlin("stdlib"))
     implementation(kotlin("stdlib-jdk8"))
