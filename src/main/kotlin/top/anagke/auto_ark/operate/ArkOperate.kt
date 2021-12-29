@@ -8,6 +8,7 @@ import top.anagke.auto_android.await
 import top.anagke.auto_android.match
 import top.anagke.auto_android.matched
 import top.anagke.auto_android.nap
+import top.anagke.auto_android.which
 import top.anagke.auto_ark.AutoArkCache
 import top.anagke.auto_ark.arkDayOfWeek
 import top.anagke.auto_ark.jumpOut
@@ -17,7 +18,7 @@ import top.anagke.auto_ark.operate.OperateLevel.Companion.LS_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.annihilation
 import top.anagke.auto_ark.operate.OperateLevel.Companion.operateLevel
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
-import top.anagke.auto_ark.operate.OperateStrategy.IFF_EXPIRE_SOON
+import top.anagke.auto_ark.operate.OperateStrategy.*
 import java.time.DayOfWeek.*
 
 val dailyLevel = when (arkDayOfWeek) {
@@ -130,7 +131,7 @@ class ArkOperate(
     }
 
     private fun Device.operateLevel(level: OperateLevel): OperateResult {
-        logger.info { "代理指挥关卡：$level，理智策略：${config.strategy}" }
+        logger.info { "代理指挥关卡：$level，理智策略：$config.strategy" }
         assert(atPrepareScreen, atPrepareScreen_autoDeployDisabled)
         if (matched(atPrepareScreen_autoDeployDisabled)) {
             logger.info { "代理指挥关卡：$level，代理指挥关闭，开启" }
@@ -140,10 +141,14 @@ class ArkOperate(
         tap(1078, 661)
         await(atFormationScreen, popupSanityEmpty, popupSanityEmptyOriginite)
 
-        if (matched(popupSanityEmpty) && config.strategy.canUsePotion() ||
-            matched(popupSanityEmptyOriginite) && config.strategy.canUseOriginite() ||
-            match(popupSanityEmptyExpireSoon) && config.strategy == IFF_EXPIRE_SOON
-        ) {
+        var strategy = config.strategy
+        if (strategy == IFF_EXPIRE_SOON) {
+            strategy = (if (match(popupSanityEmptyExpireSoon)) POTION else WAIT)
+        }
+
+        which(popupSanityEmpty, popupSanityEmptyOriginite)
+        if (matched(popupSanityEmpty) && strategy.canUsePotion() ||
+            matched(popupSanityEmptyOriginite) && strategy.canUseOriginite()) {
             logger.info { "代理指挥关卡：$level，理智不足，恢复" }
             tap(1088, 577) // 恢复理智
             await(atPrepareScreen)
@@ -151,6 +156,7 @@ class ArkOperate(
             await(atFormationScreen)
         }
 
+        which(popupSanityEmpty, popupSanityEmptyOriginite)
         if (matched(popupSanityEmpty, popupSanityEmptyOriginite)) {
             logger.info { "代理指挥关卡：$level，理智不足，退出" }
             tap(783, 580)
