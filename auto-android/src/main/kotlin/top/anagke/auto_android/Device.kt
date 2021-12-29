@@ -31,11 +31,12 @@ class Device(
 ) {
 
     init {
+        BinResources.init()
         initCustomTool()
     }
 
     private fun initCustomTool() {
-        push("bin/adb/swiper.jar", "/sdcard/swiper.jar")
+        push("top/anagke/auto_android/bin/adb/swiper.jar", "/sdcard/swiper.jar")
     }
 
 
