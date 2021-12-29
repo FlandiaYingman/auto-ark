@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "top.anagke.auto_ark"
-version = "0.1"
+version = "0.1.1"
 
 repositories {
     mavenCentral()
