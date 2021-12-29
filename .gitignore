@@ -10,7 +10,8 @@ config.toml
 cache.yaml
 
 # Extracted Binaries
-./bin
+bin/
+bin/**
 
 ### Java ###
 # Compiled class file
