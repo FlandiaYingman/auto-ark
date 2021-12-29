@@ -21,7 +21,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
-    implementation("io.github.microutils:kotlin-logging:2.1.16")
+    implementation("io.github.microutils:kotlin-logging:2.1.21")
 
     implementation("org.openpnp:opencv:4.5.1-2")
     implementation("top.anagke:kio:1.1.0")
