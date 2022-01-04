@@ -1,11 +1,8 @@
 package top.anagke.auto_ark.operate
 
-import top.anagke.auto_android.Device
+import top.anagke.auto_android.*
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.ocr
-import top.anagke.auto_android.match
-import top.anagke.auto_android.notMatch
-import top.anagke.auto_android.sleep
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
@@ -13,13 +10,12 @@ import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.LevelEntryState.FAILED
 import top.anagke.auto_ark.operate.LevelEntryState.SUCCESSFUL
+import kotlin.math.roundToInt
 
 typealias LevelEntry = Device.(LevelEntryController) -> Unit
 
 enum class LevelEntryState {
-    SUCCESSFUL,
-    UNOPENED,
-    FAILED
+    SUCCESSFUL, UNOPENED, FAILED
 }
 
 class LevelEntryController(
@@ -146,10 +142,10 @@ private constructor(
                 Rect(Pos(397 + 208 * 1, 463), Size(190, 31)),
                 Rect(Pos(397 + 208 * 2, 463), Size(190, 31)),
                 Rect(Pos(397 + 208 * 3, 463), Size(190, 31))
+            ).find { cap.crop(it).invert().ocr(listOf("固若金汤", "势不可挡", "身先士卒", "摧枯拉朽")) == name }?.center() ?: Pos(
+                -1,
+                -1
             )
-                .find { cap.crop(it).invert().ocr(listOf("固若金汤", "势不可挡", "身先士卒", "摧枯拉朽")) == name }
-                ?.center()
-                ?: Pos(-1, -1)
         }
 
 
@@ -159,6 +155,22 @@ private constructor(
                 tap(1000, 665).sleep()
                 tap(835, 400).sleep()
             }
+        }
+
+        val MAIN_1_7 = operateLevel("1-7", description = "固源岩") {
+            tap(977, 194).sleep() //进入“终端”
+            tap(269, 668).nap() //进入“主题曲”
+            tap(66, 132).nap() //进入“幻灭”
+            tap(66, 132).nap() //进入“觉醒”
+
+            dragd(950, 360, -950, 0) //确保处于“二次呼吸”
+            tap(1200, 360).nap()
+
+            tap(330, 375).sleep() //进入“黑暗时代（下）”
+
+            dragd(160, 360, (3.5 * 1280).roundToInt(), 0) //确保处于最左边
+            dragd(950, 360, -1750, 0) //确保处于“1-7”
+            tap(1092, 222).nap() //进入“1-7”
         }
 
         val MN_8 = operateLevel("MN-8", description = "玛莉亚·临光") {
