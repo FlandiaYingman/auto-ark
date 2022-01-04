@@ -29,7 +29,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation("org.jsoup:jsoup:1.14.3")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
     implementation("com.charleskorn.kaml:kaml:0.38.0")
     implementation("com.google.code.gson:gson:2.8.9")
 
