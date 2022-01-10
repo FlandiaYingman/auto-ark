@@ -248,6 +248,27 @@ private constructor(
             tap(61, 204).sleep() //进入“BI-6”
         }
 
+        val WR_8 = operateLevel("WR-8", description = "画中人，炽合金") {
+            tap(1176, 140).sleep().sleep() //进入活动，等待过场动画
+            tap(1155, 588).sleep() //进入“入画”
+            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
+            tap(57, 385).sleep() //进入“WR-8”
+        }
+
+        val WR_9 = operateLevel("WR-8", description = "画中人，聚酸酯组") {
+            tap(1176, 140).sleep().sleep() //进入活动，等待过场动画
+            tap(1155, 588).sleep() //进入“入画”
+            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
+            tap(216, 256).sleep() //进入“WR-9”
+        }
+
+        val WR_10 = operateLevel("WR-8", description = "画中人，固源岩组") {
+            tap(1176, 140).sleep().sleep() //进入活动，等待过场动画
+            tap(1155, 588).sleep() //进入“入画”
+            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
+            tap(339, 386).sleep() //进入“WR-10”
+        }
+
     }
 
     override fun toString(): String {
