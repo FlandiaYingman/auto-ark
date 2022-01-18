@@ -1,20 +1,9 @@
 package top.anagke.auto_ark.login
 
 import mu.KotlinLogging
-import top.anagke.auto_android.AutoModule
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.await
-import top.anagke.auto_android.delay
-import top.anagke.auto_android.match
-import top.anagke.auto_android.nap
+import top.anagke.auto_android.*
 import top.anagke.auto_android.util.minutes
-import top.anagke.auto_android.whileNotMatch
-import top.anagke.auto_ark.ArkServer
-import top.anagke.auto_ark.AutoArkConfig
-import top.anagke.auto_ark.atMainScreen
-import top.anagke.auto_ark.canJumpOut
-import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.template
+import top.anagke.auto_ark.*
 
 val logger = KotlinLogging.logger {}
 
@@ -25,7 +14,7 @@ class ArkLogin(
 
     companion object {
         // 登录界面
-        private val atLoginScreen = template("login/atLoginScreen.png", diff = 0.01)
+        private val 开始界面 by tmpl(diff = 0.01)
     }
 
     override fun run(): Unit = device.run {
@@ -33,8 +22,8 @@ class ArkLogin(
         if (config.forceLogin) {
             loginForce()
         } else when {
-            match(atMainScreen) -> loginMainScreen()
-            match(canJumpOut) -> loginJumpOut()
+            match(主界面) -> loginMainScreen()
+            match(可跳出) -> loginJumpOut()
             else -> loginElse()
         }
     }
@@ -61,7 +50,7 @@ class ArkLogin(
     }
 
     private fun Device.loginMainScreen() {
-        await(atMainScreen)
+        await(主界面)
         logger.info { "登录明日方舟，已在主界面，完成登录" }
     }
 
@@ -69,14 +58,14 @@ class ArkLogin(
         logger.info { "登录明日方舟，可返回主界面，返回" }
         jumpOut()
 
-        await(atMainScreen)
+        await(主界面)
         logger.info { "登录明日方舟，已返回主界面，完成登录" }
     }
 
 
     private fun Device.loginOfficial() {
         logger.info { "登录明日方舟（官服）" }
-        whileNotMatch(atLoginScreen, timeout = 10.minutes) {
+        whileNotMatch(开始界面, timeout = 10.minutes) {
             tap(640, 360).nap()
         }
 
@@ -84,26 +73,26 @@ class ArkLogin(
         tap(639, 507).nap() // 开始唤醒
 
         logger.info { "登录明日方舟（官服），等待登录完成" }
-        whileNotMatch(atMainScreen) {
+        whileNotMatch(主界面) {
             back().nap()
             tap(130, 489).nap() //防止卡在返回界面
         }
         jumpOut()
 
-        await(atMainScreen)
+        await(主界面)
         logger.info { "登录明日方舟（官服），完成登录" }
     }
 
     private fun Device.loginBilibili() {
         logger.info { "登录明日方舟（B服）" }
         delay(5000)
-        whileNotMatch(atMainScreen) {
+        whileNotMatch(主界面) {
             back().nap()
             tap(130, 489).nap() //防止卡在返回界面
         }
         jumpOut()
 
-        await(atMainScreen)
+        await(主界面)
         logger.info { "登录明日方舟（B服），完成登录" }
     }
 

@@ -1,48 +1,30 @@
 package top.anagke.auto_ark.recruit
 
 import mu.KotlinLogging
-import top.anagke.auto_android.AutoModule
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.assert
-import top.anagke.auto_android.await
+import top.anagke.auto_android.*
 import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.img.ocrTesseract
-import top.anagke.auto_android.match
-import top.anagke.auto_android.matched
-import top.anagke.auto_android.sleep
 import top.anagke.auto_android.util.Rect
-import top.anagke.auto_android.whileNotMatch
-import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.recruit.RecruitTag.*
-import top.anagke.auto_ark.template
+import top.anagke.auto_ark.recruit.RecruitTemplates.公开招募界面
+import top.anagke.auto_ark.recruit.RecruitTemplates.公开招募面板
+import top.anagke.auto_ark.recruit.RecruitTemplates.可刷新标签
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽1完成
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽1招募中
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽1空闲
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽2完成
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽2招募中
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽2空闲
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽3完成
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽3招募中
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽3空闲
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽4完成
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽4招募中
+import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽4空闲
+import top.anagke.auto_ark.主界面
 import java.util.stream.Collectors
-
-
-// 公开招募界面
-private val atRecruitSlotsScreen = template("recruit/atRecruitSlotsScreen.png")
-// 能够刷新TAG
-private val canRefreshTag = template("recruit/canRefreshTag.png", diff = 0.01)
-private val atRecruitScreen = template("recruit/atRecruitScreen.png")
-
-// 公开招募1号栏位可用
-private val isRecruitSlot1Available = template("recruit/isRecruitSlot1Available.png", diff = 0.02)
-private val isRecruitSlot1Completed = template("recruit/isRecruitSlot1Completed.png", diff = 0.02)
-private val isRecruitSlot1Recruiting = template("recruit/isRecruitSlot1Recruiting.png", diff = 0.02)
-// 公开招募2号栏位可用
-private val isRecruitSlot2Available = template("recruit/isRecruitSlot2Available.png", diff = 0.02)
-private val isRecruitSlot2Completed = template("recruit/isRecruitSlot2Completed.png", diff = 0.02)
-private val isRecruitSlot2Recruiting = template("recruit/isRecruitSlot2Recruiting.png", diff = 0.02)
-// 公开招募3号栏位可用
-private val isRecruitSlot3Available = template("recruit/isRecruitSlot3Available.png", diff = 0.02)
-private val isRecruitSlot3Completed = template("recruit/isRecruitSlot3Completed.png", diff = 0.02)
-private val isRecruitSlot3Recruiting = template("recruit/isRecruitSlot3Recruiting.png", diff = 0.02)
-// 公开招募4号栏位可用
-private val isRecruitSlot4Available = template("recruit/isRecruitSlot4Available.png", diff = 0.02)
-private val isRecruitSlot4Completed = template("recruit/isRecruitSlot4Completed.png", diff = 0.02)
-private val isRecruitSlot4Recruiting = template("recruit/isRecruitSlot4Recruiting.png", diff = 0.02)
-
 
 private enum class RecruitSlot(
     val isAvailable: Tmpl,
@@ -50,24 +32,24 @@ private enum class RecruitSlot(
     val isCompleted: Tmpl,
 ) {
     SLOT1(
-        isRecruitSlot1Available,
-        isRecruitSlot1Recruiting,
-        isRecruitSlot1Completed
+        招募槽1空闲,
+        招募槽1招募中,
+        招募槽1完成
     ),
     SLOT2(
-        isRecruitSlot2Available,
-        isRecruitSlot2Recruiting,
-        isRecruitSlot2Completed
+        招募槽2空闲,
+        招募槽2招募中,
+        招募槽2完成
     ),
     SLOT3(
-        isRecruitSlot3Available,
-        isRecruitSlot3Recruiting,
-        isRecruitSlot3Completed
+        招募槽3空闲,
+        招募槽3招募中,
+        招募槽3完成
     ),
     SLOT4(
-        isRecruitSlot4Available,
-        isRecruitSlot4Recruiting,
-        isRecruitSlot4Completed
+        招募槽4空闲,
+        招募槽4招募中,
+        招募槽4完成
     ),
 }
 
@@ -97,10 +79,10 @@ class ArkRecruit(
 
     override fun run() = device.run {
         logger.info { "运行模块：公开招募" }
-        assert(atMainScreen)
+        assert(主界面)
 
         tap(1000, 510) //公开招募
-        await(atRecruitSlotsScreen)
+        await(公开招募界面)
 
         RecruitSlot.values().forEach { slot ->
             autoSlot(slot)
@@ -148,7 +130,7 @@ class ArkRecruit(
         logger.info { "开始招募槽位：${slot.name}" }
         val exitRecruit = {
             back()
-            await(atRecruitSlotsScreen)
+            await(公开招募界面)
         }
         tapSlot(slot)
         while (true) {
@@ -164,7 +146,7 @@ class ArkRecruit(
                 exitRecruit()
                 break
             }
-            if (minimumRarity <= 2 && match(canRefreshTag)) {
+            if (minimumRarity <= 2 && match(可刷新标签)) {
                 logger.info { "最低可能星级小于等于三星且可刷新，刷新" }
                 tap(972, 408) //刷新TAG
                 tap(877, 508) //确认刷新TAG
@@ -182,8 +164,8 @@ class ArkRecruit(
             tap(977, 588) // 开始招募
             sleep()
 
-            await(atRecruitSlotsScreen, atRecruitScreen)
-            if (matched(atRecruitScreen)) {
+            await(公开招募界面, 公开招募面板)
+            if (matched(公开招募面板)) {
                 hasRecruitmentPermit = false
                 logger.info { "招募许可不足，完成招募槽位：${slot.name}" }
                 exitRecruit()

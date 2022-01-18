@@ -1,16 +1,10 @@
 package top.anagke.auto_ark.riic
 
 import kotlinx.serialization.Serializable
-import top.anagke.auto_android.AutoModule
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.assert
-import top.anagke.auto_android.await
-import top.anagke.auto_android.nap
-import top.anagke.auto_android.sleep
-import top.anagke.auto_android.whileNotMatch
-import top.anagke.auto_ark.atMainScreen
+import top.anagke.auto_android.*
 import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.template
+import top.anagke.auto_ark.tmpl
+import top.anagke.auto_ark.主界面
 
 @Serializable
 data class RiicConfig(
@@ -18,26 +12,30 @@ data class RiicConfig(
     val autoAssignControlCenter: Boolean = false,
 )
 
-
-private val atRiicScreen = template("riic/atRiicScreen.png")
-val isClueEmpty = template("riic/isClueEmpty.png")
-
 class ArkRiic(
     private val device: Device,
 ) : AutoModule {
 
+    companion object {
+        private val 基建界面 by tmpl()
+        private val 自有库无线索 by tmpl()
+    }
+
     override fun run() = device.run {
-        assert(atMainScreen)
+        assert(主界面)
 
         enterRiic()
         collect()
+        jumpOut()
+
+        enterRiic()
         assign()
         jumpOut()
     }
 
     private fun Device.enterRiic() {
         tap(985, 625) //进入基建
-        await(atRiicScreen)
+        await(基建界面)
         sleep()
     }
 
@@ -53,16 +51,13 @@ class ArkRiic(
         tap(1047, 234).sleep().sleep() //打开会客室
         tap(414, 617).sleep() //进入详情
         tap(1197, 388).sleep() //进入传递线索
-        whileNotMatch(isClueEmpty) {
+        whileNotMatch(自有库无线索) {
             tap(74, 183).nap() //选择第一个线索
             tap(1194, 135).sleep() //传递给第一个好友
         }
         back().sleep() // 返回会客室
         tap(1196, 180).sleep() //进入收集线索
         tap(805, 574).sleep() //领取会客室线索
-        back().nap()
-        back().nap()
-        back().sleep()
     }
 
     private fun assign() = device.apply {

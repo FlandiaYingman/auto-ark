@@ -1,31 +1,24 @@
 package top.anagke.auto_ark.store
 
-import top.anagke.auto_android.AutoModule
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.assert
-import top.anagke.auto_android.await
+import top.anagke.auto_android.*
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.match
-import top.anagke.auto_android.nap
-import top.anagke.auto_android.sleep
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_android.whileNotMatch
-import top.anagke.auto_ark.atMainScreen
 import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.template
+import top.anagke.auto_ark.tmpl
+import top.anagke.auto_ark.主界面
 
 class ArkStore(
     private val device: Device,
 ) : AutoModule {
 
     companion object {
-        private val isCreditGained: Tmpl = template("store/isCreditGained.png")
-        private val isAtCreditBuyingDialog: Tmpl = template("store/isAtCreditBuyingDialog.png")
+        private val 已领取信用点: Tmpl by tmpl()
+        private val 购买物品提示框: Tmpl by tmpl()
     }
 
 
     override fun run(): Unit = device.run {
-        assert(atMainScreen)
+        assert(主界面)
 
         enterStore()
         autoCreditStore()
@@ -47,7 +40,7 @@ class ArkStore(
     }
 
     private fun gainCredit() = device.apply {
-        whileNotMatch(isCreditGained) {
+        whileNotMatch(已领取信用点) {
             tap(1026, 39).sleep()
         }
     }
@@ -73,13 +66,13 @@ class ArkStore(
             tap(x, y).nap() //关闭弹出的提示框（点击原商品位置，防止触碰其他位置）
 
             //两次，防止在确认”购买物品“关闭后，对话框出现前的一瞬间检测到
-            if (match(isAtCreditBuyingDialog)) {
+            if (match(购买物品提示框)) {
                 //提示框未弹出，信用点不足
                 back().nap()
                 break
             }
         }
-        await(isCreditGained) //默认已收取信用点
+        await(已领取信用点) //默认已收取信用点
     }
 
 }

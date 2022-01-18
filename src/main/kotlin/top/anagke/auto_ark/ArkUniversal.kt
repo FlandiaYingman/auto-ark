@@ -13,11 +13,6 @@ import java.time.DayOfWeek
 import java.time.LocalDateTime
 import kotlin.reflect.KProperty
 
-fun template(name: String, diff: Double = 0.05): Tmpl {
-    val url = AutoArk::class.java.getResource(name)
-    return Tmpl(name, diff, Img.decode(url!!.readBytes())!!)
-}
-
 fun tmpl(diff: Double = 0.05) = TmplDelegate(diff)
 
 class TmplDelegate(private val diff: Double) {
@@ -42,25 +37,25 @@ val arkDayOfWeek: DayOfWeek
 
 
 // 主界面
-val atMainScreen = template("atMainScreen.png")
+val 主界面 by tmpl()
 
 // 可跳回主界面
-val canJumpOut = template("canJumpOut.png", diff = 0.01)
+val 可跳出 by tmpl(diff = 0.01)
 
 fun Device.jumpOut() {
-    if (match(canJumpOut)) {
+    if (match(可跳出)) {
         tap(267, 36).nap()
         tap(92, 169).nap()
-        await(atMainScreen)
+        await(主界面)
         sleep()
     } else {
-        whileNotMatch(atMainScreen, canJumpOut) {
+        whileNotMatch(主界面, 可跳出) {
             back().sleep()
         }
-        if (matched(canJumpOut)) {
+        if (matched(可跳出)) {
             tap(267, 36).nap()
             tap(92, 169).nap()
-            await(atMainScreen)
+            await(主界面)
             sleep()
         }
     }
