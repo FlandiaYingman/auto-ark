@@ -5,6 +5,7 @@ import top.anagke.auto_android.native.ProcessOutput
 import top.anagke.auto_android.native.openProc
 import top.anagke.auto_android.native.readRaw
 import top.anagke.auto_android.native.readText
+import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.minutes
 import java.nio.file.Path
 
@@ -60,6 +61,8 @@ class Device(
         log.debug { "Tap ($x, $y), serial='$serial'" }
         adbShell("input", "tap", "$x", "$y").readText()
     }
+
+    fun tap(pos: Pos) = tap(pos.x, pos.y)
 
     fun tapd(x: Int, y: Int) {
         log.debug { "Double Tap ($x, $y), serial='$serial'" }
