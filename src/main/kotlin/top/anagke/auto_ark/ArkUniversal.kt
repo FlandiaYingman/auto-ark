@@ -1,16 +1,9 @@
 package top.anagke.auto_ark
 
 import com.google.gson.Gson
-import top.anagke.auto_android.AndroidActivity
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.await
+import top.anagke.auto_android.*
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.match
-import top.anagke.auto_android.matched
-import top.anagke.auto_android.nap
-import top.anagke.auto_android.sleep
-import top.anagke.auto_android.whileNotMatch
 import java.net.URI
 import java.net.URL
 import java.net.http.HttpClient
@@ -18,19 +11,29 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-
-
-object ArkRes {
-    operator fun invoke(name: String): URL? {
-        return this.javaClass.getResource(name)
-    }
-}
+import kotlin.reflect.KProperty
 
 fun template(name: String, diff: Double = 0.05): Tmpl {
-    val url = ArkRes(name)
+    val url = AutoArk::class.java.getResource(name)
     return Tmpl(name, diff, Img.decode(url!!.readBytes())!!)
 }
 
+fun tmpl(diff: Double = 0.05) = TmplDelegate(diff)
+
+class TmplDelegate(private val diff: Double) {
+    private var tmpl: Tmpl? = null
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): Tmpl {
+        if (tmpl == null) {
+            val name = "${property.name}.png"
+            val kClass = thisRef?.let { it::class.java } ?: AutoArk::class.java
+            val tmplBytes = kClass
+                .getResource(name)!!
+                .readBytes()
+            tmpl = Tmpl(name, diff, Img.decode(tmplBytes)!!)
+        }
+        return tmpl!!
+    }
+}
 
 val arkDayOfWeek: DayOfWeek
     get() {

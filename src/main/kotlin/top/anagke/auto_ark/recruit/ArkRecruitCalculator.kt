@@ -5,7 +5,7 @@ package top.anagke.auto_ark.recruit
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import top.anagke.auto_ark.ArkRes
+import top.anagke.auto_ark.AutoArk
 
 object ArkRecruitCalculator {
 
@@ -63,7 +63,7 @@ object ArkRecruitCalculator {
     }
 
     private val operators: List<Operator> = run {
-        val json = ArkRes("operator_data.json")!!.readText()
+        val json = AutoArk::class.java.getResource("operator_data.json")!!.readText()
         val type = object : TypeToken<List<Operator>>() {}.type
         Gson().fromJson(json, type)
     }
