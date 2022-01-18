@@ -37,7 +37,7 @@ class Device(
     }
 
     private fun initCustomTool() {
-        push("top/anagke/auto_android/bin/adb/swiper.jar", "/sdcard/swiper.jar")
+        push("bin/adb/swipee.jar", "/data/local/tmp/swipee.jar")
     }
 
 
@@ -87,18 +87,18 @@ class Device(
     fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5) {
         log.debug { "Drag ($sx, $sy, $ex, $ey, $speed), serial='$serial'" }
         adbAppProcess(
-            "/sdcard/swiper.jar",
-            "top.anagke.Input",
-            "upless-exact", "$sx", "$sy", "$ex", "$ey", "$speed"
+            "/data/local/tmp/swipee.jar",
+            "top.anagke.Swipee",
+            "exact", "$sx", "$sy", "$ex", "$ey", "$speed"
         ).readText()
     }
 
     fun dragd(x: Int, y: Int, dx: Int, dy: Int, speed: Double = 0.5) {
         log.debug { "DragD ($x, $y, $dx, $dy, $speed), serial='$serial'" }
         adbAppProcess(
-            "/sdcard/swiper.jar",
-            "top.anagke.Input",
-            "upless-exact", "$x", "$y", "${x + dx}", "${y + dy}", "$speed"
+            "/data/local/tmp/swipee.jar",
+            "top.anagke.Swipee",
+            "exact", "$x", "$y", "${x + dx}", "${y + dy}", "$speed"
         ).readText()
     }
 
