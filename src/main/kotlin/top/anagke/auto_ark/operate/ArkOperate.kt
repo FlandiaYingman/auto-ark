@@ -1,22 +1,15 @@
 package top.anagke.auto_ark.operate
 
 import mu.KotlinLogging
-import top.anagke.auto_android.AutoModule
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.assert
-import top.anagke.auto_android.await
-import top.anagke.auto_android.match
-import top.anagke.auto_android.matched
-import top.anagke.auto_android.nap
-import top.anagke.auto_android.which
+import top.anagke.auto_android.*
 import top.anagke.auto_ark.AutoArkCache
 import top.anagke.auto_ark.arkDayOfWeek
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.OperateLevel.Companion.CA_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.CE_5
 import top.anagke.auto_ark.operate.OperateLevel.Companion.LS_5
-import top.anagke.auto_ark.operate.OperateLevel.Companion.annihilation
 import top.anagke.auto_ark.operate.OperateLevel.Companion.operateLevel
+import top.anagke.auto_ark.operate.OperateLevel.Companion.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
 import java.time.DayOfWeek.*
@@ -50,7 +43,7 @@ class ArkOperate(
         logger.info { "刷剿灭委托：${config.doFarmAnnihilation}" }
         if (!config.doFarmAnnihilation) return
 
-        farm(annihilation, 1)
+        farm(剿灭作战, 1)
     }
 
     private fun farmPlan() {

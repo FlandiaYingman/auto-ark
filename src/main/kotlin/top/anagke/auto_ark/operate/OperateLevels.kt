@@ -10,6 +10,11 @@ import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.LevelEntryState.FAILED
 import top.anagke.auto_ark.operate.LevelEntryState.SUCCESSFUL
+import top.anagke.auto_ark.operate.OperateLevel.Companion.剿灭作战
+import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已刷满
+import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已通过
+import top.anagke.auto_ark.operate.Poses.终端
+import top.anagke.auto_ark.operate.Poses.终端_每周部署
 import kotlin.math.roundToInt
 
 typealias LevelEntry = Device.(LevelEntryController) -> Unit
@@ -143,17 +148,26 @@ private constructor(
                 Rect(Pos(397 + 208 * 2, 463), Size(190, 31)),
                 Rect(Pos(397 + 208 * 3, 463), Size(190, 31))
             ).find { cap.crop(it).invert().ocr(listOf("固若金汤", "势不可挡", "身先士卒", "摧枯拉朽")) == name }?.center() ?: Pos(
-                -1,
-                -1
+                -1, -1
             )
         }
 
 
-        val annihilation = operateLevel("剿灭作战", "当期", timeout = 30L * 60L * 1000L) {
-            tap(970, 203).sleep() //终端
-            if (match(hasAnnihilation)) {
-                tap(1000, 665).sleep()
-                tap(835, 400).sleep()
+        val 剿灭作战 = operateLevel("剿灭作战", "当期", timeout = 30L * 60L * 1000L) {
+            tap(终端).sleep()
+            tap(终端_每周部署).nap()
+            if (notMatch(剿灭_已刷满)) {
+                tap(838, 385).sleep() //当期委托
+                if (match(剿灭_已通过)) {
+                    //已通过当期委托
+                } else {
+                    //尚未通过当期委托
+                    back().nap() //跳出关卡信息界面
+                    tap(1150, 680).nap() //切换剿灭作战
+                    tap(1184, 263).sleep() //选择龙门外环
+                    //选择龙门外环的原因是：如果一个账号尚未通过当期委托，那么很大概率是因为练度不够。
+                    //如果是因为练度不够，那么这个账号很可能也尚未通过龙门市区，所以保险起见，选择龙门外环。
+                }
             }
         }
 
@@ -286,4 +300,8 @@ fun OperateLevel.enter(device: Device): LevelEntryState {
         return FAILED
     }
     return state
+}
+
+fun main() {
+    剿灭作战.enter(Device())
 }
