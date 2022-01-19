@@ -30,10 +30,9 @@ class TmplDelegate(private val diff: Double) {
     }
 }
 
-val arkDayOfWeek: DayOfWeek
-    get() {
-        return LocalDateTime.now().minusHours(4).dayOfWeek
-    }
+fun today(): DayOfWeek {
+    return LocalDateTime.now().minusHours(4).dayOfWeek
+}
 
 
 // 主界面
