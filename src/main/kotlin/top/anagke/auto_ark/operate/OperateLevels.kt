@@ -1,8 +1,7 @@
 package top.anagke.auto_ark.operate
 
 import top.anagke.auto_android.*
-import top.anagke.auto_android.img.Img
-import top.anagke.auto_android.img.ocr
+import top.anagke.auto_android.img.ocrWord
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
@@ -15,11 +14,14 @@ import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已刷满
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已通过
+import top.anagke.auto_ark.operate.Poses.PR_X_1
+import top.anagke.auto_ark.operate.Poses.PR_X_2
+import top.anagke.auto_ark.operate.Poses.XX_5
 import top.anagke.auto_ark.operate.Poses.终端
 import top.anagke.auto_ark.operate.Poses.终端_主题曲
 import top.anagke.auto_ark.operate.Poses.终端_每周部署
 import top.anagke.auto_ark.operate.Poses.终端_资源收集
-import kotlin.math.roundToInt
+import top.anagke.auto_ark.operate.资源收集芯片.*
 
 typealias LevelEntry = Device.(LevelEntryController) -> Unit
 
@@ -30,6 +32,25 @@ enum class LevelEntryState {
 class LevelEntryController(
     var state: LevelEntryState = SUCCESSFUL,
 )
+
+private enum class 资源收集芯片 {
+    固若金汤, 摧枯拉朽, 势不可挡, 身先士卒;
+
+    fun where(dev: Device): Pos? {
+        val cap = dev.cap()
+        val chipTextRegion = listOf(
+            Rect(Pos(397 + 208 * 0, 463), Size(190, 31)),
+            Rect(Pos(397 + 208 * 1, 463), Size(190, 31)),
+            Rect(Pos(397 + 208 * 2, 463), Size(190, 31)),
+            Rect(Pos(397 + 208 * 3, 463), Size(190, 31))
+        )
+        return chipTextRegion.find {
+            val image = cap.crop(it)
+            val words = values().map(资源收集芯片::name)
+            ocrWord(image, words = words) == name
+        }?.center()
+    }
+}
 
 class OperateLevel
 private constructor(
@@ -60,104 +81,93 @@ private constructor(
         }
 
 
-        val LS_5 = operateLevel("LS-5", "作战记录") {
+        val LS_5 = operateLevel("LS-5", "战术演习（作战记录）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //终端_资源收集
+            tap(终端_资源收集).nap()
             tap(643, 363).sleep() //战术演习
-            tap(945, 177).sleep() //LS-5
+            tap(XX_5).nap() //LS-5
         }
-        val CE_5 = operateLevel("CE-5", "龙门币") {
+        val CE_5 = operateLevel("CE-5", "货物运送（龙门币）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //终端_资源收集
-            tap(438, 349).sleep()
-            tap(945, 177).sleep() //CE-5
+            tap(终端_资源收集).nap()
+            tap(438, 349).sleep() //资源保障
+            tap(XX_5).nap() //CE-5
         }
-        val CA_5 = operateLevel("CA-5", "技巧概要") {
+        val CA_5 = operateLevel("CA-5", "空中威胁（技巧概要）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //终端_资源收集
-            tap(229, 357).sleep()
-            tap(945, 177).sleep() //CA-5
+            tap(终端_资源收集).nap()
+            tap(229, 357).sleep() //空中威胁
+            tap(XX_5).nap() //CA-5
         }
 
-        val PR_A_1 = operateLevel("PR-A-1", "重装/医疗芯片") {
+        val PR_A_1 = operateLevel("PR-A-1", "固若金汤（重装/医疗芯片）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "固若金汤")
-            tap(pos.x, pos.y).sleep() //固若金汤
-            tap(403, 438).sleep() //PR-X-1
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(固若金汤.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_1).nap()
         }
-        val PR_B_1 = operateLevel("PR-B-1", "狙击/术士芯片") {
+        val PR_B_1 = operateLevel("PR-B-1", "摧枯拉朽（狙击/术士芯片）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "摧枯拉朽")
-            tap(pos.x, pos.y).sleep() //摧枯拉朽
-            tap(403, 438).sleep() //PR-X-1
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(摧枯拉朽.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_1).nap()
         }
-        val PR_C_1 = operateLevel("PR-C-1", "先锋/辅助芯片") {
+        val PR_C_1 = operateLevel("PR-C-1", "势不可挡（先锋/辅助芯片）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "势不可挡")
-            tap(pos.x, pos.y).sleep() //势不可挡
-            tap(403, 438).sleep() //PR-X-1
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(势不可挡.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_1).nap()
         }
-        val PR_D_1 = operateLevel("PR-D-1", "近卫/特种芯片") {
+        val PR_D_1 = operateLevel("PR-D-1", "身先士卒（近卫/特种芯片）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "身先士卒")
-            tap(pos.x, pos.y).sleep() //身先士卒
-            tap(403, 438).sleep() //PR-X-1
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(身先士卒.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_1).nap()
         }
 
-        val PR_A_2 = operateLevel("PR-A-2", "重装/医疗芯片组") {
+        val PR_A_2 = operateLevel("PR-A-2", "固若金汤（重装/医疗芯片组）") {
             tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "固若金汤")
-            tap(pos.x, pos.y).sleep() //固若金汤
-            tap(830, 258).sleep() //PR-X-2
-        }
-        val PR_B_2 = operateLevel("PR-B-2", "狙击/术士芯片组") {
-            tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "摧枯拉朽")
-            tap(pos.x, pos.y).sleep() //摧枯拉朽
-            tap(830, 258).sleep() //PR-X-2
-        }
-        val PR_C_2 = operateLevel("PR-C-2", "先锋/辅助芯片组") {
-            tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "势不可挡")
-            tap(pos.x, pos.y).sleep() //势不可挡
-            tap(830, 258).sleep() //PR-X-2
-        }
-        val PR_D_2 = operateLevel("PR-D-2", "近卫/特种芯片组") {
-            tap(终端).sleep()
-            tap(终端_资源收集).sleep() //Resource Collection
-            swipe(920, 360, 360, 360).sleep()
-            val pos = findChipLevel(cap(), "身先士卒")
-            tap(pos.x, pos.y).sleep() //身先士卒
-            tap(830, 258).sleep() //PR-X-2
-        }
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
 
-        private fun findChipLevel(cap: Img, name: String): Pos {
-            return listOf(
-                Rect(Pos(397 + 208 * 0, 463), Size(190, 31)),
-                Rect(Pos(397 + 208 * 1, 463), Size(190, 31)),
-                Rect(Pos(397 + 208 * 2, 463), Size(190, 31)),
-                Rect(Pos(397 + 208 * 3, 463), Size(190, 31))
-            ).find { cap.crop(it).invert().ocr(listOf("固若金汤", "势不可挡", "身先士卒", "摧枯拉朽")) == name }?.center() ?: Pos(
-                -1, -1
-            )
+            tap(固若金汤.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_2).nap()
+        }
+        val PR_B_2 = operateLevel("PR-B-2", "摧枯拉朽（狙击/术士芯片组）") {
+            tap(终端).sleep()
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(摧枯拉朽.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_2).nap()
+        }
+        val PR_C_2 = operateLevel("PR-C-2", "势不可挡（先锋/辅助芯片组）") {
+            tap(终端).sleep()
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(势不可挡.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_2).nap()
+        }
+        val PR_D_2 = operateLevel("PR-D-2", "身先士卒（近卫/特种芯片组）") {
+            tap(终端).sleep()
+            tap(终端_资源收集).nap()
+            dragd(640, 360, -1280, 0)
+
+            tap(身先士卒.where(this) ?: return@operateLevel).sleep()
+            tap(PR_X_2).nap()
         }
 
 
-        val 剿灭作战 = operateLevel("剿灭作战", "当期", timeout = 30L * 60L * 1000L) {
+        val 剿灭作战 = operateLevel("剿灭作战", "当期委托（合成玉）", timeout = 15.minutes) {
             tap(终端).sleep()
             tap(终端_每周部署).nap()
             if (notMatch(剿灭_已刷满)) {
@@ -182,109 +192,13 @@ private constructor(
             tap(66, 132).nap() //进入“觉醒”
 
             dragd(950, 360, -950, 0) //确保处于“二次呼吸”
-            tap(1200, 360).nap()
+            tap(1200, 360).nap() //取消拖动
 
             tap(330, 375).sleep() //进入“黑暗时代（下）”
 
-            dragd(160, 360, (3.5 * 1280).roundToInt(), 0) //确保处于最左边
+            dragd(160, 360, 4480, 0) //确保处于最左边
             dragd(950, 360, -1750, 0) //确保处于“1-7”
             tap(1092, 222).nap() //进入“1-7”
-        }
-
-        val MN_8 = operateLevel("MN-8", description = "玛莉亚·临光") {
-            tap(终端).sleep()
-            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
-            tap(959, 435).sleep() //进入“大竞技场”
-            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
-            tap(130, 299).sleep() //MN-8
-        }
-        val MN_6 = operateLevel("MN-6", description = "玛莉亚·临光") {
-            tap(终端).sleep()
-            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
-            tap(959, 435).sleep() //进入“大竞技场”
-            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
-            drag(640, 360, 640 + 1000, 360, 1.0).sleep() //划到MN-6
-            tap(276, 295).sleep() //MN-6
-        }
-
-        val NL_8 = operateLevel("NL-8", description = "糖组，长夜临光") {
-            tap(终端).sleep()
-            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
-            tap(1012, 446).sleep() //进入“大骑士领”
-            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
-            tap(242, 350).sleep() //NL-8
-        }
-        val NL_9 = operateLevel("NL-9", description = "晶体元件，长夜临光") {
-            tap(终端).sleep()
-            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
-            tap(1012, 446).sleep() //进入“大骑士领”
-            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
-            tap(439, 241).sleep() //NL-9
-        }
-        val NL_10 = operateLevel("NL-10", description = "扭转醇，长夜临光") {
-            tap(终端).sleep()
-            tap(404, 566).sleep().sleep() //进入活动，等待过场动画
-            tap(1012, 446).sleep() //进入“大骑士领”
-            swipe(1220, 375, 60, 375, 200).sleep() //划到最末端
-            tap(515, 498).sleep() //NL-8
-        }
-
-        val MB_8 = operateLevel("MB-8", description = "孤岛风云，异铁组") {
-            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
-            tap(1140, 157).sleep() //进入“越狱计划”
-            tap(1139, 521).sleep() //进入“MB-8”
-        }
-        val MB_7 = operateLevel("MB-7", description = "孤岛风云，酮凝集组") {
-            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
-            tap(1140, 157).sleep() //进入“越狱计划”
-            tap(840, 521).sleep() //进入“MB-7”
-        }
-        val MB_6 = operateLevel("MB-6", description = "孤岛风云，酮凝集组") {
-            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
-            tap(1140, 157).sleep() //进入“越狱计划”
-            tap(840, 392).sleep() //进入“MB-6”
-        }
-
-
-        val BI_8 = operateLevel("BI-8", description = "风雪过境，研磨石") {
-            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
-            tap(1164, 334).sleep() //进入“雪山大典”
-            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
-            tap(303, 388).sleep() //进入“BI-8”
-        }
-        val BI_7 = operateLevel("BI-7", description = "风雪过境，聚酸酯组") {
-            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
-            tap(1164, 334).sleep() //进入“雪山大典”
-            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
-            tap(142, 291).sleep() //进入“BI-7”
-        }
-        val BI_6 = operateLevel("BI-6", description = "风雪过境，炽合金") {
-            tap(1176, 141).sleep().sleep() //进入活动，等待过场动画
-            tap(1164, 334).sleep() //进入“雪山大典”
-            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
-            drag(389, 373, 535, 390).sleep() //往回划一些
-            tap(61, 204).sleep() //进入“BI-6”
-        }
-
-        val WR_8 = operateLevel("WR-8", description = "画中人，炽合金") {
-            tap(1176, 140).sleep().sleep() //进入活动，等待过场动画
-            tap(1155, 588).sleep() //进入“入画”
-            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
-            tap(57, 385).sleep() //进入“WR-8”
-        }
-
-        val WR_9 = operateLevel("WR-9", description = "画中人，聚酸酯组") {
-            tap(1176, 140).sleep().sleep() //进入活动，等待过场动画
-            tap(1155, 588).sleep() //进入“入画”
-            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
-            tap(216, 256).sleep() //进入“WR-9”
-        }
-
-        val WR_10 = operateLevel("WR-10", description = "画中人，固源岩组") {
-            tap(1176, 140).sleep().sleep() //进入活动，等待过场动画
-            tap(1155, 588).sleep() //进入“入画”
-            drag(1280, 360, -1280 * 3, 360).sleep() //划到最末端
-            tap(339, 386).sleep() //进入“WR-10”
         }
 
     }
