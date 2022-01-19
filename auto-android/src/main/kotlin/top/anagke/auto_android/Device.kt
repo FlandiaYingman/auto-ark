@@ -38,11 +38,15 @@ class Device(
 
     private fun initCustomTool() {
         push("bin/adb/swipee.jar", "/data/local/tmp/swipee.jar")
+        adbShell("chmod", "0777", "/data/local/tmp/swipee.jar").readText()
+        push("bin/ascreencap/${getAbi()}/ascreencap", "/data/local/tmp/ascreencap")
+        adbShell("chmod", "0777", "/data/local/tmp/ascreencap").readText()
     }
 
+    private fun getAbi() = adbProc("exec-out", "getprop", "ro.product.cpu.abi").readText().stdout
 
-    private fun adbProc(vararg adbCommands: String): Process =
-        adbProc(adbPath, *adbCommands, serial = serial.orEmpty())
+
+    private fun adbProc(vararg adbCommands: String): Process = adbProc(adbPath, *adbCommands, serial = serial.orEmpty())
 
     private fun adbShell(vararg shellCommands: String): Process =
         adbShell(adbPath, *shellCommands, serial = serial.orEmpty())
@@ -52,8 +56,8 @@ class Device(
 
 
     fun cap(): Img {
-        return Img.decode(adbProc("exec-out", "screencap -p").readRaw().stdout)
-            ?: throw IllegalStateException("empty screencap")
+        val raw = adbProc("exec-out", "/data/local/tmp/ascreencap", "--stdout", "--pack").readRaw().stdout
+        return Img.decode(raw)!!
     }
 
 
@@ -87,18 +91,14 @@ class Device(
     fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5) {
         log.debug { "Drag ($sx, $sy, $ex, $ey, $speed), serial='$serial'" }
         adbAppProcess(
-            "/data/local/tmp/swipee.jar",
-            "top.anagke.Swipee",
-            "exact", "$sx", "$sy", "$ex", "$ey", "$speed"
+            "/data/local/tmp/swipee.jar", "top.anagke.Swipee", "exact", "$sx", "$sy", "$ex", "$ey", "$speed"
         ).readText()
     }
 
     fun dragd(x: Int, y: Int, dx: Int, dy: Int, speed: Double = 0.5) {
         log.debug { "DragD ($x, $y, $dx, $dy, $speed), serial='$serial'" }
         adbAppProcess(
-            "/data/local/tmp/swipee.jar",
-            "top.anagke.Swipee",
-            "exact", "$x", "$y", "${x + dx}", "${y + dy}", "$speed"
+            "/data/local/tmp/swipee.jar", "top.anagke.Swipee", "exact", "$x", "$y", "${x + dx}", "${y + dy}", "$speed"
         ).readText()
     }
 
