@@ -73,6 +73,17 @@ class Device(
         adbShell("input", "tap", "$x", "$y", ";", "input", "tap", "$x", "$y").readText()
     }
 
+    fun taps(poses: List<Pos>) {
+        log.debug { "Tap $poses, serial='$serial'" }
+//        val command = poses.map { listOf("input", "tap", "${it.x}", "${it.y}", ";") }.flatten()
+        poses.map {
+            delay(100)
+            adbShell("input", "tap", "${it.x}", "${it.y}")
+        }.forEach {
+            it.readText()
+        }
+    }
+
     fun input(str: String) {
         log.debug { "Input '$str', serial='$serial'" }
         adbShell("input", "text", str).readText()
