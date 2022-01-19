@@ -2,6 +2,7 @@ package top.anagke.auto_ark.riic
 
 import kotlinx.serialization.Serializable
 import top.anagke.auto_android.*
+import top.anagke.auto_android.util.Pos
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.tmpl
 import top.anagke.auto_ark.主界面
@@ -19,6 +20,13 @@ class ArkRiic(
     companion object {
         private val 基建界面 by tmpl()
         private val 自有库无线索 by tmpl()
+        private val 干员选择界面 by tmpl(diff = 0.01)
+        private val 进驻总览界面 by tmpl(diff = 0.01)
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ArkRiic(Device()).assign()
+        }
     }
 
     override fun run() = device.run {
@@ -61,63 +69,60 @@ class ArkRiic(
     }
 
     private fun assign() = device.apply {
-        tap(74, 118).sleep() //进驻总览
+        tap(74, 118) //进驻总览
+        await(进驻总览界面)
 
         //前两个宿舍
         repeat(2) {
-            drag(1200, 415, 1200, 415 - 880) //一个宿舍距离
-            tap(670, 200).sleep() //第一个房间
-            shift(5)
+            dragd(1200, 415, 0, -880, speed = 1.0) //一个宿舍距离
+            shift(Pos(670, 200), 5, canPopup = true) //宿舍
         }
 
         //后两个宿舍
-        drag(1200, 415, 1200, 415 - 880) //一个宿舍距离
-        tap(670, 240).sleep() //第三个宿舍
-        shift(5)
-        tap(670, 600).sleep() //第四个宿舍
-        shift(5)
+        dragd(1200, 415, 0, -880, speed = 1.0) //一个宿舍距离
+        shift(Pos(670, 240), 5, canPopup = true) //第三个宿舍
+        shift(Pos(670, 600), 5, canPopup = true) //第四个宿舍
 
-        swipe(1200, 415, 1200, 415 + 2048, 1000).sleep()
+        swipe(1200, 415, 1200, 415 + 2048, 500).nap()
 
-        drag(1200, 415, 1200, 415 - 190) //一个房间距离
-        tap(670, 200).nap() //第一个房间
-        shift(2)
+        dragd(1200, 415, 0, -190, speed = 1.0) //一个房间距离
+        shift(Pos(670, 200), 2) //第一个房间
 
         repeat(3) {
-            drag(1200, 415, 1200, 415 - 245) //一层距离
+            dragd(1200, 415, 0, -245, speed = 1.0) //一层距离
             repeat(3) {
-                tap(670, 200).nap() //第一个房间
-                shift(3) //贸易站、制造站或发电站
-                drag(1200, 415, 1200, 415 - 190) //一个房间距离
+                shift(Pos(670, 200), 3) //贸易站、制造站或发电站
+                dragd(1200, 415, 0, -190, speed = 1.0) //一个房间距离
             }
             if (it < 3 - 1) {
-                drag(1200, 415, 1200, 415 - 190) //一个房间距离
-                tap(670, 200).nap() //第一个房间
-                shift(1) //辅助设施
+                dragd(1200, 415, 0, -190, speed = 1.0) //一个房间距离
+                shift(Pos(670, 200), 3) //辅助设施
             }
         }
     }
 
 
-    private fun shift(limit: Int) = device.apply {
-        val operatorPos = listOf(
-            490 to 253,
-            478 to 446,
-            597 to 249,
-            607 to 464,
-            732 to 256,
-            775 to 501,
-            931 to 266,
-            913 to 445,
-            1042 to 235,
-            1033 to 454,
-        )
-        repeat(limit * 2) {
-            tap(operatorPos[it].first, operatorPos[it].second)
-        }
+    private fun shift(room: Pos, limit: Int, canPopup: Boolean = false) = device.apply {
+        tap(room)
+        await(干员选择界面)
 
-        tap(1180, 675).sleep() //确认
-        tap(1180, 675).sleep() //确认
+        val operatorPos = listOf(
+            Pos(490, 253),
+            Pos(478, 446),
+            Pos(597, 249),
+            Pos(607, 464),
+            Pos(732, 256),
+            Pos(775, 501),
+            Pos(931, 266),
+            Pos(913, 445),
+            Pos(1042, 235),
+            Pos(1033, 454),
+        )
+        taps(operatorPos.subList(0, 2 * limit))
+
+        if (canPopup) tap(1180, 675).nap() //确认
+        tap(1180, 675) //确认
+        await(进驻总览界面)
     }
 
 }
