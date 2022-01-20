@@ -79,10 +79,10 @@ object OperateOperations {
         fun where(dev: Device): Pos? {
             val cap = dev.cap()
             val chipTextRegion = listOf(
-                Rect(Pos(397 + 208 * 0, 463), Size(190, 31)),
-                Rect(Pos(397 + 208 * 1, 463), Size(190, 31)),
-                Rect(Pos(397 + 208 * 2, 463), Size(190, 31)),
-                Rect(Pos(397 + 208 * 3, 463), Size(190, 31))
+                Rect(Pos(423 + 207 * 0, 453), Size(137, 49)),
+                Rect(Pos(423 + 207 * 1, 453), Size(137, 49)),
+                Rect(Pos(423 + 207 * 2, 453), Size(137, 49)),
+                Rect(Pos(423 + 207 * 3, 453), Size(137, 49))
             )
             return chipTextRegion.find {
                 val image = cap.crop(it)
@@ -93,69 +93,60 @@ object OperateOperations {
     }
 
     internal val PR_A_1 = Operation("PR-A-1", "重装/医疗芯片") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.固若金汤.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
     internal val PR_B_1 = Operation("PR-B-1", "狙击/术士芯片") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.摧枯拉朽.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
     internal val PR_C_1 = Operation("PR-C-1", "先锋/辅助芯片") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.势不可挡.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
     internal val PR_D_1 = Operation("PR-D-1", "近卫/特种芯片") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.身先士卒.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
 
     internal val PR_A_2 = Operation("PR-A-2", "重装/医疗芯片组") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.固若金汤.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
     internal val PR_B_2 = Operation("PR-B-2", "狙击/术士芯片组") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.摧枯拉朽.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
     internal val PR_C_2 = Operation("PR-C-2", "先锋/辅助芯片组") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.势不可挡.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
     internal val PR_D_2 = Operation("PR-D-2", "近卫/特种芯片组") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -1280, 0)
+        进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.身先士卒.where(this) ?: return@Operation).sleep()
         tap(OperatePoses.PR_X_2).nap()
+    }
+
+    private fun Device.进入_终端_资源收集_芯片() {
+        tap(OperatePoses.终端).sleep()
+        tap(OperatePoses.终端_资源收集).nap()
+        dragd(640, 360, -600, 0)
+        tap(1230, 50).nap()
     }
 
     internal val 剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 15.minutes) {
