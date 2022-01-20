@@ -45,6 +45,17 @@ fun ocrWord(img: Img, words: List<String> = emptyList()): String {
     BinResources.init()
 
     logger.debug { "OCR using pre-built tesseract v5.0.1.20220118" }
+    val psm7 = rawOcr(img, 7)
+    val psm8 = rawOcr(img, 8)
+    val bestWord = words.minByOrNull {
+        JaroWinkler().distance(it, psm7) + JaroWinkler().distance(it, psm8)
+    } ?: psm7
+
+    logger.debug { "OCR result: best word '$bestWord', stdout '$psm7', '$psm8'" }
+    return bestWord
+}
+
+private fun rawOcr(img: Img, psm: Int): String {
     val tesseractExec = "bin/tesseract/tesseract.exe"
 
     // Page Segmentation Modes:
@@ -52,12 +63,8 @@ fun ocrWord(img: Img, words: List<String> = emptyList()): String {
     // 7    Treat the image as a single text line.
     // 8    Treat the image as a single word.
     // ...
-    val proc = openProc(tesseractExec, "stdin", "stdout", "-l", "chi_sim+eng", "--psm", "8")
-    proc.outputStream.write(Img.encode(img))
-
+    val proc = openProc(tesseractExec, "stdin", "stdout", "-l", "chi_sim", "--psm", "$psm", "--dpi", "240")
+    proc.outputStream.use { it.write(Img.encode(img)) }
     val stdout = proc.readText().stdout.replace(Regex("\\s"), "")
-    val bestWord = words.minByOrNull { JaroWinkler().distance(it, stdout) } ?: stdout
-
-    logger.debug { "OCR result: best word '$bestWord', stdout '$stdout'" }
-    return bestWord
+    return stdout
 }
