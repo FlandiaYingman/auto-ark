@@ -8,6 +8,7 @@ import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import top.anagke.auto_android.util.minutes
+import top.anagke.auto_ark.operate.OperatePoses.终端_活动
 import top.anagke.auto_ark.tmpl
 import top.anagke.auto_ark.today
 import java.time.DayOfWeek
@@ -21,6 +22,8 @@ object OperatePoses {
     internal val PR_X_1 = Pos(403, 438)
     internal val PR_X_2 = Pos(830, 258)
     internal val XX_5 = Pos(945, 177)
+
+    internal val 终端_活动 = Pos(1096, 143)
 }
 
 object OperateTemplates {
@@ -182,8 +185,34 @@ object OperateOperations {
         dragd(950, 360, -1750, 0) //确保处于“1-7”
         tap(1092, 222).nap() //进入“1-7”
     }
-}
 
+    internal val IW_6 = Operation("IW-6", description = "将进酒、全新装置") {
+        tap(终端_活动).sleep().sleep()
+        tap(1078, 591).sleep()
+
+        dragd(640, 360, -1280 * 3, 0)
+        dragd(640, 360, 600, 0)
+        tap(189, 531).nap() // IW-6
+    }
+
+    internal val IW_7 = Operation("IW-7", description = "将进酒、固源岩组") {
+        tap(终端_活动).sleep().sleep()
+        tap(1078, 591).sleep()
+
+        dragd(640, 360, -1280 * 3, 0)
+        dragd(640, 360, 600, 0)
+        tap(393, 448).nap() // IW-7
+    }
+
+    internal val IW_8 = Operation("IW-8", description = "将进酒、RMA70-12") {
+        tap(终端_活动).sleep().sleep()
+        tap(1078, 591).sleep()
+
+        dragd(640, 360, -1280 * 3, 0)
+        dragd(640, 360, 600, 0)
+        tap(624, 369).nap() // IW-8
+    }
+}
 
 fun dailyOperation() = when (today()) {
     DayOfWeek.MONDAY -> OperateOperations.LS_5
