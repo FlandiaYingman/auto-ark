@@ -73,6 +73,11 @@ class Device(
         adbShell("input", "tap", "$x", "$y", ";", "input", "tap", "$x", "$y").readText()
     }
 
+    fun tapl(x: Int, y: Int, duration: Int = 1000) {
+        log.debug { "Long Tap ($x, $y) for $duration ms, serial='$serial'" }
+        adbShell("input", "swipe", "$x", "$y", "$x", "$y", "$duration").readText()
+    }
+
     fun taps(poses: List<Pos>) {
         log.debug { "Tap $poses, serial='$serial'" }
 //        val command = poses.map { listOf("input", "tap", "${it.x}", "${it.y}", ";") }.flatten()
