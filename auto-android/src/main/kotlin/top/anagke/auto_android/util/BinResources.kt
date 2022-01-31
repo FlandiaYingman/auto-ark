@@ -1,4 +1,4 @@
-package top.anagke.auto_android
+package top.anagke.auto_android.util
 
 import mu.KotlinLogging
 import org.reflections.Reflections

@@ -1,14 +1,10 @@
 @file:Suppress("unused")
 
-package top.anagke.auto_android
+package top.anagke.auto_android.device
 
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.util.FrequencyLimiter
-import top.anagke.auto_android.util.Pos
-import top.anagke.auto_android.util.Rect
-import top.anagke.auto_android.util.minutes
-import top.anagke.auto_android.util.seconds
+import top.anagke.auto_android.util.*
 import java.time.Duration
 import java.time.Instant
 import kotlin.system.measureTimeMillis

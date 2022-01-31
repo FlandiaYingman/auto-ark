@@ -51,35 +51,35 @@ private class ProcessReader(
 
     private fun logLine(line: String) {
         when (type) {
-            STDOUT -> log.trace { "STDOUT> $line" }
-            STDERR -> log.debug { "STDERR> $line" }
+            STDOUT -> log.trace { "$proc: STDOUT> $line" }
+            STDERR -> log.debug { "$proc: STDERR> $line" }
         }
     }
 
 }
 
 
-fun Process.readRaw(timeout: Long = 15.seconds): ProcessOutput<ByteArray, String> {
+fun Process.waitRaw(timeout: Long = 15.seconds): ProcessOutput<ByteArray, String> {
     val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachRaw())
     val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText())
 
-    waitProcess(timeout)
+    val exitValue = waitProcess(timeout)
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
-    return ProcessOutput(stdout, stderr)
+    return ProcessOutput(stdout, stderr, exitValue)
 }
 
-fun Process.readText(timeout: Long = 15.seconds): ProcessOutput<String, String> {
+fun Process.waitText(timeout: Long = 15.seconds): ProcessOutput<String, String> {
     val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachText())
     val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText())
 
-    waitProcess(timeout)
+    val exitValue = waitProcess(timeout)
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
-    return ProcessOutput(stdout, stderr)
+    return ProcessOutput(stdout, stderr, exitValue)
 }
 
-private fun Process.waitProcess(timeout: Long) {
+private fun Process.waitProcess(timeout: Long): Int {
     val exited = waitFor(timeout, MILLISECONDS)
     if (exited.not()) {
         destroyForcibly()
@@ -89,12 +89,14 @@ private fun Process.waitProcess(timeout: Long) {
     if (eventuallyExited.not()) {
         throw IOException("process $this not exited after destroying")
     }
+    return this.exitValue()
 }
 
 
 data class ProcessOutput<O, E>(
     val stdout: O,
     val stderr: E,
+    val exitValue: Int,
 )
 
 fun openProc(vararg command: String): Process {
