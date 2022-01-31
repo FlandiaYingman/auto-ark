@@ -1,18 +1,16 @@
 package top.anagke.auto_android.native
 
 import mu.KotlinLogging
-import org.mozilla.universalchardet.UniversalDetector
 import top.anagke.auto_android.native.ProcessReader.Type.STDERR
 import top.anagke.auto_android.native.ProcessReader.Type.STDOUT
 import top.anagke.auto_android.util.seconds
+import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
-import java.nio.charset.Charset
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
-import kotlin.text.Charsets.UTF_8
 
 private val log = KotlinLogging.logger { }
 
@@ -21,32 +19,40 @@ private val readerExecutor: ExecutorService = Executors.newCachedThreadPool { ru
     Executors.defaultThreadFactory().newThread(runnable).also { it.isDaemon = true }
 }
 
-private class ProcessReader(val stream: InputStream, val type: Type) {
+private class ProcessReader(
+    val proc: Process, val type: Type
+) {
 
     enum class Type { STDOUT, STDERR }
 
     fun attachRaw(): Callable<ByteArray> = Callable {
-        stream.buffered()
-            .use {
-                it.readBytes()
-            }
+        procInputStream.use { it.readBytes() }
     }
 
     fun attachText(): Callable<String> = Callable {
-        stream.bufferedReader(charset = UTF_8)
-            .useLines { sequence ->
-                sequence
-                    .map { it.toByteArray(charset = UTF_8) }
-                    .map { it.detectCharsetToString() }
-                    .onEach { it.logLine() }
-                    .joinToString(separator = "\n")
-            }
+        procReader.useLines { lines ->
+            lines.onEach { logLine(it) }.joinToString(separator = "\n")
+        }
     }
 
-    private fun String.logLine() {
+    private val procInputStream: InputStream
+        get() = when (type) {
+            STDOUT -> proc.inputStream
+            STDERR -> proc.errorStream
+        }
+
+
+    private val procReader: BufferedReader
+        get() = when (type) {
+            STDOUT -> proc.inputReader()
+            STDERR -> proc.errorReader()
+        }
+
+
+    private fun logLine(line: String) {
         when (type) {
-            STDOUT -> log.trace { "STDOUT> $this" }
-            STDERR -> log.debug { "STDERR> $this" }
+            STDOUT -> log.trace { "STDOUT> $line" }
+            STDERR -> log.debug { "STDERR> $line" }
         }
     }
 
@@ -54,27 +60,26 @@ private class ProcessReader(val stream: InputStream, val type: Type) {
 
 
 fun Process.readRaw(timeout: Long = 15.seconds): ProcessOutput<ByteArray, String> {
-    val stdoutFuture = readerExecutor.submit(ProcessReader(inputStream, STDOUT).attachRaw())
-    val stderrFuture = readerExecutor.submit(ProcessReader(errorStream, STDERR).attachText())
+    val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachRaw())
+    val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText())
 
-    val exited = waitFor(timeout, MILLISECONDS)
-    if (exited.not()) {
-        destroyForcibly()
-        log.warn { "process $this timed out after $timeout ms" }
-    }
-    val eventuallyExited = waitFor(5.seconds, MILLISECONDS)
-    if (eventuallyExited.not()) {
-        throw IOException("process $this not exited after destroying")
-    }
+    waitProcess(timeout)
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
     return ProcessOutput(stdout, stderr)
 }
 
 fun Process.readText(timeout: Long = 15.seconds): ProcessOutput<String, String> {
-    val stdoutFuture = readerExecutor.submit(ProcessReader(inputStream, STDOUT).attachText())
-    val stderrFuture = readerExecutor.submit(ProcessReader(errorStream, STDERR).attachText())
+    val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachText())
+    val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText())
 
+    waitProcess(timeout)
+    val stdout = stdoutFuture.get()
+    val stderr = stderrFuture.get()
+    return ProcessOutput(stdout, stderr)
+}
+
+private fun Process.waitProcess(timeout: Long) {
     val exited = waitFor(timeout, MILLISECONDS)
     if (exited.not()) {
         destroyForcibly()
@@ -84,16 +89,6 @@ fun Process.readText(timeout: Long = 15.seconds): ProcessOutput<String, String> 
     if (eventuallyExited.not()) {
         throw IOException("process $this not exited after destroying")
     }
-    val stdout = stdoutFuture.get()
-    val stderr = stderrFuture.get()
-    return ProcessOutput(stdout, stderr)
-}
-
-private fun ByteArray.detectCharsetToString(): String {
-    val detector = UniversalDetector()
-    detector.handleData(this)
-    detector.dataEnd()
-    return String(this, detector.detectedCharset?.let { charset(it) } ?: Charset.defaultCharset())
 }
 
 

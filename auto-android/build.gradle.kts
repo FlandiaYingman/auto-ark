@@ -28,7 +28,6 @@ dependencies {
     implementation("top.anagke:kio:1.1.0")
 
     // Utilities
-    implementation("com.github.albfernandez:juniversalchardet:2.4.0")
     implementation("info.debatty:java-string-similarity:2.0.0")
     implementation("org.reflections:reflections:0.10.2")
 
