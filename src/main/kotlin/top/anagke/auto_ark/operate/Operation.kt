@@ -1,7 +1,7 @@
 package top.anagke.auto_ark.operate
 
-import top.anagke.auto_android.Device
-import top.anagke.auto_android.notMatch
+import top.anagke.auto_android.device.Device
+import top.anagke.auto_android.device.notMatch
 import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭

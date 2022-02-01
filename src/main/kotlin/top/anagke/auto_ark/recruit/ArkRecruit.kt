@@ -1,10 +1,12 @@
 package top.anagke.auto_ark.recruit
 
 import mu.KotlinLogging
-import top.anagke.auto_android.*
+import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.img.ocrTesseract
 import top.anagke.auto_android.util.Rect
+import top.anagke.auto_ark.ArkModule
+import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.recruit.RecruitTag.*
@@ -65,8 +67,8 @@ private enum class RecruitTag(
 
 
 class ArkRecruit(
-    private val device: Device,
-) : AutoModule {
+    auto: AutoArk,
+) : ArkModule(auto) {
 
     private val logger = KotlinLogging.logger { }
 
@@ -76,6 +78,7 @@ class ArkRecruit(
 
     private val skippingSlotList: MutableList<RecruitSlot> = mutableListOf()
 
+    override val name: String = "公开招募模块"
 
     override fun run() = device.run {
         logger.info { "运行模块：公开招募" }

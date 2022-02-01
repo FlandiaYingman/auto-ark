@@ -1,21 +1,12 @@
 package top.anagke.auto_ark.riic
 
-import kotlinx.serialization.Serializable
-import top.anagke.auto_android.*
+import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.tmpl
-import top.anagke.auto_ark.主界面
-
-@Serializable
-data class RiicConfig(
-    val autoAssigning: Boolean = true,
-    val autoAssignControlCenter: Boolean = false,
-)
+import top.anagke.auto_ark.*
 
 class ArkRiic(
-    private val device: Device,
-) : AutoModule {
+    auto: AutoArk,
+) : ArkModule(auto) {
 
     companion object {
         private val 基建界面 by tmpl()
@@ -25,9 +16,11 @@ class ArkRiic(
 
         @JvmStatic
         fun main(args: Array<String>) {
-            ArkRiic(Device()).assign()
+            ArkRiic(AutoArk.default()).run()
         }
     }
+
+    override val name: String = "基建模块"
 
     override fun run() = device.run {
         assert(主界面)
@@ -41,7 +34,7 @@ class ArkRiic(
         jumpOut()
     }
 
-    private fun Device.enterRiic() {
+    private fun enterRiic() = device.apply {
         tap(985, 625) //进入基建
         await(基建界面)
         sleep()
@@ -74,28 +67,28 @@ class ArkRiic(
 
         //前两个宿舍
         repeat(2) {
-            dragd(1200, 415, 0, -880) //一个宿舍距离
+            dragv(1200, 415, 0, -880) //一个宿舍距离
             shift(Pos(670, 200), 5, canPopup = true) //宿舍
         }
 
         //后两个宿舍
-        dragd(1200, 415, 0, -880) //一个宿舍距离
+        dragv(1200, 415, 0, -880) //一个宿舍距离
         shift(Pos(670, 240), 5, canPopup = true) //第三个宿舍
         shift(Pos(670, 600), 5, canPopup = true) //第四个宿舍
 
-        swipe(1200, 415, 1200, 415 + 2048, 500).nap()
+        swipe(1200, 415, 1200, 415 + 2048, 10.0).nap()
 
-        dragd(1200, 415, 0, -195) //一个房间距离
+        dragv(1200, 415, 0, -190) //一个房间距离
         shift(Pos(670, 200), 2) //第一个房间
 
         repeat(3) {
-            dragd(1200, 415, 0, -245) //一层距离
+            dragv(1200, 415, 0, -245) //一层距离
             repeat(3) {
                 shift(Pos(670, 200), 3) //贸易站、制造站或发电站
-                dragd(1200, 415, 0, -195) //一个房间距离
+                dragv(1200, 415, 0, -190) //一个房间距离
             }
             if (it < 3 - 1) {
-                dragd(1200, 415, 0, -195) //一个房间距离
+                dragv(1200, 415, 0, -190) //一个房间距离
                 shift(Pos(670, 200), 3) //辅助设施
             }
         }
@@ -118,7 +111,7 @@ class ArkRiic(
             Pos(1042, 235),
             Pos(1033, 454),
         )
-        taps(operatorPos.subList(0, 2 * limit))
+        tapm(*operatorPos.subList(0, 2 * limit).toTypedArray())
 
         if (canPopup) tap(1180, 675).nap() //确认
         tap(1180, 675) //确认
@@ -126,4 +119,3 @@ class ArkRiic(
     }
 
 }
-

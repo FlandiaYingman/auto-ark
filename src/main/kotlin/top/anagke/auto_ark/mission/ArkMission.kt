@@ -1,18 +1,21 @@
 package top.anagke.auto_ark.mission
 
-import top.anagke.auto_android.*
-import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.tmpl
-import top.anagke.auto_ark.主界面
+import top.anagke.auto_android.device.assert
+import top.anagke.auto_android.device.await
+import top.anagke.auto_android.device.match
+import top.anagke.auto_android.device.sleep
+import top.anagke.auto_ark.*
 
 class ArkMission(
-    private val device: Device,
-) : AutoModule {
+    auto: AutoArk,
+) : ArkModule(auto) {
 
     companion object {
         // 仍有任务奖励尚未领取
         private val 可收集 by tmpl()
     }
+
+    override val name = "任务模块"
 
     override fun run(): Unit = device.run {
         assert(主界面)

@@ -1,14 +1,8 @@
 package top.anagke.auto_ark
 
-import com.google.gson.Gson
-import top.anagke.auto_android.*
+import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Tmpl
-import java.net.URI
-import java.net.URL
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import kotlin.reflect.KProperty
@@ -64,27 +58,6 @@ fun Device.jumpOut() {
 enum class ArkServer(
     val activity: AndroidActivity,
 ) {
-    OFFICIAL(AndroidActivity("com.hypergryph.arknights", "com.u8.sdk.U8UnityContext")) {
-        override fun apkUrl(): URL =
-            URL("https://ak.hypergryph.com/downloads/android_lastest")
-    },
-
-    BILIBILI(AndroidActivity("com.hypergryph.arknights.bilibili", "")) {
-        override fun apkUrl(): URL {
-            val versionDataUrl =
-                URI.create("https://line1-h5-pc-api.biligame.com/game/detail/gameinfo?game_base_id=101772")
-            val request = HttpRequest.newBuilder()
-                .uri(versionDataUrl)
-                .GET()
-                .build()
-            val response = HttpClient.newHttpClient()
-                .send(request, HttpResponse.BodyHandlers.ofString())
-
-            val jsonObject = Gson().fromJson(response.body(), Map::class.java)
-            val data = jsonObject["data"] as Map<*, *>
-            return URL(data["android_download_link"].toString())
-        }
-    };
-
-    abstract fun apkUrl(): URL
+    OFFICIAL(AndroidActivity("com.hypergryph.arknights", "com.u8.sdk.U8UnityContext")),
+    BILIBILI(AndroidActivity("com.hypergryph.arknights.bilibili", ""))
 }

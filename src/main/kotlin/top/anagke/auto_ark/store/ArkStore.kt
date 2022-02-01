@@ -1,20 +1,20 @@
 package top.anagke.auto_ark.store
 
-import top.anagke.auto_android.*
+import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.tmpl
-import top.anagke.auto_ark.主界面
+import top.anagke.auto_ark.*
 
 class ArkStore(
-    private val device: Device,
-) : AutoModule {
+    auto: AutoArk,
+) : ArkModule(auto) {
 
     companion object {
         private val 已领取信用点: Tmpl by tmpl()
         private val 购买物品提示框: Tmpl by tmpl()
     }
+
+    override val name: String = "商店模块"
 
 
     override fun run(): Unit = device.run {
@@ -75,8 +75,4 @@ class ArkStore(
         await(已领取信用点) //默认已收取信用点
     }
 
-}
-
-fun main() {
-//    AutoArk(appConfig).autoStore()
 }

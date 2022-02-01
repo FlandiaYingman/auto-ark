@@ -1,8 +1,9 @@
 package top.anagke.auto_ark.operate
 
 import mu.KotlinLogging
-import top.anagke.auto_android.*
-import top.anagke.auto_ark.AutoArkCache
+import top.anagke.auto_android.device.*
+import top.anagke.auto_ark.ArkModule
+import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
@@ -20,10 +21,16 @@ import top.anagke.auto_ark.operate.OperateTemplates.行动结束
 private val logger = KotlinLogging.logger {}
 
 class ArkOperate(
-    private val device: Device,
-    private val config: OperateConfig,
-    private val cache: AutoArkCache,
-) : AutoModule {
+    auto: AutoArk,
+) : ArkModule(auto) {
+
+    private val operateConfig = config.operateConfig
+
+    override fun init() {
+        val farmingPlan = Operation.operations.map { it.name }.associateWith { 0 }.toMutableMap()
+        farmingPlan.putAll(cache.farmingPlan)
+        cache.farmingPlan = farmingPlan
+    }
 
     override fun run() {
         logger.info { "运行模块：刷副本" }
@@ -32,22 +39,20 @@ class ArkOperate(
         farmDaily()
     }
 
+    override val name = "行动模块"
+
     private fun farmAnnihilation() {
-        logger.info { "刷剿灭委托：${config.doFarmAnnihilation}" }
-        if (!config.doFarmAnnihilation) return
+        logger.info { "刷剿灭委托：${operateConfig.doFarmAnnihilation}" }
+        if (!operateConfig.doFarmAnnihilation) return
 
         farm(剿灭作战, 1)
     }
 
     private fun farmPlan() {
-        logger.info { "刷计划副本：${config.doFarmPlan}" }
-        if (!config.doFarmPlan) return
+        logger.info { "刷计划副本：${operateConfig.doFarmPlan}" }
+        if (!operateConfig.doFarmPlan) return
 
-        val farmingPlan = Operation.operations.map { it.name }.associateWith { 0 }.toMutableMap()
-        farmingPlan.putAll(cache.farmingPlan)
-        cache.farmingPlan = farmingPlan
-
-        for (entry in farmingPlan) {
+        for (entry in cache.farmingPlan) {
             val operationName = entry.key
             val farmTimes = entry.value
             if (farmTimes == 0) continue
@@ -63,8 +68,8 @@ class ArkOperate(
     }
 
     private fun farmDaily() {
-        logger.info { "刷日常副本：${config.doFarmDaily}" }
-        if (!config.doFarmDaily) return
+        logger.info { "刷日常副本：${operateConfig.doFarmDaily}" }
+        if (!operateConfig.doFarmDaily) return
 
         farm(dailyOperation())
     }
@@ -107,7 +112,7 @@ class ArkOperate(
     }
 
     private fun Device.operateOperation(operation: Operation): OperateResult {
-        logger.info { "代理指挥关卡：$operation，理智策略：$config.strategy" }
+        logger.info { "代理指挥关卡：$operation，理智策略：${operateConfig.strategy}" }
         assert(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)
         if (matched(关卡信息界面_代理指挥关闭)) {
             logger.info { "代理指挥关卡：$operation，代理指挥关闭，开启" }
@@ -117,7 +122,7 @@ class ArkOperate(
         tap(1078, 661)
         await(编队界面, 理智不足_可使用药剂, 理智不足_可使用源石)
 
-        var strategy = config.strategy
+        var strategy = operateConfig.strategy
         if (strategy == IFF_EXPIRE_SOON) {
             strategy = (if (match(理智不足_药剂即将到期)) POTION else WAIT)
         }

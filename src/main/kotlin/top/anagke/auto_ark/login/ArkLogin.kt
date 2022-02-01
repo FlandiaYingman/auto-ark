@@ -1,23 +1,25 @@
 package top.anagke.auto_ark.login
 
 import mu.KotlinLogging
-import top.anagke.auto_android.*
+import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.*
 
-val logger = KotlinLogging.logger {}
-
 class ArkLogin(
-    private val device: Device,
-    private val config: AutoArkConfig,
-) : AutoModule {
+    auto: AutoArk
+) : ArkModule(auto) {
 
     companion object {
-        // 登录界面
+
+        val logger = KotlinLogging.logger {}
+
         private val 开始界面 by tmpl(diff = 0.01)
+
     }
 
-    override fun run(): Unit = device.run {
+    override val name: String = "登录模块"
+
+    override fun run() = device.run {
         logger.info { "登录明日方舟" }
         if (config.forceLogin) {
             loginForce()
@@ -27,7 +29,6 @@ class ArkLogin(
             else -> loginElse()
         }
     }
-
 
     private fun Device.loginForce() {
         logger.info { "登录明日方舟，强制登录，启动明日方舟中" }

@@ -2,7 +2,7 @@
 
 package top.anagke.auto_ark.operate
 
-import top.anagke.auto_android.*
+import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.ocrWord
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
@@ -49,7 +49,7 @@ object OperateTemplates {
     internal val 行动结束 by tmpl(diff = 0.01)
 
     // 等待“升级”
-    internal val 等级提升 by tmpl()
+    internal val 等级提升 by tmpl(diff = 0.025)
 
     internal val 剿灭_行动结束 by tmpl(diff = 0.05)
     internal val 剿灭_已通过 by tmpl(diff = 0.01)
@@ -148,7 +148,7 @@ object OperateOperations {
     private fun Device.进入_终端_资源收集_芯片() {
         tap(OperatePoses.终端).sleep()
         tap(OperatePoses.终端_资源收集).nap()
-        dragd(640, 360, -600, 0)
+        dragv(640, 360, -600, 0)
         tap(1230, 50).nap()
     }
 
@@ -176,13 +176,13 @@ object OperateOperations {
         tap(66, 132).nap() //进入“幻灭”
         tap(66, 132).nap() //进入“觉醒”
 
-        dragd(950, 360, -950, 0) //确保处于“二次呼吸”
+        dragv(950, 360, -950, 0) //确保处于“二次呼吸”
         tap(1200, 360).nap() //取消拖动
 
         tap(330, 375).sleep() //进入“黑暗时代（下）”
 
-        dragd(160, 360, 4480, 0) //确保处于最左边
-        dragd(950, 360, -1750, 0) //确保处于“1-7”
+        dragv(160, 360, 4480, 0) //确保处于最左边
+        dragv(950, 360, -1750, 0) //确保处于“1-7”
         tap(1092, 222).nap() //进入“1-7”
     }
 
@@ -190,8 +190,8 @@ object OperateOperations {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
 
-        dragd(640, 360, -1280 * 3, 0)
-        dragd(640, 360, 600, 0)
+        dragv(640, 360, -1280 * 3, 0)
+        dragv(640, 360, 600, 0)
         tap(189, 531).nap() // IW-6
     }
 
@@ -199,8 +199,8 @@ object OperateOperations {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
 
-        dragd(640, 360, -1280 * 3, 0)
-        dragd(640, 360, 600, 0)
+        dragv(640, 360, -1280 * 3, 0)
+        dragv(640, 360, 600, 0)
         tap(393, 448).nap() // IW-7
     }
 
@@ -208,8 +208,8 @@ object OperateOperations {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
 
-        dragd(640, 360, -1280 * 3, 0)
-        dragd(640, 360, 600, 0)
+        dragv(640, 360, -1280 * 3, 0)
+        dragv(640, 360, 600, 0)
         tap(624, 369).nap() // IW-8
     }
 }
