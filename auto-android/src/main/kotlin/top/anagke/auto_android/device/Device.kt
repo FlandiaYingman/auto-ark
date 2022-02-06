@@ -88,7 +88,7 @@ class Device(
 
     fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, description: String = "") {
         log.debug { genLogMessage("Swipe ($sx, $sy, $ex, $ey, $speed)", description) }
-        val k = 1
+        val k = 1.0
         val duration = (distance(Pos(sx, sy), Pos(ex, ey)) / speed * k).roundToInt()
         sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
     }
@@ -104,10 +104,10 @@ class Device(
 
     fun swipev(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.5, description: String = "") {
         log.debug { genLogMessage("Swipe Variation ($sx, $sy, $vx, $vy, $speed)", description) }
-        val k = 1.0
         val ex = sx + vx
         val ey = sy + vy
-        val duration = distance(Pos(sx, sy), Pos(ex, ey)) * speed * k
+        val k = 1.0
+        val duration = (distance(Pos(sx, sy), Pos(ex, ey)) / speed * k).roundToInt()
         sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
     }
 
