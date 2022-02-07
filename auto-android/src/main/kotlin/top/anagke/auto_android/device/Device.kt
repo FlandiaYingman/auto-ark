@@ -4,10 +4,7 @@ import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.native.ProcessOutput
 import top.anagke.auto_android.native.waitRaw
 import top.anagke.auto_android.native.waitText
-import top.anagke.auto_android.util.BinResources
-import top.anagke.auto_android.util.Pos
-import top.anagke.auto_android.util.distance
-import top.anagke.auto_android.util.minutes
+import top.anagke.auto_android.util.*
 import kotlin.math.roundToInt
 
 class Device(
@@ -38,7 +35,7 @@ class Device(
         push("bin/adb/swipee.jar", "/data/local/tmp/swipee.jar")
         sh("chmod", "0777", "/data/local/tmp/swipee.jar").waitText()
 
-        push("bin/ascreencap/${abi}/ascreencap", "/data/local/tmp/ascreencap")
+        push("bin/ascreencap/x86/ascreencap", "/data/local/tmp/ascreencap")
         sh("chmod", "0777", "/data/local/tmp/ascreencap").waitText()
     }
 
@@ -54,10 +51,16 @@ class Device(
      * If the current screen is unavailable to capture, throws an [NullPointerException].
      */
     fun cap(): Img {
-        val raw = cmd("exec-out", "/data/local/tmp/ascreencap", "--stdout", "--pack")
+        // 27623 ms using raw ascreencap (100 times)
+        // 21717 ms using LZ4 (level 1) ascreencap (100 times)
+        // 21151 ms using LZ4 (level 5) ascreencap (100 times)
+        // 21468 ms using LZ4 (level 9) ascreencap (100 times)
+        val raw = cmd("exec-out", "/data/local/tmp/ascreencap", "--stdout", "--pack", "1")
             .waitRaw()
             .stdout
-        return Img.decode(raw)!!
+        val len = raw.getUIntAt(4)
+        val decompress = LZ4.decompressor.decompress(raw, 20, len.toInt())
+        return Img.decode(decompress)!!
     }
 
     fun tap(pos: Pos, description: String = "") = tap(pos.x, pos.y, description = description)
