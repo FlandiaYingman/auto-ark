@@ -1,11 +1,14 @@
 package top.anagke.auto_android.img
 
 import mu.KotlinLogging
+import org.bytedeco.javacpp.Loader
+import org.bytedeco.opencv.opencv_java
 import org.opencv.core.*
 import org.opencv.core.CvType.CV_8UC1
 import org.opencv.highgui.HighGui
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
+import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.*
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
@@ -19,7 +22,7 @@ private val log = KotlinLogging.logger {}
 object OpenCV {
 
     init {
-        nu.pattern.OpenCV.loadLocally()
+        Loader.load(opencv_java::class.java)
     }
 
     fun init() {
@@ -114,6 +117,11 @@ private constructor(private val mat: Mat) {
     }
 
     fun show() {
+        // Doing this because currently HighGui.imshow() doesn't support transparency.
+        var mat = this.mat
+        if (mat.channels() >= 3) {
+            mat = Mat().also { Imgproc.cvtColor(mat, it, COLOR_BGRA2BGR) }
+        }
         HighGui.imshow(null, mat)
         HighGui.waitKey()
     }

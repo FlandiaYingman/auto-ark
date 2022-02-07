@@ -24,12 +24,13 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:2.1.21")
 
     // OpenCV
-    implementation("org.openpnp:opencv:4.5.1-2")
+    implementation("org.bytedeco:opencv-platform:4.5.3-1.5.6")
     implementation("top.anagke:kio:1.1.0")
 
     // Utilities
     implementation("info.debatty:java-string-similarity:2.0.0")
     implementation("org.reflections:reflections:0.10.2")
+    implementation("org.lz4:lz4-java:1.8.0")
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.1")
