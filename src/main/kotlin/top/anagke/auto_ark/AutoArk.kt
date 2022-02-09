@@ -2,6 +2,7 @@ package top.anagke.auto_ark
 
 import top.anagke.auto_android.AutoAndroid
 import top.anagke.auto_android.AutoModule
+import top.anagke.auto_android.device.BlueStacks
 import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.match
 import top.anagke.auto_ark.login.ArkLogin
@@ -22,7 +23,7 @@ class AutoArk(
         fun default(): AutoArk {
             val config = AutoArkConfig.loadConfig()
             val cache = AutoArkCache.loadCache(config.cacheLocation)
-            return AutoArk(config, cache, config.emulator.launch().device)
+            return AutoArk(config, cache, BlueStacks(config.emulator).launch().device)
         }
     }
 

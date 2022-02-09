@@ -1,7 +1,7 @@
 package top.anagke.auto_ark
 
 import com.sksamuel.hoplite.ConfigLoader
-import top.anagke.auto_android.device.BlueStacks
+import top.anagke.auto_android.device.BlueStacksConf
 import top.anagke.auto_ark.operate.OperateConfig
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
@@ -11,7 +11,7 @@ data class AutoArkConfig(
     val server: ArkServer,
     val cacheLocation: Path,
     val forceLogin: Boolean,
-    val emulator: BlueStacks,
+    val emulator: BlueStacksConf,
     val operateConfig: OperateConfig,
 ) {
 
