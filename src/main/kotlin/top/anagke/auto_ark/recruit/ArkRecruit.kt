@@ -3,7 +3,7 @@ package top.anagke.auto_ark.recruit
 import mu.KotlinLogging
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.img.ocrTesseract
+import top.anagke.auto_android.img.ocrWord
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
@@ -123,7 +123,7 @@ class ArkRecruit(
         val cap = cap()
         return RecruitTag.values().toList()
             .parallelStream()
-            .map { it to ocrTesseract(cap.crop(it.screenRect).invert()) }
+            .map { it to ocrWord(cap.crop(it.screenRect).invert()) }
             .collect(Collectors.toList())
             .toMap()
     }
