@@ -91,37 +91,35 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
 
         private fun connect(adb: ADB, adbHost: String, adbPort: Int): Device? {
             val addr = "${adbHost}:${adbPort}"
-            while (true) {
-                val (stdout, stderr) = adb.cmd("devices", serial = null).waitText()
-                when {
-                    // the stderr prints some message: reset ADB
-                    stderr.isNotBlank() -> {
-                        adb.reset()
-                    }
-                    // the address exist, the state is device: nothing to do
-                    stdout.contains(Regex("$addr\\s*device")) -> {
-                        break
-                    }
-                    // the address exist, but the state is offline: reconnect device
-                    stdout.contains(Regex("$addr\\s*offline")) -> {
-                        adb.cmd("reconnect", serial = addr).waitText()
-                    }
-                    // the address doesn't even exist - not connected
-                    else -> {
-                        adb.cmd("connect", addr, serial = null).waitText()
-                    }
+            val (stdout, stderr) = adb.cmd("devices", serial = null).waitText()
+            when {
+                // the stderr prints some message: reset ADB
+                stderr.isNotBlank() -> {
+                    adb.reset()
+                    return null
+                }
+                // the address exist, the state is device: nothing to do
+                stdout.contains(Regex("$addr\\s*device")) -> {
+                }
+                // the address exist, but the state is offline: reconnect device
+                stdout.contains(Regex("$addr\\s*offline")) -> {
+                    adb.cmd("reconnect", serial = addr).waitText()
+                    return null
+                }
+                // the address doesn't even exist - not connected
+                else -> {
+                    adb.cmd("connect", addr, serial = null).waitText()
+                    return null
                 }
             }
 
             val device = Device(addr, adb)
-            while (true) {
-                try {
-                    device.cap()
-                    break
-                } catch (_: NullPointerException) {
-                }
+            return try {
+                device.cap()
+                device
+            } catch (_: NullPointerException) {
+                null
             }
-            return device
         }
 
     }
