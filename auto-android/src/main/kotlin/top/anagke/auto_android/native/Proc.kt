@@ -7,6 +7,7 @@ import top.anagke.auto_android.util.seconds
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
+import java.nio.charset.Charset
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -26,27 +27,32 @@ private class ProcessReader(
     enum class Type { STDOUT, STDERR }
 
     fun attachRaw(): Callable<ByteArray> = Callable {
-        procInputStream.use { it.readBytes() }
+        getProcInputStream().use { it.readBytes() }
     }
 
-    fun attachText(): Callable<String> = Callable {
-        procReader.useLines { lines ->
+    fun attachText(charset: Charset? = null): Callable<String> = Callable {
+        getProcReader(charset).useLines { lines ->
             lines.onEach { logLine(it) }.joinToString(separator = "\n")
         }
     }
 
-    private val procInputStream: InputStream
-        get() = when (type) {
-            STDOUT -> proc.inputStream
-            STDERR -> proc.errorStream
-        }
+    private fun getProcInputStream(): InputStream = when (type) {
+        STDOUT -> proc.inputStream
+        STDERR -> proc.errorStream
+    }
 
 
-    private val procReader: BufferedReader
-        get() = when (type) {
+    private fun getProcReader(charset: Charset? = null): BufferedReader = if (charset == null) {
+        when (type) {
             STDOUT -> proc.inputReader()
             STDERR -> proc.errorReader()
         }
+    } else {
+        when (type) {
+            STDOUT -> proc.inputReader(charset)
+            STDERR -> proc.errorReader(charset)
+        }
+    }
 
 
     private fun logLine(line: String) {
@@ -59,9 +65,9 @@ private class ProcessReader(
 }
 
 
-fun Process.waitRaw(timeout: Long = 15.seconds): ProcessOutput<ByteArray, String> {
+fun Process.waitRaw(timeout: Long = 15.seconds, charset: Charset? = null): ProcessOutput<ByteArray, String> {
     val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachRaw())
-    val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText())
+    val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText(charset))
 
     val exitValue = waitProcess(timeout)
     val stdout = stdoutFuture.get()
@@ -69,9 +75,9 @@ fun Process.waitRaw(timeout: Long = 15.seconds): ProcessOutput<ByteArray, String
     return ProcessOutput(stdout, stderr, exitValue)
 }
 
-fun Process.waitText(timeout: Long = 15.seconds): ProcessOutput<String, String> {
-    val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachText())
-    val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText())
+fun Process.waitText(timeout: Long = 15.seconds, charset: Charset? = null): ProcessOutput<String, String> {
+    val stdoutFuture = readerExecutor.submit(ProcessReader(this, STDOUT).attachText(charset))
+    val stderrFuture = readerExecutor.submit(ProcessReader(this, STDERR).attachText(charset))
 
     val exitValue = waitProcess(timeout)
     val stdout = stdoutFuture.get()
