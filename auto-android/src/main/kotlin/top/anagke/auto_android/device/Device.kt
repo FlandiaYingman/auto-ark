@@ -58,6 +58,7 @@ class Device(
         val raw = cmd("exec-out", "/data/local/tmp/ascreencap", "--stdout", "--pack", "1")
             .waitRaw()
             .stdout
+        if (raw.isEmpty()) throw NullPointerException()
         val len = raw.getUIntAt(4)
         val decompress = LZ4.decompressor.decompress(raw, 20, len.toInt())
         return Img.decode(decompress)!!
