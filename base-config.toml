@@ -11,5 +11,5 @@ autoAssignControlCenter = false
 [operateConfig]
 strategy = "IFF_EXPIRE_SOON"
 doFarmAnnihilation = true
-doFarmPlan = false
+doFarmPlan = true
 doFarmDaily = true
