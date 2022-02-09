@@ -32,6 +32,9 @@ dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("org.lz4:lz4-java:1.8.0")
 
+    implementation("net.java.dev.jna:jna:5.10.0")
+    implementation("net.java.dev.jna:jna-platform:5.10.0")
+
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
 }
