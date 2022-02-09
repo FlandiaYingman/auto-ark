@@ -65,6 +65,6 @@ private fun rawOcr(img: Img, psm: Int): String {
     // ...
     val proc = openProc(tesseractExec, "stdin", "stdout", "-l", "chi_sim", "--psm", "$psm", "--dpi", "240")
     proc.outputStream.use { it.write(Img.encode(img)) }
-    val stdout = proc.waitText().stdout.replace(Regex("\\s"), "")
+    val stdout = proc.waitText(charset = Charsets.UTF_8).stdout.replace(Regex("\\s"), "")
     return stdout
 }
