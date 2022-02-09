@@ -1,7 +1,6 @@
 package top.anagke.auto_android.device
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
+import top.anagke.auto_android.native.Platform
 import top.anagke.auto_android.native.openProc
 import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.MutexException
@@ -10,13 +9,14 @@ import top.anagke.auto_android.util.Win32
 import java.io.File
 import java.util.*
 
-@Serializable
-data class BlueStacks(
-    val blueStacksHome: String,
-    val blueStacksData: String,
-) : Emulator {
+class BlueStacks(config: BlueStacksConf) : Emulator {
 
-    @Contextual
+    val blueStacksHome: String =
+        File(config.blueStacksHome ?: Platform.getPlatform().getBlueStacksInstallDir()).canonicalPath
+    val blueStacksData: String =
+        File(config.blueStacksData ?: Platform.getPlatform().getBlueStacksDataDir()).canonicalPath
+
+
     val bsConf: Map<String, String>
         get() {
             val props = Properties()
@@ -28,13 +28,13 @@ data class BlueStacks(
             }
         }
 
-    @Contextual
     val bsInstances: List<BlueStacksInstance>
         get() = bsConf.keys.mapNotNull {
             val regex = Regex("""bst\.instance\.(.*?)\..*""")
             val result = regex.matchEntire(it) ?: return@mapNotNull null
             result.groups[1]!!.value
         }.map { BlueStacksInstance(it) }.distinct().toList()
+
 
     inner class BlueStacksInstance(val instance: String) {
 
