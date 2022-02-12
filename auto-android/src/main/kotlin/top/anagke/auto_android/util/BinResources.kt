@@ -18,12 +18,12 @@ internal object BinResources {
     private const val dst = "bin"
 
     init {
-        logger.info { "Extracting resources..." }
+        logger.debug { "Extracting resources..." }
         val ref = Reflections(pkg, Scanners.Resources)
         val res = ref.getResources(".*")
         res.forEach { name ->
             (ClassLoader.getSystemResourceAsStream(name) ?: throw NoSuchFileException(name)).use { istream ->
-                logger.info { "Extracting resource: $name..." }
+                logger.debug { "Extracting resource: $name..." }
                 val dst = Path.of(dst).resolve(Path.of(pkg.replace('.', '/')).relativize(Path.of(name)))
                 dst.parent.createDirectories()
                 dst.outputStream().use { ostream ->
