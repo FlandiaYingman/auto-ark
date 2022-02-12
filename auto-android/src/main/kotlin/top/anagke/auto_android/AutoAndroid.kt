@@ -25,14 +25,13 @@ abstract class AutoAndroid<Self : AutoAndroid<Self>>(
 
 
     fun doRoutine() {
-        runInitModules()
-        runWorkModules()
-        runFinalModules()
-    }
+        initModules.forEach { initInitModule(it) }
+        workModules.forEach { initWorkModule(it) }
+        finalModules.forEach { initFinalModule(it) }
 
-
-    private fun runInitModules() {
-        initModules.onEach { initInitModule(it) }.forEach { runInitModule(it) }
+        initModules.forEach { runInitModule(it) }
+        workModules.forEach { runWorkModule(it) }
+        finalModules.forEach { runFinalModule(it) }
     }
 
     private fun initInitModule(module: AutoModule<Self>) {
@@ -52,9 +51,6 @@ abstract class AutoAndroid<Self : AutoAndroid<Self>>(
             logger.warn(e) { "运行初始模块 $module 时出现错误；跳过" }
         }
     }
-
-
-    private fun runWorkModules() = workModules.onEach { initWorkModule(it) }.forEach { runWorkModule(it) }
 
     private fun initWorkModule(module: AutoModule<Self>) {
         try {
@@ -82,11 +78,6 @@ abstract class AutoAndroid<Self : AutoAndroid<Self>>(
         } finally {
             afterModule()
         }
-    }
-
-
-    private fun runFinalModules() {
-        finalModules.onEach { initFinalModule(it) }.forEach { runFinalModule(it) }
     }
 
     private fun initFinalModule(module: AutoModule<Self>) {
@@ -126,8 +117,8 @@ abstract class AutoAndroid<Self : AutoAndroid<Self>>(
             returnToMain()
         } catch (e: Exception) {
             logger.info { "无法返回至主界面；重新启动应用 $this" }
-            runFinalModules()
-            runInitModules()
+            finalModules.forEach { runFinalModule(it) }
+            initModules.forEach { runInitModule(it) }
         }
     }
 
