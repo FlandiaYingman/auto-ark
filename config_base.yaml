@@ -1,0 +1,31 @@
+# 要登录的服务器，可为"OFFICIAL"或者“BILIBILI"
+server: "OFFICIAL"
+#server: "BILIBILI"
+
+# 所使用的模拟器，目前只支持 BlueStacks 5
+emulator:
+  # 模拟器的安装路径。null 则从注册表中自动寻找
+  blueStacksHome: null
+  #  blueStacksHome: "C:\Program Files\BlueStacks_nxt"
+  # 模拟器的数据路径。null 则从注册表中自动寻找
+  blueStacksData: null
+#  blueStacksData: "D:\ProgramData\BlueStacks_nxt"
+
+riicConfig:
+  autoAssigning: true
+  autoAssignControlCenter: false
+
+# 行动配置
+operateConfig:
+  # 理智使用策略。
+  # "WAIT": 不使用任何恢复理智的道具。
+  # "POTION": 使用应急理智顶液和应急理智合剂等非源石道具恢复理智。
+  # "IFF_EXPIRE_SOON": 仅当即将过期时，使用应急理智顶液和应急理智合剂等非源石道具恢复理智。
+  # "ORIGINITE": 使用源石恢复理智。隐含[POTION]，即：优先使用非原石道具，只有当不存在非原石道具时，才会使用源石。
+  strategy: "IFF_EXPIRE_SOON"
+  # 是否自动刷剿灭
+  doFarmAnnihilation: true
+  # 是否自动刷“计划”
+  doFarmPlan: true
+  # 是否自动刷“日常”
+  doFarmDaily: true

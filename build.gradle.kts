@@ -39,7 +39,7 @@ dependencies {
 
     // Config Parsing
     implementation("com.sksamuel.hoplite:hoplite:1.0.3")
-    implementation("com.sksamuel.hoplite:hoplite-toml:1.4.16")
+    implementation("com.sksamuel.hoplite:hoplite-yaml:1.4.16")
 
 
     // CLI Argument Parsing
@@ -66,13 +66,13 @@ distributions {
         contents {
             from(".") {
                 include("bin/**")
-                include("base-config.toml")
+                include("config_base.yaml")
             }
         }
     }
 }
 
 application {
-    mainClass.set("top.anagke.MainKt")
+    mainClass.set("top.anagke.auto_ark.AppKt")
     executableDir = ""
 }

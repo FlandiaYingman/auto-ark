@@ -16,7 +16,7 @@ class ArkRiic(
 
         @JvmStatic
         fun main(args: Array<String>) {
-            ArkRiic(AutoArk.default()).run()
+            ArkRiic(App.defaultAutoArk()).run()
         }
     }
 

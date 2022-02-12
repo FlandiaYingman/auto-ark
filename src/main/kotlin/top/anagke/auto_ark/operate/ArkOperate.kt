@@ -27,9 +27,17 @@ class ArkOperate(
     private val operateConfig = config.operateConfig
 
     override fun init() {
-        val farmingPlan = Operation.operations.map { it.name }.associateWith { 0 }.toMutableMap()
-        farmingPlan.putAll(cache.farmingPlan)
-        cache.farmingPlan = farmingPlan
+        // To initialize the operations
+        OperateOperations
+
+        Operation.operations
+            .map { it.name }
+            .associateWith { 0 }
+            .toMutableMap()
+            .apply {
+                putAll(savedata.farmingPlan)
+                savedata.farmingPlan = this
+            }
     }
 
     override fun run() {
@@ -52,7 +60,7 @@ class ArkOperate(
         logger.info { "刷计划副本：${operateConfig.doFarmPlan}" }
         if (!operateConfig.doFarmPlan) return
 
-        for (entry in cache.farmingPlan) {
+        for (entry in savedata.farmingPlan) {
             val operationName = entry.key
             val farmTimes = entry.value
             if (farmTimes == 0) continue

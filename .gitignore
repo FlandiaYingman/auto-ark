@@ -5,9 +5,9 @@
 # Downloaded APK
 *.apk
 
-# Config & Cache
-config.toml
-cache.yaml
+# Config & Savedata
+config.yaml
+savedata.yaml
 
 # Extracted Binaries
 bin/

@@ -6,6 +6,6 @@ abstract class ArkModule(auto: AutoArk) : AutoModule<AutoArk>(auto) {
 
     protected val config: AutoArkConfig = auto.config
 
-    protected val cache: AutoArkCache = auto.cache
+    protected val savedata: AutoArkSavedata = auto.savedata
 
 }
