@@ -21,48 +21,18 @@ class ArkLogin(
 
     override fun run() = device.run {
         logger.info { "登录明日方舟" }
-        if (config.forceLogin) {
-            loginForce()
-        } else when {
-            match(主界面) -> loginMainScreen()
-            match(可跳出) -> loginJumpOut()
-            else -> loginElse()
-        }
-    }
-
-    private fun Device.loginForce() {
-        logger.info { "登录明日方舟，强制登录，启动明日方舟中" }
-        stop(config.server.activity)
-        launch(config.server.activity)
+        launch()
         when (config.server) {
             ArkServer.OFFICIAL -> loginOfficial()
             ArkServer.BILIBILI -> loginBilibili()
         }
     }
 
-    private fun Device.loginElse() {
+    private fun Device.launch() {
         logger.info { "登录明日方舟，启动明日方舟中" }
         stop(config.server.activity)
         launch(config.server.activity)
-        when (config.server) {
-            ArkServer.OFFICIAL -> loginOfficial()
-            ArkServer.BILIBILI -> loginBilibili()
-        }
     }
-
-    private fun Device.loginMainScreen() {
-        await(主界面)
-        logger.info { "登录明日方舟，已在主界面，完成登录" }
-    }
-
-    private fun Device.loginJumpOut() {
-        logger.info { "登录明日方舟，可返回主界面，返回" }
-        jumpOut()
-
-        await(主界面)
-        logger.info { "登录明日方舟，已返回主界面，完成登录" }
-    }
-
 
     private fun Device.loginOfficial() {
         logger.info { "登录明日方舟（官服）" }
