@@ -5,9 +5,9 @@ import top.anagke.auto_android.AutoModule
 import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.match
 import top.anagke.auto_ark.login.ArkLogin
+import top.anagke.auto_ark.mission.ArkMission
 import top.anagke.auto_ark.operate.ArkOperate
 import top.anagke.auto_ark.recruit.ArkRecruit
-import top.anagke.auto_ark.recruit.mission.ArkMission
 import top.anagke.auto_ark.riic.ArkRiic
 import top.anagke.auto_ark.store.ArkStore
 import top.anagke.auto_ark.update.ArkUpdate

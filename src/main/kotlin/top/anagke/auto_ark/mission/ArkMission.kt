@@ -1,4 +1,4 @@
-package top.anagke.auto_ark.recruit.mission
+package top.anagke.auto_ark.mission
 
 import top.anagke.auto_android.device.assert
 import top.anagke.auto_android.device.await
