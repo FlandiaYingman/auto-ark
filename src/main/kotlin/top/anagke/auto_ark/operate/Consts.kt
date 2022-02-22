@@ -214,12 +214,15 @@ object OperateOperations {
     }
 }
 
+// 策略
+// 1. 永远优先龙门币。
+// 2. 然后刷 1-7 和 经验。
 fun dailyOperation() = when (today()) {
     DayOfWeek.MONDAY -> OperateOperations.LS_5
     DayOfWeek.TUESDAY -> OperateOperations.CE_5
-    DayOfWeek.WEDNESDAY -> OperateOperations.CA_5
+    DayOfWeek.WEDNESDAY -> OperateOperations.MAIN_1_7
     DayOfWeek.THURSDAY -> OperateOperations.CE_5
-    DayOfWeek.FRIDAY -> OperateOperations.CA_5
+    DayOfWeek.FRIDAY -> OperateOperations.MAIN_1_7
     DayOfWeek.SATURDAY -> OperateOperations.CE_5
     DayOfWeek.SUNDAY -> OperateOperations.CE_5
 }
