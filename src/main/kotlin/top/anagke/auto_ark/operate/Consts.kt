@@ -53,7 +53,7 @@ object OperateTemplates {
 
     internal val 剿灭_行动结束 by tmpl(diff = 0.05)
     internal val 剿灭_已通过 by tmpl(diff = 0.01)
-    internal val 剿灭_已刷满 by tmpl(diff = 0.01)
+    internal val 剿灭_已刷满 by tmpl(diff = 0.0025)
 }
 
 object OperateOperations {
@@ -211,6 +211,15 @@ object OperateOperations {
         dragv(640, 360, -1280 * 3, 0)
         dragv(640, 360, 600, 0)
         tap(624, 369).nap() // IW-8
+    }
+
+    internal val GA_6 = Operation("GA-6", description = "吾导先路、糖组") {
+        tap(终端_活动).sleep().sleep()
+        tap(1117, 471).sleep()
+
+        dragv(640, 360, -1280 * 3, 0)
+        dragv(640, 360, 1129, 0)
+        tap(1240, 340).nap() // IW-8
     }
 }
 
