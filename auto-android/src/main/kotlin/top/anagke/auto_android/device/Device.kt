@@ -51,7 +51,7 @@ class Device(
      * If the current screen is unavailable to capture, throws an [NullPointerException].
      */
     fun cap(): Img {
-        val raw = cmd("exec-out", "screencap")
+        val raw = cmd("exec-out", "screencap", "-p")
             .waitRaw()
             .stdout
         if (raw.isEmpty()) throw NullPointerException()
