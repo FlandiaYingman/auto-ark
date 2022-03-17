@@ -217,8 +217,8 @@ object OperateOperations {
         tap(终端_活动).sleep().sleep()
         tap(1117, 471).sleep()
 
-        dragv(640, 360, -1280 * 3, 0)
-        dragv(640, 360, 1129, 0)
+        dragv(640, 360, 1280 * 3, 0)
+        dragv(640, 360, -1129, 0)
         tap(1240, 340).nap() // IW-8
     }
 }
