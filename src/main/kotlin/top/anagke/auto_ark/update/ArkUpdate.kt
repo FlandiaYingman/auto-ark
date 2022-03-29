@@ -2,7 +2,8 @@ package top.anagke.auto_ark.update
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import mu.KotlinLogging
+
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.ArkServer
 import top.anagke.auto_ark.AutoArk
@@ -15,9 +16,7 @@ import kotlin.io.path.notExists
  */
 class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
 
-    companion object {
-        private val logger = KotlinLogging.logger {}
-    }
+    companion object;
 
     override val name = "更新模块"
 
@@ -46,25 +45,25 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
     }
 
     private fun update() {
-        logger.info { "检查更新" }
+        Logger.info("检查更新")
         val currentVersion = currentVersion()
         val latestVersion = latestVersion()
-        logger.info { "检查更新，当前版本号：$currentVersion，最新版本号：$latestVersion" }
+        Logger.info("检查更新，当前版本号：$currentVersion，最新版本号：$latestVersion")
         if (currentVersion != latestVersion) {
-            logger.info { "检查更新，版本号不同，更新至最新版本" }
+            Logger.info("检查更新，版本号不同，更新至最新版本")
             val apkFile = Path.of("./$latestVersion.apk")
 
-            logger.info { "检查更新，下载最新版本中：$apkFile" }
+            Logger.info("检查更新，下载最新版本中：$apkFile")
             if (apkFile.notExists()) {
                 downloadLatest(apkFile)
             }
 
-            logger.info { "检查更新，安装中：$apkFile" }
+            Logger.info("检查更新，安装中：$apkFile")
             device.install(apkFile.toString())
 
-            logger.info { "检查更新，安装完毕：$apkFile，已更新至最新版本" }
+            Logger.info("检查更新，安装完毕：$apkFile，已更新至最新版本")
         } else {
-            logger.info { "检查更新，已是最新版本" }
+            Logger.info("检查更新，已是最新版本")
         }
     }
 

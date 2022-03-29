@@ -1,6 +1,7 @@
 package top.anagke.auto_ark.operate
 
-import mu.KotlinLogging
+
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
@@ -17,8 +18,6 @@ import top.anagke.auto_ark.operate.OperateTemplates.理智不足_药剂即将到
 import top.anagke.auto_ark.operate.OperateTemplates.等级提升
 import top.anagke.auto_ark.operate.OperateTemplates.编队界面
 import top.anagke.auto_ark.operate.OperateTemplates.行动结束
-
-private val logger = KotlinLogging.logger {}
 
 class ArkOperate(
     auto: AutoArk,
@@ -41,7 +40,7 @@ class ArkOperate(
     }
 
     override fun run() {
-        logger.info { "运行模块：刷副本" }
+        Logger.info("运行模块：刷副本")
         farmAnnihilation()
         farmPlan()
         farmDaily()
@@ -50,14 +49,14 @@ class ArkOperate(
     override val name = "行动模块"
 
     private fun farmAnnihilation() {
-        logger.info { "刷剿灭委托：${operateConfig.doFarmAnnihilation}" }
+        Logger.info("刷剿灭委托：${operateConfig.doFarmAnnihilation}")
         if (!operateConfig.doFarmAnnihilation) return
 
         farm(剿灭作战, 1)
     }
 
     private fun farmPlan() {
-        logger.info { "刷计划副本：${operateConfig.doFarmPlan}" }
+        Logger.info("刷计划副本：${operateConfig.doFarmPlan}")
         if (!operateConfig.doFarmPlan) return
 
         for (entry in savedata.farmingPlan) {
@@ -76,7 +75,7 @@ class ArkOperate(
     }
 
     private fun farmDaily() {
-        logger.info { "刷日常副本：${operateConfig.doFarmDaily}" }
+        Logger.info("刷日常副本：${operateConfig.doFarmDaily}")
         if (!operateConfig.doFarmDaily) return
 
         farm(dailyOperation())
@@ -84,11 +83,11 @@ class ArkOperate(
 
 
     private fun farm(operation: Operation, farmTimes: Int = Int.MAX_VALUE): Int = device.run {
-        logger.info { "刷副本：$operation，预计刷 $farmTimes 次" }
+        Logger.info("刷副本：$operation，预计刷 $farmTimes 次")
 
         val successful = enterOperation(operation)
         if (!successful) {
-            logger.info { "刷副本：$operation，完毕，实际刷 ${0} 次" }
+            Logger.info("刷副本：$operation，完毕，实际刷 ${0} 次")
             return@run 0
         }
 
@@ -100,30 +99,30 @@ class ArkOperate(
         }
         jumpOut()
 
-        logger.info { "刷副本：$operation，完毕，实际刷 $actualTimes 次" }
+        Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes 次")
         actualTimes
     }
 
     private fun Device.enterOperation(operation: Operation): Boolean {
-        logger.info { "进入关卡：$operation" }
+        Logger.info("进入关卡：$operation")
         return when (enter(operation)) {
             OperationState.OPEN -> {
-                logger.info { "进入关卡：$operation，完毕" }
+                Logger.info("进入关卡：$operation，完毕")
                 assert(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)
                 true
             }
             OperationState.NOT_OPEN -> {
-                logger.info { "进入关卡：$operation，关卡未开放，退出" }
+                Logger.info("进入关卡：$operation，关卡未开放，退出")
                 false
             }
         }
     }
 
     private fun Device.operateOperation(operation: Operation): OperateResult {
-        logger.info { "代理指挥关卡：$operation，理智策略：${operateConfig.strategy}" }
+        Logger.info("代理指挥关卡：$operation，理智策略：${operateConfig.strategy}")
         assert(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)
         if (matched(关卡信息界面_代理指挥关闭)) {
-            logger.info { "代理指挥关卡：$operation，代理指挥关闭，开启" }
+            Logger.info("代理指挥关卡：$operation，代理指挥关闭，开启")
             tap(1067, 592) // 开启“代理指挥”
         }
 
@@ -137,7 +136,7 @@ class ArkOperate(
 
         which(理智不足_可使用药剂, 理智不足_可使用源石)
         if (matched(理智不足_可使用药剂) && strategy.canUsePotion() || matched(理智不足_可使用源石) && strategy.canUseOriginite()) {
-            logger.info { "代理指挥关卡：$operation，理智不足，恢复" }
+            Logger.info("代理指挥关卡：$operation，理智不足，恢复")
             tap(1088, 577) // 恢复理智
             await(关卡信息界面_代理指挥开启)
             tap(1078, 661)
@@ -146,7 +145,7 @@ class ArkOperate(
 
         which(理智不足_可使用药剂, 理智不足_可使用源石)
         if (matched(理智不足_可使用药剂, 理智不足_可使用源石)) {
-            logger.info { "代理指挥关卡：$operation，理智不足，退出" }
+            Logger.info("代理指挥关卡：$operation，理智不足，退出")
             tap(783, 580)
             await(关卡信息界面_代理指挥开启)
             return EMPTY_SANITY
@@ -162,7 +161,7 @@ class ArkOperate(
 
         tap(640, 360).nap()
         await(关卡信息界面_代理指挥开启)
-        logger.info { "代理指挥关卡：$operation，完毕" }
+        Logger.info("代理指挥关卡：$operation，完毕")
         return OperateResult.SUCCESS
     }
 

@@ -1,6 +1,7 @@
 package top.anagke.auto_ark.recruit
 
-import mu.KotlinLogging
+
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.img.ocrWord
@@ -70,7 +71,6 @@ class ArkRecruit(
     auto: AutoArk,
 ) : ArkModule(auto) {
 
-    private val logger = KotlinLogging.logger { }
 
     private var hasRecruitmentPermit = true
 
@@ -81,7 +81,7 @@ class ArkRecruit(
     override val name: String = "公开招募模块"
 
     override fun run() = device.run {
-        logger.info { "运行模块：公开招募" }
+        Logger.info("运行模块：公开招募")
         assert(主界面)
 
         tap(1000, 510) //公开招募
@@ -92,14 +92,14 @@ class ArkRecruit(
         }
 
         jumpOut()
-        logger.info { "结束模块：公开招募" }
+        Logger.info("结束模块：公开招募")
     }
 
     private fun autoSlot(slot: RecruitSlot) = device.apply {
         while (true) {
             if (slot in skippingSlotList) break
             val slotStatus = assert(slot.isAvailable, slot.isRecruiting, slot.isCompleted)
-            logger.info { "检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasRecruitmentPermit}，存在加急许可：$hasExpeditedPlan" }
+            Logger.info("检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasRecruitmentPermit}，存在加急许可：$hasExpeditedPlan")
             when (slotStatus) {
                 slot.isAvailable -> if (hasRecruitmentPermit) startRecruit(slot) else break
                 slot.isRecruiting -> if (hasExpeditedPlan) expediteRecruit(slot) else break
@@ -130,7 +130,7 @@ class ArkRecruit(
 
 
     private fun startRecruit(slot: RecruitSlot) = device.apply {
-        logger.info { "开始招募槽位：${slot.name}" }
+        Logger.info("开始招募槽位：${slot.name}")
         val exitRecruit = {
             back()
             await(公开招募界面)
@@ -139,18 +139,18 @@ class ArkRecruit(
         while (true) {
             val tags = parseTags()
             val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
-            logger.info { "标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators" }
+            Logger.info("标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators")
 
             val minimumRarity = possibleOperators.minOf(RecruitOperator::rarity)
-            logger.info { "最低可能星级：$minimumRarity" }
+            Logger.info("最低可能星级：$minimumRarity")
             if (minimumRarity >= 4) {
-                logger.info { "最低可能星级大于等于五星，退出" }
+                Logger.info("最低可能星级大于等于五星，退出")
                 skippingSlotList += slot
                 exitRecruit()
                 break
             }
             if (minimumRarity <= 2 && match(可刷新标签)) {
-                logger.info { "最低可能星级小于等于三星且可刷新，刷新" }
+                Logger.info("最低可能星级小于等于三星且可刷新，刷新")
                 tap(972, 408) //刷新TAG
                 tap(877, 508) //确认刷新TAG
                 sleep()
@@ -170,37 +170,37 @@ class ArkRecruit(
             await(公开招募界面, 公开招募面板)
             if (matched(公开招募面板)) {
                 hasRecruitmentPermit = false
-                logger.info { "招募许可不足，完成招募槽位：${slot.name}" }
+                Logger.info("招募许可不足，完成招募槽位：${slot.name}")
                 exitRecruit()
                 break
             } else {
-                logger.info { "开始招募槽位：${slot.name}，完毕" }
+                Logger.info("开始招募槽位：${slot.name}，完毕")
                 break
             }
         }
     }
 
     private fun expediteRecruit(slot: RecruitSlot) = device.apply {
-        logger.info { "立即招募槽位：${slot.name}" }
+        Logger.info("立即招募槽位：${slot.name}")
         tapSlot(slot)
         if (match(slot.isRecruiting)) {
             hasExpeditedPlan = false
-            logger.info { "加急许可不足，跳过加急槽位：${slot.name}" }
+            Logger.info("加急许可不足，跳过加急槽位：${slot.name}")
         } else {
             tap(955, 518).sleep()
             await(slot.isCompleted)
-            logger.info { "立即招募槽位：${slot.name}，完毕" }
+            Logger.info("立即招募槽位：${slot.name}，完毕")
         }
     }
 
     private fun completeRecruit(slot: RecruitSlot) = device.apply {
-        logger.info { "完成招募：${slot.name}" }
+        Logger.info("完成招募：${slot.name}")
         tapSlot(slot)
         whileNotMatch(slot.isAvailable) {
             tap(1221, 41).sleep()
         }
         await(slot.isAvailable)
-        logger.info { "完成招募：${slot.name}，完毕" }
+        Logger.info("完成招募：${slot.name}，完毕")
     }
 
 }

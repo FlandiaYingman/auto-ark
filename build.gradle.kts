@@ -20,8 +20,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
-    implementation("io.github.microutils:kotlin-logging:2.1.21")
+    implementation("org.tinylog:tinylog-impl:2.4.1")
+    implementation("org.tinylog:tinylog-api-kotlin:2.4.1")
+    implementation("org.tinylog:slf4j-tinylog:2.4.1")
 
     implementation("org.openpnp:opencv:4.5.1-2")
     implementation("top.anagke:kio:1.1.0")
