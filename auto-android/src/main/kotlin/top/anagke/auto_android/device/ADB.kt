@@ -1,5 +1,6 @@
 package top.anagke.auto_android.device
 
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.native.killProc
 import top.anagke.auto_android.native.openProc
 import top.anagke.auto_android.native.waitText
@@ -12,7 +13,7 @@ class ADB(
 
     companion object {
         val global: ADB = ADB("adb")
-        private val logger = mu.KotlinLogging.logger {}
+
     }
 
     fun cmd(vararg adbCmds: String, serial: String?): Process {
@@ -21,7 +22,7 @@ class ADB(
         } else {
             listOf(listOf(adbPath, "-s", serial), adbCmds.toList()).flatten()
         }
-        logger.trace { "run: ${commands.joinToString(separator = " ")}" }
+        Logger.trace("run: ${commands.joinToString(separator = " ")}")
         return openProc(*commands.toTypedArray())
     }
 

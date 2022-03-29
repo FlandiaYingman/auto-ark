@@ -1,6 +1,6 @@
 package top.anagke.auto_android.img
 
-import mu.KotlinLogging
+
 import org.bytedeco.javacpp.Loader
 import org.bytedeco.opencv.opencv_java
 import org.opencv.core.*
@@ -10,13 +10,11 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.*
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import kotlin.math.roundToInt
-
-
-private val log = KotlinLogging.logger {}
 
 
 object OpenCV {
@@ -70,7 +68,7 @@ private constructor(private val mat: Mat) {
             }
             1.0 - result[0, 0][0]
         } catch (e: Exception) {
-            log.warn(e) { "Error in matching" }
+            Logger.warn(e, "Error in matching")
             1.0
         }
     }

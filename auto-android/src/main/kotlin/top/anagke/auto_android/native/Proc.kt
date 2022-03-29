@@ -1,6 +1,7 @@
 package top.anagke.auto_android.native
 
-import mu.KotlinLogging
+
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.native.ProcessReader.Type.STDERR
 import top.anagke.auto_android.native.ProcessReader.Type.STDOUT
 import top.anagke.auto_android.util.seconds
@@ -13,7 +14,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-private val log = KotlinLogging.logger { }
+
 
 
 private val readerExecutor: ExecutorService = Executors.newCachedThreadPool { runnable ->
@@ -57,8 +58,8 @@ private class ProcessReader(
 
     private fun logLine(line: String) {
         when (type) {
-            STDOUT -> log.trace { "$proc: STDOUT> $line" }
-            STDERR -> log.debug { "$proc: STDERR> $line" }
+            STDOUT -> Logger.trace("$proc: STDOUT> $line")
+            STDERR -> Logger.debug("$proc: STDERR> $line")
         }
     }
 
@@ -89,7 +90,7 @@ private fun Process.waitProcess(timeout: Long): Int {
     val exited = waitFor(timeout, MILLISECONDS)
     if (exited.not()) {
         destroyForcibly()
-        log.warn { "process $this timed out after $timeout ms" }
+        Logger.warn("process $this timed out after $timeout ms")
     }
     val eventuallyExited = waitFor(5.seconds, MILLISECONDS)
     if (eventuallyExited.not()) {

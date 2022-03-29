@@ -2,6 +2,7 @@
 
 package top.anagke.auto_android.device
 
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.TableSelector.ConstraintType.HORIZONTAL
 import top.anagke.auto_android.device.TableSelector.ConstraintType.VERTICAL
 import top.anagke.auto_android.img.Img
@@ -15,7 +16,7 @@ class TimeoutException(message: String) : Exception(message)
 class AssertException(message: String) : Exception(message)
 
 
-private val log = mu.KotlinLogging.logger { }
+
 
 private val lastMatchedTmplMap: MutableMap<Device, Tmpl?> = mutableMapOf()
 private var Device.lastMatchedTmpl: Tmpl?
@@ -45,7 +46,7 @@ fun Device.which(vararg tmpls: Tmpl): Tmpl? {
             diff = tmpl.diff(screen)
             matched = diff <= tmpl.threshold
         }
-        log.debug { "Matching $tmpl... result=$matched, difference=${diff.formatDiff()}, diffTime=$diffTime ms, capTime=$capTime ms" }
+        Logger.debug("Matching $tmpl... result=$matched, difference=${diff.formatDiff()}, diffTime=$diffTime ms, capTime=$capTime ms")
         if (matched) {
             this.lastMatchedTmpl = tmpl
             return tmpl
@@ -58,7 +59,7 @@ fun Device.which(vararg tmpls: Tmpl): Tmpl? {
 
 
 fun Device.await(vararg tmpls: Tmpl, timeout: Long = 1.minutes): Tmpl {
-    log.debug { "Awaiting ${tmpls.contentToString()}..." }
+    Logger.debug("Awaiting ${tmpls.contentToString()}...")
     val frequencyLimiter = FrequencyLimiter(1.seconds)
     val begin = Instant.now()
     var tmpl: Tmpl?
@@ -72,7 +73,7 @@ fun Device.await(vararg tmpls: Tmpl, timeout: Long = 1.minutes): Tmpl {
 }
 
 fun Device.assert(vararg tmpls: Tmpl): Tmpl {
-    log.debug { "Asserting ${tmpls.toList()}..." }
+    Logger.debug("Asserting ${tmpls.toList()}...")
     val matched = which(*tmpls)
     if (matched != null) {
         return matched
@@ -115,7 +116,7 @@ fun Device.find(tmpl: Tmpl): Pos? {
     val screen = cap()
     val (pos, diff) = tmpl.find(screen)
     val result = if (diff <= tmpl.threshold) pos else null
-    log.debug { "Finding $tmpl... result=$result, difference=${diff.formatDiff()}" }
+    Logger.debug("Finding $tmpl... result=$result, difference=${diff.formatDiff()}")
     return result?.let { Rect(it, tmpl.img.size).center() }
 }
 
@@ -123,7 +124,7 @@ fun Device.findEdge(tmpl: Tmpl): Pos? {
     val screen = cap()
     val (pos, diff) = tmpl.findEdge(screen)
     val result = if (diff <= tmpl.threshold) pos else null
-    log.debug { "Finding edge $tmpl... result=$result, difference=${diff.formatDiff()}" }
+    Logger.debug("Finding edge $tmpl... result=$result, difference=${diff.formatDiff()}")
     return result?.let { Rect(it, tmpl.img.size).center() }
 }
 

@@ -19,9 +19,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // Log Frameworks
-    implementation("ch.qos.logback:logback-core:1.3.0-alpha5")
-    implementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
-    implementation("io.github.microutils:kotlin-logging:2.1.21")
+    implementation("org.tinylog:tinylog-impl:2.4.1")
+    implementation("org.tinylog:tinylog-api-kotlin:2.4.1")
+    implementation("org.tinylog:slf4j-tinylog:2.4.1")
 
     // OpenCV
     implementation("org.bytedeco:opencv-platform:4.5.3-1.5.6")
