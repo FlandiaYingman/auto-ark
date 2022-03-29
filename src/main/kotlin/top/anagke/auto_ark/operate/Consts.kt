@@ -194,7 +194,6 @@ object OperateOperations {
         dragv(640, 360, 600, 0)
         tap(189, 531).nap() // IW-6
     }
-
     internal val IW_7 = Operation("IW-7", description = "将进酒、固源岩组") {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
@@ -203,7 +202,6 @@ object OperateOperations {
         dragv(640, 360, 600, 0)
         tap(393, 448).nap() // IW-7
     }
-
     internal val IW_8 = Operation("IW-8", description = "将进酒、RMA70-12") {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
