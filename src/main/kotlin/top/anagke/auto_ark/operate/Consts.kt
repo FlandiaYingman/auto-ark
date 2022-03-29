@@ -219,6 +219,37 @@ object OperateOperations {
         dragv(640, 360, -1129, 0)
         tap(1240, 340).nap() // IW-8
     }
+
+    internal val WD_6 = Operation("WD-6", description = "遗尘漫步、聚酸酯组") {
+        enterPrimaryEvent(1180, 550)
+
+        swipev(640, 360, 1280 * 3, 0)
+        dragv(640, 360, -1780, 0)
+
+        tap(475, 350).nap()
+    }
+    internal val WD_7 = Operation("WD-7", description = "遗尘漫步、酮凝集组") {
+        enterPrimaryEvent(1180, 550)
+
+        swipev(640, 360, 1280 * 3, 0)
+        dragv(640, 360, -1780, 0)
+
+        tap(880, 470).nap()
+    }
+    internal val WD_8 = Operation("WD-8", description = "遗尘漫步、RMA70-12") {
+        enterPrimaryEvent(1180, 550)
+
+        swipev(640, 360, 1280 * 3, 0)
+        dragv(640, 360, -1780, 0)
+
+        tap(1200, 470).nap()
+    }
+
+
+    private fun Device.enterPrimaryEvent(x: Int, y: Int) {
+        tap(终端_活动).sleep().sleep()
+        tap(x, y).sleep().sleep()
+    }
 }
 
 // 策略
