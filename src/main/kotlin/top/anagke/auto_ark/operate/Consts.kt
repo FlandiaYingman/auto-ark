@@ -8,6 +8,7 @@ import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import top.anagke.auto_android.util.minutes
+import top.anagke.auto_ark.operate.OperatePoses.终端_副活动
 import top.anagke.auto_ark.operate.OperatePoses.终端_活动
 import top.anagke.auto_ark.tmpl
 import top.anagke.auto_ark.today
@@ -24,6 +25,7 @@ object OperatePoses {
     internal val XX_5 = Pos(945, 177)
 
     internal val 终端_活动 = Pos(1096, 143)
+    internal val 终端_副活动 = Pos(1096, 243)
 }
 
 object OperateTemplates {
@@ -221,15 +223,15 @@ object OperateOperations {
     }
 
     internal val WD_6 = Operation("WD-6", description = "遗尘漫步、聚酸酯组") {
-        enterPrimaryEvent(1180, 550)
+        enterSecondaryEvent(1180, 550)
 
         swipev(640, 360, 1280 * 3, 0)
         dragv(640, 360, -1780, 0)
 
-        tap(475, 350).nap()
+        tap(755, 350).nap()
     }
     internal val WD_7 = Operation("WD-7", description = "遗尘漫步、酮凝集组") {
-        enterPrimaryEvent(1180, 550)
+        enterSecondaryEvent(1180, 550)
 
         swipev(640, 360, 1280 * 3, 0)
         dragv(640, 360, -1780, 0)
@@ -237,7 +239,7 @@ object OperateOperations {
         tap(880, 470).nap()
     }
     internal val WD_8 = Operation("WD-8", description = "遗尘漫步、RMA70-12") {
-        enterPrimaryEvent(1180, 550)
+        enterSecondaryEvent(1180, 550)
 
         swipev(640, 360, 1280 * 3, 0)
         dragv(640, 360, -1780, 0)
@@ -248,6 +250,11 @@ object OperateOperations {
 
     private fun Device.enterPrimaryEvent(x: Int, y: Int) {
         tap(终端_活动).sleep().sleep()
+        tap(x, y).sleep().sleep()
+    }
+
+    private fun Device.enterSecondaryEvent(x: Int, y: Int) {
+        tap(终端_副活动).sleep().sleep()
         tap(x, y).sleep().sleep()
     }
 }
