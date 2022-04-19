@@ -20,9 +20,11 @@ object OperatePoses {
     internal val 终端_资源收集 = Pos(719, 670)
     internal val 终端_每周部署 = Pos(878, 670)
 
-    internal val PR_X_1 = Pos(403, 438)
-    internal val PR_X_2 = Pos(830, 258)
-    internal val XX_5 = Pos(945, 177)
+    internal val PR_X_1 = Pos(328, 443)
+    internal val PR_X_2 = Pos(783, 247)
+
+    // LS-5、CE-5、CA-5 等。
+    internal val XX_5 = Pos(918, 292)
 
     internal val 终端_活动 = Pos(1096, 143)
     internal val 终端_副活动 = Pos(1096, 243)
