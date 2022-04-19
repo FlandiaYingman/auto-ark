@@ -3,6 +3,7 @@ package top.anagke.auto_ark.operate
 
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
+import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.jumpOut
@@ -22,6 +23,19 @@ import top.anagke.auto_ark.operate.OperateTemplates.行动结束
 class ArkOperate(
     auto: AutoArk,
 ) : ArkModule(auto) {
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+//            farm()
+        }
+
+        private fun farm(o: Operation, n: Int) {
+            val ark = App.defaultAutoArk()
+            val operate = ArkOperate(ark)
+            operate.farm(o, n)
+        }
+    }
 
     private val operateConfig = config.operateConfig
 
