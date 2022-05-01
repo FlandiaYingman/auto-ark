@@ -11,7 +11,11 @@ import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭
+import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭_0
+import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭_1
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启
+import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启_0
+import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启_1
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_行动结束
 import top.anagke.auto_ark.operate.OperateTemplates.理智不足_可使用源石
 import top.anagke.auto_ark.operate.OperateTemplates.理智不足_可使用药剂
@@ -27,7 +31,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-//            farm()
+            farm(剿灭作战, 1)
         }
 
         private fun farm(o: Operation, n: Int) {
@@ -122,7 +126,11 @@ class ArkOperate(
         return when (enter(operation)) {
             OperationState.OPEN -> {
                 Logger.info("进入关卡：$operation，完毕")
-                assert(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)
+                assert(
+                    关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
+                    关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥关闭_0,
+                    关卡信息界面_代理指挥开启_1, 关卡信息界面_代理指挥关闭_1
+                )
                 true
             }
             OperationState.NOT_OPEN -> {
@@ -134,8 +142,12 @@ class ArkOperate(
 
     private fun Device.operateOperation(operation: Operation): OperateResult {
         Logger.info("代理指挥关卡：$operation，理智策略：${operateConfig.strategy}")
-        assert(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)
-        if (matched(关卡信息界面_代理指挥关闭)) {
+        assert(
+            关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
+            关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥关闭_0,
+            关卡信息界面_代理指挥开启_1, 关卡信息界面_代理指挥关闭_1
+        )
+        if (matched(关卡信息界面_代理指挥关闭, 关卡信息界面_代理指挥关闭_0, 关卡信息界面_代理指挥关闭_1)) {
             Logger.info("代理指挥关卡：$operation，代理指挥关闭，开启")
             tap(1067, 592) // 开启“代理指挥”
         }
@@ -168,11 +180,10 @@ class ArkOperate(
         tap(1103, 522)
         await(行动结束, 等级提升, 剿灭_行动结束, timeout = operation.timeout)
         if (matched(剿灭_行动结束)) {
-            tap(640, 360).nap()
-            tap(640, 360).nap()
+            tap(640, 360).sleep()
+            tap(640, 360).sleep()
         }
-        tap(640, 360).nap()
-
+        tap(640, 360).sleep()
         tap(640, 360).nap()
         await(关卡信息界面_代理指挥开启)
         Logger.info("代理指挥关卡：$operation，完毕")

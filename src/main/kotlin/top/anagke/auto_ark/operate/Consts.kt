@@ -36,6 +36,10 @@ object OperateTemplates {
 
     // 关卡准备页面，且代理指挥关闭
     internal val 关卡信息界面_代理指挥关闭 by tmpl(diff = 0.02)
+    internal val 关卡信息界面_代理指挥开启_0 by tmpl(diff = 0.01)
+    internal val 关卡信息界面_代理指挥关闭_0 by tmpl(diff = 0.01)
+    internal val 关卡信息界面_代理指挥开启_1 by tmpl(diff = 0.01)
+    internal val 关卡信息界面_代理指挥关闭_1 by tmpl(diff = 0.01)
 
     // 等待“开始行动”
     internal val 编队界面 by tmpl(diff = 0.01)
@@ -247,6 +251,33 @@ object OperateOperations {
         dragv(640, 360, -1780, 0)
 
         tap(1200, 470).nap()
+    }
+
+
+    internal val SN_8 = Operation("SN-8", description = "愚人号、异铁块") {
+        tap(终端_活动).sleep()
+        tap(314, 497).sleep() // 失落旗舰
+
+        // 屏幕总是自动移动到最右侧，所以无需手动移动
+        tap(381, 207).sleep() // SN-8
+    }
+
+    internal val SN_9 = Operation("SN-9", description = "愚人号、轻锰矿") {
+        tap(终端_活动).sleep()
+        tap(353, 571).sleep() // 无名之海
+
+        // 屏幕总是自动移动到最右侧，所以无需手动移动
+        dragv(640, 360, 0, 700)
+        tap(83, 442).sleep() // SN-9
+    }
+
+    internal val SN_10 = Operation("SN-10", description = "愚人号、化合切削液") {
+        tap(终端_活动).sleep()
+        tap(353, 571).sleep() // 无名之海
+
+        // 屏幕总是自动移动到最右侧，所以无需手动移动
+        dragv(640, 360, 700, 0)
+        tap(148, 339).sleep() // SN-10
     }
 
 
