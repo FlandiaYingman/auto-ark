@@ -16,8 +16,6 @@ class TimeoutException(message: String) : Exception(message)
 class AssertException(message: String) : Exception(message)
 
 
-
-
 private val lastMatchedTmplMap: MutableMap<Device, Tmpl?> = mutableMapOf()
 private var Device.lastMatchedTmpl: Tmpl?
     get() {
@@ -154,6 +152,10 @@ fun Unit.nap() {
 
 fun Unit.sleep() {
     delay(2000)
+}
+
+fun Unit.sleepl() {
+    delay(5000)
 }
 
 fun sleep() {
