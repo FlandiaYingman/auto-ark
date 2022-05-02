@@ -267,7 +267,7 @@ object OperateOperations {
         tap(353, 571).sleep() // 无名之海
 
         // 屏幕总是自动移动到最右侧，所以无需手动移动
-        dragv(640, 360, 0, 700)
+        dragv(640, 360, 700, 0)
         tap(83, 442).sleep() // SN-9
     }
 
