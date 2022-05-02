@@ -255,16 +255,16 @@ object OperateOperations {
 
 
     internal val SN_8 = Operation("SN-8", description = "愚人号、异铁块") {
-        tap(终端_活动).sleep()
-        tap(314, 497).sleep() // 失落旗舰
+        tap(终端_活动).sleepl()
+        tap(267, 495).sleepl() // 失落旗舰
 
         // 屏幕总是自动移动到最右侧，所以无需手动移动
         tap(381, 207).sleep() // SN-8
     }
 
     internal val SN_9 = Operation("SN-9", description = "愚人号、轻锰矿") {
-        tap(终端_活动).sleep()
-        tap(353, 571).sleep() // 无名之海
+        tap(终端_活动).sleepl()
+        tap(353, 571).sleepl() // 无名之海
 
         // 屏幕总是自动移动到最右侧，所以无需手动移动
         dragv(640, 360, 700, 0)
@@ -272,8 +272,8 @@ object OperateOperations {
     }
 
     internal val SN_10 = Operation("SN-10", description = "愚人号、化合切削液") {
-        tap(终端_活动).sleep()
-        tap(353, 571).sleep() // 无名之海
+        tap(终端_活动).sleepl()
+        tap(353, 571).sleepl() // 无名之海
 
         // 屏幕总是自动移动到最右侧，所以无需手动移动
         dragv(640, 360, 700, 0)
