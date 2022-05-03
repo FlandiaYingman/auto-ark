@@ -55,7 +55,7 @@ class ArkLogin(
     private fun Device.loginBilibili() {
         Logger.info("登录明日方舟（B服）")
         delay(5000)
-        whileNotMatch(主界面) {
+        whileNotMatch(主界面, timeout = 10.minutes) {
             back().nap()
             tap(130, 489).nap() //防止卡在返回界面
         }
