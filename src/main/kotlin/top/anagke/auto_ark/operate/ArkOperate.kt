@@ -32,7 +32,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(SN_8, 1)
+            farm(SN_8, 2)
         }
 
         private fun farm(o: Operation, n: Int) {
@@ -186,7 +186,7 @@ class ArkOperate(
         }
         tap(640, 360).sleep()
         tap(640, 360).nap()
-        await(关卡信息界面_代理指挥开启)
+        await(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥开启_1)
         Logger.info("代理指挥关卡：$operation，完毕")
         return OperateResult.SUCCESS
     }
