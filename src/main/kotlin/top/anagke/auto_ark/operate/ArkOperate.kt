@@ -165,7 +165,7 @@ class ArkOperate(
         if (matched(理智不足_可使用药剂) && strategy.canUsePotion() || matched(理智不足_可使用源石) && strategy.canUseOriginite()) {
             Logger.info("代理指挥关卡：$operation，理智不足，恢复")
             tap(1088, 577) // 恢复理智
-            await(关卡信息界面_代理指挥开启)
+            await(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥开启_1)
             tap(1078, 661)
             await(编队界面)
         }
@@ -174,7 +174,7 @@ class ArkOperate(
         if (matched(理智不足_可使用药剂, 理智不足_可使用源石)) {
             Logger.info("代理指挥关卡：$operation，理智不足，退出")
             tap(783, 580)
-            await(关卡信息界面_代理指挥开启)
+            await(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥开启_1)
             return EMPTY_SANITY
         }
 
