@@ -37,6 +37,7 @@ dependencies {
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 java {
