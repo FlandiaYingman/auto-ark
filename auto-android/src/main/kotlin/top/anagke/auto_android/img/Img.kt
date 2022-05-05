@@ -45,7 +45,7 @@ private constructor(private val mat: Mat) {
         }
 
         fun decodeRaw(width: Int, height: Int, raw: ByteArray): Img {
-            if (raw.isEmpty()) return Img(Mat(width, height, CvType.CV_8UC3, Scalar(0.0)))
+            if (raw.isEmpty()) return Img(Mat(height, width, CvType.CV_8UC3, Scalar(0.0)))
             val native = ByteBuffer.allocateDirect(width * height * 4).apply {
                 put(raw, 12, raw.size - 12)
             }
