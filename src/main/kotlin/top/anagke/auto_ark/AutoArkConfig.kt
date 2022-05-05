@@ -22,7 +22,7 @@ data class AutoArkConfig(
             if (configFile.notExists()) {
                 baseConfigFile.copyTo(configFile)
             }
-            return ConfigLoader().loadConfigOrThrow(listOfNotNull(configFile, baseConfigFile))
+            return ConfigLoader().loadConfigOrThrow(listOfNotNull(configFile.toString(), baseConfigFile.toString()))
         }
 
     }
