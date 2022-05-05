@@ -8,12 +8,12 @@ import org.opencv.core.CvType.CV_8UC1
 import org.opencv.highgui.HighGui
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
-import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.*
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
+import java.nio.ByteBuffer
 import kotlin.math.roundToInt
 
 
@@ -42,6 +42,17 @@ private constructor(private val mat: Mat) {
         fun decode(originalData: ByteArray): Img? {
             if (originalData.isEmpty()) return null
             return Img(Imgcodecs.imdecode(MatOfByte(*originalData), IMREAD_UNCHANGED))
+        }
+
+        fun decodeRaw(width: Int, height: Int, raw: ByteArray): Img {
+            if (raw.isEmpty()) return Img(Mat(width, height, CvType.CV_8UC3, Scalar(0.0)))
+            val native = ByteBuffer.allocateDirect(width * height * 4).apply {
+                put(raw, 12, raw.size - 12)
+            }
+            val m = Mat(height, width, CvType.CV_8UC4, native).apply {
+                cvtColor(this, this, COLOR_RGBA2BGR)
+            }
+            return Img(m)
         }
 
         fun encode(img: Img): ByteArray {
@@ -100,7 +111,7 @@ private constructor(private val mat: Mat) {
     fun blur(radius: Double): Img {
         val kernelSize = radius.toInt() * 4 + 1
         val canny = Mat().also {
-            GaussianBlur(mat, it, org.opencv.core.Size(kernelSize.toDouble(), kernelSize.toDouble()), radius)
+            GaussianBlur(mat, it, Size(kernelSize.toDouble(), kernelSize.toDouble()), radius)
         }
         HighGui.imshow(null, canny)
         return Img(canny)
@@ -118,7 +129,7 @@ private constructor(private val mat: Mat) {
         // Doing this because currently HighGui.imshow() doesn't support transparency.
         var mat = this.mat
         if (mat.channels() >= 3) {
-            mat = Mat().also { Imgproc.cvtColor(mat, it, COLOR_BGRA2BGR) }
+            mat = Mat().also { cvtColor(mat, it, COLOR_BGRA2BGR) }
         }
         HighGui.imshow(null, mat)
         HighGui.waitKey()

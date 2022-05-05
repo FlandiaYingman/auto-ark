@@ -49,14 +49,14 @@ class Device(
     /**
      * Captures current screen.
      *
-     * If the current screen is unavailable to capture, throws an [NullPointerException].
+     * If the current screen is unavailable to capture, throws an
+     * [NullPointerException].
      */
     fun cap(): Img {
-        val raw = cmd("exec-out", "screencap", "-p")
+        val raw = cmd("exec-out", "screencap")
             .waitRaw()
             .stdout
-        if (raw.isEmpty()) throw NullPointerException()
-        return Img.decode(raw)!!
+        return Img.decodeRaw(1280, 720, raw)
     }
 
     fun tap(pos: Pos, description: String = "") = tap(pos.x, pos.y, description = description)
