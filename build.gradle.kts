@@ -31,8 +31,8 @@ dependencies {
     implementation("org.jsoup:jsoup:1.14.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
-    implementation("com.charleskorn.kaml:kaml:0.38.0")
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.charleskorn.kaml:kaml:0.43.0")
+    implementation("com.google.code.gson:gson:2.9.0")
 
 
     implementation("com.github.albfernandez:juniversalchardet:2.4.0")
@@ -40,7 +40,7 @@ dependencies {
 
     // Config Parsing
     implementation("com.sksamuel.hoplite:hoplite:1.0.3")
-    implementation("com.sksamuel.hoplite:hoplite-yaml:1.4.16")
+    implementation("com.sksamuel.hoplite:hoplite-yaml:2.1.2")
 
 
     // CLI Argument Parsing
