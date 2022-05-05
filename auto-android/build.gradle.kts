@@ -24,7 +24,7 @@ dependencies {
     implementation("org.tinylog:slf4j-tinylog:2.4.1")
 
     // OpenCV
-    implementation("org.bytedeco:opencv-platform:4.5.3-1.5.6")
+    implementation("org.bytedeco:opencv-platform:4.5.5-1.5.7")
     implementation("top.anagke:kio:1.1.0")
 
     // Utilities
@@ -32,12 +32,12 @@ dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("org.lz4:lz4-java:1.8.0")
 
-    implementation("net.java.dev.jna:jna:5.10.0")
-    implementation("net.java.dev.jna:jna-platform:5.10.0")
+    implementation("net.java.dev.jna:jna:5.11.0")
+    implementation("net.java.dev.jna:jna-platform:5.11.0")
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
 java {
