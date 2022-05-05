@@ -58,17 +58,19 @@ fun Device.which(vararg tmpls: Tmpl): Tmpl? {
 
 fun Device.await(vararg tmpls: Tmpl, timeout: Long = 1.minutes): Tmpl {
     Logger.debug("Awaiting ${tmpls.contentToString()}...")
-    val frequencyLimiter = FrequencyLimiter(1.seconds)
+    val frequency = newFrequency(timeout)
     val begin = Instant.now()
     var tmpl: Tmpl?
     do {
-        tmpl = frequencyLimiter.run { which(*tmpls) }
+        tmpl = frequency.run { which(*tmpls) }
         if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
             throw TimeoutException("timeout after $timeout ms")
         }
     } while (tmpl == null)
     return tmpl
 }
+
+private fun newFrequency(timeout: Long) = FrequencyLimiter(if (timeout <= 1.minutes) 1.seconds else 5.seconds)
 
 fun Device.assert(vararg tmpls: Tmpl): Tmpl {
     Logger.debug("Asserting ${tmpls.toList()}...")
@@ -82,9 +84,9 @@ fun Device.assert(vararg tmpls: Tmpl): Tmpl {
 
 
 fun Device.whileMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
-    val frequencyLimiter = FrequencyLimiter(1.seconds)
+    val frequency = newFrequency(timeout)
     val begin = Instant.now()
-    while (frequencyLimiter.run { which(*tmpls) } != null) {
+    while (frequency.run { which(*tmpls) } != null) {
         block.invoke()
         if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
             throw TimeoutException("timeout after $timeout ms")
@@ -93,9 +95,9 @@ fun Device.whileMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -
 }
 
 fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
-    val frequencyLimiter = FrequencyLimiter(1.seconds)
+    val frequency = newFrequency(timeout)
     val begin = Instant.now()
-    while (frequencyLimiter.run { which(*tmpls) } == null) {
+    while (frequency.run { which(*tmpls) } == null) {
         block.invoke()
         if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
             throw TimeoutException("timeout after $timeout ms")
@@ -127,10 +129,10 @@ fun Device.findEdge(tmpl: Tmpl): Pos? {
 }
 
 fun Device.whileFind(tmpl: Tmpl, timeout: Long = 1.minutes, block: (Pos) -> Unit) {
-    val frequencyLimiter = FrequencyLimiter(1.seconds)
+    val frequency = newFrequency(timeout)
     val begin = Instant.now()
     var pos: Pos?
-    while (frequencyLimiter.run { find(tmpl) }.also { pos = it } != null) {
+    while (frequency.run { find(tmpl) }.also { pos = it } != null) {
         block.invoke(pos!!)
         if (Duration.between(begin, Instant.now()).toMillis() > timeout) {
             throw TimeoutException("timeout after $timeout ms")
