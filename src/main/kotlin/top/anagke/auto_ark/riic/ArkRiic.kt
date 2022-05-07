@@ -13,6 +13,9 @@ class ArkRiic(
         private val 自有库无线索 by tmpl()
         private val 干员选择界面 by tmpl(diff = 0.01)
         private val 进驻总览界面 by tmpl(diff = 0.01)
+        private val 贸易站_存在订单 by tmpl()
+        private val 贸易站_不存在订单 by tmpl()
+        private val 会客室_存在可用线索 by tmpl()
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -25,22 +28,31 @@ class ArkRiic(
     override fun run() = device.run {
         assert(主界面)
 
-        enterRiic()
-        collect()
+        进入基建()
+        收取基建()
         jumpOut()
 
-        enterRiic()
-        assign()
+        进入基建()
+        换班()
         jumpOut()
     }
 
-    private fun enterRiic() = device.apply {
+    private fun 进入基建() = device.apply {
         tap(985, 625) //进入基建
         await(基建界面)
         sleep()
     }
 
-    private fun collect() = device.apply {
+    private fun 收取基建() = device.apply {
+        收取基建产出()
+        收取会客室()
+        listOf(
+            { 无人机加速贸易站(贸易站 = Pos(60, 307)) },
+            { 无人机加速制造站(制造站 = Pos(275, 522)) }
+        ).random()()
+    }
+
+    private fun Device.收取基建产出() {
         tap(1203, 132).nap() //打开基建提醒（下方位置）
         repeat(3) { tap(239, 693).nap() } //收取贸易站产物、制造站产物和干员信赖
         tap(1136, 94).nap() //关闭基建提醒
@@ -48,20 +60,92 @@ class ArkRiic(
         tap(1203, 92).nap() //打开基建提醒（一般位置）
         repeat(3) { tap(239, 693).nap() } //收取贸易站产物、制造站产物和干员信赖
         tap(1136, 94).nap() //关闭基建提醒
-
-        tap(1047, 234).sleep().sleep() //打开会客室
-        tap(414, 617).sleep() //进入详情
-        tap(1197, 388).sleep() //进入传递线索
-        whileNotMatch(自有库无线索) {
-            tap(74, 183).nap() //选择第一个线索
-            tap(1194, 135).sleep() //传递给第一个好友
-        }
-        back().sleep() // 返回会客室
-        tap(1196, 180).sleep() //进入收集线索
-        tap(805, 574).sleep() //领取会客室线索
     }
 
-    private fun assign() = device.apply {
+    private fun Device.收取会客室() {
+        // 进入会客室
+        tap(1047, 234, description = "进入会客室").sleepl()
+        tap(414, 617, description = "进入详情").sleep()
+        tap(682, 663, description = "关闭线索交流完毕的提示（如果有）").sleep()
+
+        // 领取线索
+        tap(1196, 180, description = "进入收集线索").sleep()
+        tap(805, 574, description = "领取会客室线索").sleep()
+        tap(986, 100, description = "返回详情界面").sleep()
+
+        // 接收线索
+        tap(1199, 288, description = "进入接收线索").sleep()
+        tap(1074, 687, description = "收取好友线索").sleep()
+        tap(810, 396, description = "返回详情界面").nap()
+
+        // 传递线索
+        tap(1197, 388, description = "进入传递线索").sleep()
+        whileNotMatch(自有库无线索) {
+            tap(74, 183, description = "选择第一个线索").nap()
+            tap(1194, 135, description = "传递给第一个好友").sleep()
+        }
+        tap(1244, 34, description = "返回详情界面").sleep()
+
+        // 开启线索交流（如果能）
+        tap(389, 228, description = "一号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(987, 86, description = "二号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(1036, 86, description = "三号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(1092, 86, description = "四号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(1138, 86, description = "五号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(1185, 86, description = "六号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(1243, 86, description = "七号线索").nap()
+        if (match(会客室_存在可用线索)) tap(930, 227, description = "装入第一个线索").sleep()
+        tap(810, 396, description = "返回详情界面").nap()
+        tap(687, 650, description = "解锁线索（如果能）").sleep()
+
+        whileNotMatch(基建界面) {
+            back(description = "返回基建界面").sleepl()
+        }
+    }
+
+    private fun Device.无人机加速贸易站(贸易站: Pos) {
+        tap(贸易站, description = "默认贸易站").sleep()
+        tap(79, 611, description = "贵金属订单").sleep()
+        whileMatch(贸易站_存在订单) {
+            tap(290, 160, description = "收获订单").sleep()
+        }
+
+        tap(373, 494, description = "无人机加速").nap()
+        tap(962, 335, description = "最多").nap()
+        tap(935, 585, description = "确定").sleep()
+        whileMatch(贸易站_存在订单) {
+            tap(290, 160, description = "收获订单").sleep()
+
+            tap(373, 494, description = "无人机加速").nap()
+            tap(962, 335, description = "最多").nap()
+            tap(935, 585, description = "确定").sleep()
+        }
+
+        whileNotMatch(基建界面) {
+            back(description = "返回基建界面").sleep()
+        }
+    }
+
+    private fun Device.无人机加速制造站(制造站: Pos) {
+        tap(制造站, description = "默认制造站").sleep()
+        tap(制造站, description = "默认制造站（防止变为收取）").sleep()
+        tap(82, 610, description = "制造详情").sleep()
+        tap(1219, 536, description = "无人机加速").nap()
+        tap(962, 335, description = "最多").nap()
+        tap(935, 585, description = "确定").sleep()
+        tap(1125, 639, description = "收取").sleep()
+        back().nap()
+        back().nap()
+        await(基建界面)
+    }
+
+    private fun 换班() = device.apply {
         tap(74, 118) //进驻总览
         await(进驻总览界面)
 
@@ -94,7 +178,6 @@ class ArkRiic(
         }
     }
 
-
     private fun shift(room: Pos, limit: Int, canPopup: Boolean = false) = device.apply {
         tap(room)
         await(干员选择界面)
@@ -117,5 +200,6 @@ class ArkRiic(
         tap(1180, 675) //确认
         await(进驻总览界面)
     }
+
 
 }
