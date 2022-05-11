@@ -3,6 +3,7 @@ package top.anagke.auto_ark
 import com.sksamuel.hoplite.ConfigLoader
 import top.anagke.auto_android.device.BlueStacksConf
 import top.anagke.auto_ark.operate.OperateConfig
+import top.anagke.auto_ark.riic.RIICConfig
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
@@ -12,6 +13,7 @@ data class AutoArkConfig(
     val server: ArkServer,
     val emulator: BlueStacksConf,
     val operateConfig: OperateConfig,
+    val 基建: RIICConfig
 ) {
 
     companion object {

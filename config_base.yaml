@@ -29,3 +29,119 @@ operateConfig:
   doFarmPlan: true
   # 是否自动刷“日常”
   doFarmDaily: true
+
+基建:
+  高级模式: false
+  宿舍保留: [ 2, 2, 2, 0 ]
+  计划:
+    - rooms:
+        - "B101"
+        - "B102"
+      schedule:
+        - ops:
+            - name: "孑"
+              elite: 2
+              level: 90
+            - name: "德克萨斯"
+              elite: 2
+              level: 90
+            - name: "拉普兰德"
+              elite: 2
+              level: 90
+          room: "TRADING"
+        - ops:
+            - name: "能天使"
+              elite: 2
+              level: 90
+            - name: "海蒂"
+              elite: 2
+              level: 90
+            - name: "空弦"
+              elite: 2
+              level: 90
+          room: "TRADING"
+        - ops:
+            - name: "月见夜"
+              elite: 2
+              level: 90
+            - name: "空爆"
+              elite: 2
+              level: 90
+            - name: "古米"
+              elite: 2
+              level: 90
+          room: "TRADING"
+    - rooms:
+        - "B201"
+        - "B202"
+      schedule:
+        - ops:
+            - name: "温蒂"
+              elite: 2
+              level: 90
+            - name: "森蚺"
+              elite: 2
+              level: 90
+            - name: "清流"
+              elite: 2
+              level: 90
+          room: "MANUFACTURE"
+        - ops:
+            - name: "砾"
+              elite: 2
+              level: 90
+            - name: "夜烟"
+              elite: 2
+              level: 90
+            - name: "斑点"
+              elite: 2
+              level: 90
+          room: "MANUFACTURE"
+        - ops:
+            - name: "远牙"
+              elite: 2
+              level: 90
+            - name: "赫默"
+              elite: 2
+              level: 90
+            - name: "白面鸮"
+              elite: 2
+              level: 90
+          room: "MANUFACTURE"
+    - rooms:
+        - "B301"
+        - "B302"
+      schedule:
+        - ops:
+            - name: "水月"
+              elite: 2
+              level: 90
+            - name: "香草"
+              elite: 2
+              level: 90
+            - name: "史都华德"
+              elite: 2
+              level: 90
+          room: "MANUFACTURE"
+        - ops:
+            - name: "红云"
+              elite: 2
+              level: 90
+            - name: "黑角"
+              elite: 2
+              level: 90
+            - name: "刻俄柏"
+              elite: 2
+              level: 90
+          room: "MANUFACTURE"
+        - ops:
+            - name: "Castle-3"
+              elite: 2
+              level: 90
+            - name: "红豆"
+              elite: 2
+              level: 90
+            - name: "食铁兽"
+              elite: 2
+              level: 90
+          room: "MANUFACTURE"

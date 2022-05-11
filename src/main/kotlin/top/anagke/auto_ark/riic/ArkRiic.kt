@@ -17,6 +17,9 @@ class ArkRiic(
         private val 贸易站_不存在订单 by tmpl()
         private val 会客室_存在可用线索 by tmpl()
 
+        val 心情增序 by tmpl()
+        val 未进驻筛选 by tmpl()
+
         @JvmStatic
         fun main(args: Array<String>) {
             ArkRiic(App.defaultAutoArk()).run()
@@ -25,7 +28,7 @@ class ArkRiic(
 
     override val name: String = "基建模块"
 
-    override fun run() = device.run {
+    override fun run(): Unit = device.run {
         assert(主界面)
 
         进入基建()
@@ -145,61 +148,67 @@ class ArkRiic(
         await(基建界面)
     }
 
+    private val conf = config.基建
+
     private fun 换班() = device.apply {
         tap(74, 118) //进驻总览
         await(进驻总览界面)
 
-        //前两个宿舍
-        repeat(2) {
-            dragv(1200, 415, 0, -880) //一个宿舍距离
-            shift(Pos(670, 200), 5, canPopup = true) //宿舍
-        }
+        dragv(1200, 415, 0, -190) //一个房间距离
+        shift(Pos(670, 200), "1F02") //第一个房间
 
-        //后两个宿舍
-        dragv(1200, 415, 0, -880) //一个宿舍距离
-        shift(Pos(670, 240), 5, canPopup = true) //第三个宿舍
-        shift(Pos(670, 600), 5, canPopup = true) //第四个宿舍
+        repeat(3) { level ->
+            dragv(1200, 415, 0, -245) //一层距离
+            repeat(3) { room ->
+                shift(Pos(670, 200), "B${level + 1}0${room + 1}") //贸易站、制造站或发电站
+                dragv(1200, 415, 0, -190) //一个房间距离
+            }
+            // 只有第一、二、三层有辅助设施
+            if (level + 1 <= 3) {
+                dragv(1200, 415, 0, -190) //一个房间距离
+            }
+            // 只有第二层的办公室需要换班
+            if (level + 1 == 2) {
+                shift(Pos(670, 200), "B${level + 1}05") //辅助设施
+            }
+        }
 
         swipe(1200, 415, 1200, 415 + 2048, 10.0).nap()
+        swipe(1200, 415, 1200, 415 + 2048, 10.0).nap()
 
-        dragv(1200, 415, 0, -190) //一个房间距离
-        shift(Pos(670, 200), 2) //第一个房间
-
-        repeat(3) {
-            dragv(1200, 415, 0, -245) //一层距离
-            repeat(3) {
-                shift(Pos(670, 200), 3) //贸易站、制造站或发电站
-                dragv(1200, 415, 0, -190) //一个房间距离
-            }
-            if (it < 3 - 1) {
-                dragv(1200, 415, 0, -190) //一个房间距离
-                shift(Pos(670, 200), 3) //辅助设施
-            }
-        }
+        //前两个宿舍
+        dragv(1200, 415, 0, -880) //一个宿舍距离
+        shift(Pos(670, 200), "B104", init = true) //宿舍
+        dragv(1200, 415, 0, -880) //一个宿舍距离
+        shift(Pos(670, 200), "B204") //宿舍
+        //后两个宿舍
+        dragv(1200, 415, 0, -880) //一个宿舍距离
+        shift(Pos(670, 240), "B304") //第三个宿舍
+        shift(Pos(670, 600), "B404") //第四个宿舍
     }
 
-    private fun shift(room: Pos, limit: Int, canPopup: Boolean = false) = device.apply {
-        tap(room)
+
+    private fun shift(pos: Pos, room: String, init: Boolean = false) = device.apply {
+        tap(pos)
         await(干员选择界面)
 
-        val operatorPos = listOf(
-            Pos(490, 253),
-            Pos(478, 446),
-            Pos(597, 249),
-            Pos(607, 464),
-            Pos(732, 256),
-            Pos(775, 501),
-            Pos(931, 266),
-            Pos(913, 445),
-            Pos(1042, 235),
-            Pos(1033, 454),
-        )
-        tapm(*operatorPos.subList(0, 2 * limit).toTypedArray())
-
-        if (canPopup) tap(1180, 675).nap() //确认
-        tap(1180, 675) //确认
-        await(进驻总览界面)
+        if (conf.高级模式) when (room) {
+            in conf.计划.flatMap { it.rooms } -> {
+                val runnable = conf.计划.filter { it.shiftable(room) }
+                if (runnable.size > 1) throw Exception("runnable plan $runnable > 1")
+                runnable.forEach { it.shift(room, conf.计划, this) }
+            }
+            in setOf("B104", "B204", "B304", "B404") -> {
+                doShiftDorm(conf.宿舍保留[room[1].toString().toInt() - 1], init = init)
+            }
+            else -> doShift(room)
+        } else {
+            doShift(room)
+        }
+        tap(1180, 675).nap() //确认
+        whileNotMatch(进驻总览界面) {
+            tap(1180, 675).nap() //确认
+        }
     }
-
 
 }
