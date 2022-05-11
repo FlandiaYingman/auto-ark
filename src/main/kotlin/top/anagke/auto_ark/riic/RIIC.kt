@@ -272,7 +272,7 @@ data class Plan(
     val schB get() = schedule[1]
     val schY get() = schedule[2]
 
-    val planBegin get() = LocalTime.parse("6:00")
+    val planBegin get() = LocalTime.parse("06:00")
     val planInterval get() = Duration.parse("6h")
 
     val shiftTime1st: LocalTime get() = planBegin + (planInterval * 0).toJavaDuration()
