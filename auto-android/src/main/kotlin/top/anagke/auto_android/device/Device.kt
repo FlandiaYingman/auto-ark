@@ -110,7 +110,7 @@ class Device(
         sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
     }
 
-    fun dragv(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.5, description: String = "") {
+    fun dragv(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.15, description: String = "") {
         Logger.debug(genLogMessage("Drag Variation ($sx, $sy, $vx, $vy, $speed)", description))
         val ex = sx + vx
         val ey = sy + vy

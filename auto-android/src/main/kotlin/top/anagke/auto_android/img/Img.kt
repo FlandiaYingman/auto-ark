@@ -29,7 +29,7 @@ object OpenCV {
 }
 
 class Img
-private constructor(private val mat: Mat) {
+private constructor(val mat: Mat) {
 
     val size: Size = Size(mat.width(), mat.height())
 
