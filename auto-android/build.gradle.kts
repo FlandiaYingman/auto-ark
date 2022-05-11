@@ -38,10 +38,6 @@ dependencies {
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
-
-    // API
-    implementation("com.baidu.aip:java-sdk:4.16.7")
-
 }
 
 java {
