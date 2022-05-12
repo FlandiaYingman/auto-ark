@@ -41,6 +41,14 @@ private val OPERATOR_NAME_ID_MAP = CHARACTER_TABLE_JSON_OBJ.keySet().associateBy
     CHARACTER_TABLE_JSON_OBJ.getAsJsonObject(it).getAsJsonPrimitive("name").asString
 }
 
+private val MANUFACTURE_BUFFS = OPERATOR_NAME_ID_MAP.keys
+    .flatMap { allBuffs(Op(it), "MANUFACTURE") }
+    .filter { buffs -> buffs.isNotEmpty() }
+    .distinct()
+private val TRADING_BUFFS = OPERATOR_NAME_ID_MAP.keys
+    .flatMap { allBuffs(Op(it), "TRADING") }
+    .filter { buffs -> buffs.isNotEmpty() }
+    .distinct()
 
 @Serializable
 data class Op(
@@ -62,6 +70,9 @@ fun Sch(
 ) = Sch(ops.toList(), room)
 
 
+private fun toAbsLevel(elite: Int, level: Int): Int = elite * 90 + level
+
+
 data class Buff(
     val id: String,
     val name: String,
@@ -76,25 +87,47 @@ data class Buff(
     val icon = RIIC.javaClass
         .getResourceAsStream("skill_icons/$iconName.png")
         .readBytes()
-        .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }.let { overlay(ICON_BACKGROUND, it) }
+        .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }
+        .also { GaussianBlur(it, it, Size(3.0, 3.0), (3.0 - 1) / 6) }
+        .let { overlay(ICON_BACKGROUND, it) }
 
     val iconTemplate = splitMask(icon)
 
 }
 
-fun schBuffs(sch: Sch): List<List<Buff>> {
+fun schBuffs(sch: Sch): List<Set<Buff>> {
     return sch.ops.map { buffs(it, sch.room) }
 }
 
-private fun buffs(op: Op, room: String): List<Buff> {
+
+private fun allBuffs(op: Op, room: String): List<Set<Buff>> {
+    val opID = OPERATOR_NAME_ID_MAP[op.name]
+    val buffs = BUILDING_DATA_JSON_OBJ
+        ?.getAsJsonObject("chars")
+        ?.getAsJsonObject(opID)
+        ?.getAsJsonArray("buffChar")
+        ?.flatMap { buffChar ->
+            buffChar.asJsonObject.getAsJsonArray("buffData").map { buffData ->
+                buffData.asJsonObject.getAsJsonObject("cond").let {
+                    val elite = it.getAsJsonPrimitive("phase").asInt
+                    val level = it.getAsJsonPrimitive("level").asInt
+                    buffs(op.copy(elite = elite, level = level), room)
+                }
+            }
+        }
+    return buffs ?: emptyList()
+}
+
+private fun buffs(op: Op, room: String): Set<Buff> {
     val opID = OPERATOR_NAME_ID_MAP[op.name]
     val buffs = BUILDING_DATA_JSON_OBJ.getAsJsonObject("chars").getAsJsonObject(opID).getAsJsonArray("buffChar")
         .mapNotNull { buffs ->
             buffs.asJsonObject.getAsJsonArray("buffData").lastOrNull { buff ->
                 buff.asJsonObject.getAsJsonObject("cond").let {
-                    val elite = it.getAsJsonPrimitive("phase").asInt <= op.elite
-                    val level = it.getAsJsonPrimitive("level").asInt <= op.level
-                    elite && level
+                    val actual = toAbsLevel(op.elite, op.level)
+                    val expected =
+                        toAbsLevel(it.getAsJsonPrimitive("phase").asInt, it.getAsJsonPrimitive("level").asInt)
+                    expected <= actual
                 }
             }?.let { buff ->
                 val buffID = buff.asJsonObject.getAsJsonPrimitive("buffId").asString
@@ -106,27 +139,16 @@ private fun buffs(op: Op, room: String): List<Buff> {
                     rawBuffObj.getAsJsonPrimitive("skillIcon").asString,
                 )
             }
-        }
+        }.toSet()
     return buffs
 }
 
 private val SKILLS_ROW_1 = Rect(400, 263, 880, 40)
 private val SKILLS_ROW_2 = Rect(400, 544, 880, 40)
 
-fun main() {
-    val screenshot = imread("C:\\Users\\Flandia\\Desktop\\a.png")
-    val recognize = recognize(
-        screenshot,
-        buffs(Op("香草"), "MANUFACTURE").toSet(),
-        listOf(buffs(Op("水月"), "MANUFACTURE").toSet())
-    )
-    println(recognize)
-}
-
-private fun recognize(screenshot: Mat, wantedBuffs: Set<Buff>, possibleBuffs: List<Set<Buff>>): List<Pos> {
-    // unwantedBuffs = the union set of all proper subset of wantedBuffs in possibleBuffs
-    val unwantedBuffs = possibleBuffs
-        .filter { it.containsAll(wantedBuffs) && it != wantedBuffs }
+private fun recognize(screenshot: Mat, wantedBuffs: Set<Buff>): List<Pos> {
+    val unwantedBuffs = (TRADING_BUFFS + MANUFACTURE_BUFFS)
+        .filter { (it != wantedBuffs) && it.containsAll(wantedBuffs) }
         .flatten()
 
     val row1 = screenshot.submat(SKILLS_ROW_1)
@@ -170,7 +192,7 @@ private fun overlay(bg: Mat, fg: Mat): Mat {
     return canvas
 }
 
-private fun findMaxes(m: Mat, threshold: Double = 0.97, thickness: Int = 5): List<MinMaxLocResult> {
+private fun findMaxes(m: Mat, threshold: Double = 0.975, thickness: Int = 5): List<MinMaxLocResult> {
     val list = ArrayList<MinMaxLocResult>()
     while (true) {
         val mml = minMaxLoc(m)
@@ -204,7 +226,7 @@ fun Device.doShift(room: String = "") {
     }
 }
 
-fun Device.doShiftAdv(schedule: Sch, fullSchedules: Collection<Sch>) {
+fun Device.doShiftAdv(schedule: Sch) {
     tap(510, 680, description = "清空选择").nap()
 
     val selectedOperators = mutableSetOf<Op>()
@@ -216,8 +238,7 @@ fun Device.doShiftAdv(schedule: Sch, fullSchedules: Collection<Sch>) {
             if (selectedOperators.size >= schedule.ops.size) return@forEach
             if (operator in selectedOperators) return@forEach
 
-            val possibleBuffs = fullSchedules.flatMap { sch -> sch.buffs.map { it.toSet() } }
-            val poses = recognize(screenshot, operatorBuffs.toSet(), possibleBuffs)
+            val poses = recognize(screenshot, operatorBuffs.toSet())
             for (pos in poses) {
                 if (selectedOperators.size >= schedule.ops.size) return@forEach
                 if (pos in selectedPoses) continue
@@ -255,7 +276,7 @@ private fun Pos.toScreenPos(): Pos {
     return Pos(480 + x * 144, 210 + y * 300)
 }
 
-enum class 房间(id: String) {
+enum class 房间(val id: String) {
     贸易站("TRADING"), 制造站("MANUFACTURE"), 发电站("<发电站>"), 宿舍("<宿舍>")
 }
 
@@ -294,15 +315,15 @@ data class Plan(
         else -> false
     }
 
-    fun shift(room: String, fullPlan: Collection<Plan>, device: Device) = device.apply {
+    fun shift(room: String, device: Device) = device.apply {
         when (room) {
             room1 -> when {
-                now().equals(shiftTime1st, planInterval / 2) -> doShiftAdv(schY, fullPlan.flatMap { it.schedule })
-                now().equals(shiftTime2nd, planInterval / 2) -> doShiftAdv(schA, fullPlan.flatMap { it.schedule })
+                now().equals(shiftTime1st, planInterval / 2) -> doShiftAdv(schY)
+                now().equals(shiftTime2nd, planInterval / 2) -> doShiftAdv(schA)
             }
             room2 -> when {
-                now().equals(shiftTime2nd, planInterval / 2) -> doShiftAdv(schY, fullPlan.flatMap { it.schedule })
-                now().equals(shiftTime3rd, planInterval / 2) -> doShiftAdv(schB, fullPlan.flatMap { it.schedule })
+                now().equals(shiftTime2nd, planInterval / 2) -> doShiftAdv(schY)
+                now().equals(shiftTime3rd, planInterval / 2) -> doShiftAdv(schB)
             }
         }
     }
@@ -321,4 +342,10 @@ data class Plan(
         }
     }
 
+}
+
+fun main() {
+    var screenshot = imread("C:\\Users\\Flandia\\Desktop\\a.png")
+    val recognize = recognize(screenshot, buffs(Op("森蚺"), 房间.制造站.id))
+    println(recognize)
 }

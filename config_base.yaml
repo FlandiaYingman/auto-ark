@@ -32,7 +32,11 @@ operateConfig:
 
 基建:
   高级模式: false
-  宿舍保留: [ 2, 2, 2, 0 ]
+  宿舍保留:
+    - 2
+    - 2
+    - 2
+    - 0
   计划:
     - rooms:
         - "B101"
@@ -135,13 +139,13 @@ operateConfig:
               level: 90
           room: "MANUFACTURE"
         - ops:
-            - name: "Castle-3"
-              elite: 2
-              level: 90
             - name: "红豆"
               elite: 2
               level: 90
-            - name: "食铁兽"
+            - name: "白雪"
+              elite: 2
+              level: 90
+            - name: "霜叶"
               elite: 2
               level: 90
           room: "MANUFACTURE"

@@ -2,7 +2,10 @@ package top.anagke.auto_ark.riic
 
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_ark.*
+import top.anagke.auto_ark.App
+import top.anagke.auto_ark.ArkModule
+import top.anagke.auto_ark.AutoArk
+import top.anagke.auto_ark.tmpl
 
 class ArkRiic(
     auto: AutoArk,
@@ -29,15 +32,15 @@ class ArkRiic(
     override val name: String = "基建模块"
 
     override fun run(): Unit = device.run {
-        assert(主界面)
+//        assert(主界面)
 
-        进入基建()
-        收取基建()
-        jumpOut()
+//        进入基建()
+//        收取基建()
+//        jumpOut()
 
-        进入基建()
+//        进入基建()
         换班()
-        jumpOut()
+//        jumpOut()
     }
 
     private fun 进入基建() = device.apply {
@@ -196,7 +199,7 @@ class ArkRiic(
             in conf.计划.flatMap { it.rooms } -> {
                 val runnable = conf.计划.filter { it.shiftable(room) }
                 if (runnable.size > 1) throw Exception("runnable plan $runnable > 1")
-                runnable.forEach { it.shift(room, conf.计划, this) }
+                runnable.forEach { it.shift(room, this) }
             }
             in setOf("B104", "B204", "B304", "B404") -> {
                 doShiftDorm(conf.宿舍保留[room[1].toString().toInt() - 1], init = init)
