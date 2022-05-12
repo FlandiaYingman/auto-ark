@@ -2,10 +2,7 @@ package top.anagke.auto_ark.riic
 
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.Pos
-import top.anagke.auto_ark.App
-import top.anagke.auto_ark.ArkModule
-import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.tmpl
+import top.anagke.auto_ark.*
 
 class ArkRiic(
     auto: AutoArk,
@@ -32,15 +29,15 @@ class ArkRiic(
     override val name: String = "基建模块"
 
     override fun run(): Unit = device.run {
-//        assert(主界面)
+        assert(主界面)
 
-//        进入基建()
-//        收取基建()
-//        jumpOut()
+        进入基建()
+        收取基建()
+        jumpOut()
 
-//        进入基建()
+        进入基建()
         换班()
-//        jumpOut()
+        jumpOut()
     }
 
     private fun 进入基建() = device.apply {
