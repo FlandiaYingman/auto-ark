@@ -6,9 +6,7 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.img.ocrWord
 import top.anagke.auto_android.util.Rect
-import top.anagke.auto_ark.ArkModule
-import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.jumpOut
+import top.anagke.auto_ark.*
 import top.anagke.auto_ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.recruit.RecruitTag.*
 import top.anagke.auto_ark.recruit.RecruitTemplates.公开招募界面
@@ -26,7 +24,6 @@ import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽3空闲
 import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽4完成
 import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽4招募中
 import top.anagke.auto_ark.recruit.RecruitTemplates.招募槽4空闲
-import top.anagke.auto_ark.主界面
 import java.util.stream.Collectors
 
 private enum class RecruitSlot(
@@ -102,6 +99,7 @@ class ArkRecruit(
             Logger.info("检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasRecruitmentPermit}，存在加急许可：$hasExpeditedPlan")
             when (slotStatus) {
                 slot.isAvailable -> if (hasRecruitmentPermit) startRecruit(slot) else break
+                slot.isRecruiting -> break
                 slot.isCompleted -> completeRecruit(slot)
             }
         }
@@ -177,7 +175,7 @@ class ArkRecruit(
                 break
             }
         }
-        if (hasExpeditedPlan) expediteRecruit(slot)
+        if (hasExpeditedPlan && match(slot.isRecruiting)) expediteRecruit(slot)
     }
 
     private fun expediteRecruit(slot: RecruitSlot) = device.apply {
@@ -206,5 +204,5 @@ class ArkRecruit(
 }
 
 fun main() {
-//    AutoArk(appConfig).autoRecruit()
+    ArkRecruit(App.defaultAutoArk()).run()
 }
