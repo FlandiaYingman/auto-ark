@@ -32,11 +32,11 @@ class ArkRiic(
         assert(主界面)
 
         进入基建()
-        收取基建()
+        换班()
         jumpOut()
 
         进入基建()
-        换班()
+        收取基建()
         jumpOut()
     }
 

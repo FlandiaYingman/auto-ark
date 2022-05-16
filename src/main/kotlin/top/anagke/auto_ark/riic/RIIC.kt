@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.opencv.core.*
 import org.opencv.core.Core.*
-import org.opencv.imgcodecs.Imgcodecs.*
+import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
+import org.opencv.imgcodecs.Imgcodecs.imdecode
 import org.opencv.imgproc.Imgproc.*
 import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.nap
@@ -41,14 +42,11 @@ private val OPERATOR_NAME_ID_MAP = CHARACTER_TABLE_JSON_OBJ.keySet().associateBy
     CHARACTER_TABLE_JSON_OBJ.getAsJsonObject(it).getAsJsonPrimitive("name").asString
 }
 
-private val MANUFACTURE_BUFFS = OPERATOR_NAME_ID_MAP.keys
-    .flatMap { allBuffs(Op(it), "MANUFACTURE") }
-    .filter { buffs -> buffs.isNotEmpty() }
-    .distinct()
-private val TRADING_BUFFS = OPERATOR_NAME_ID_MAP.keys
-    .flatMap { allBuffs(Op(it), "TRADING") }
-    .filter { buffs -> buffs.isNotEmpty() }
-    .distinct()
+private val MANUFACTURE_BUFFS =
+    OPERATOR_NAME_ID_MAP.keys.flatMap { allBuffs(Op(it), "MANUFACTURE") }.filter { buffs -> buffs.isNotEmpty() }
+        .distinct()
+private val TRADING_BUFFS =
+    OPERATOR_NAME_ID_MAP.keys.flatMap { allBuffs(Op(it), "TRADING") }.filter { buffs -> buffs.isNotEmpty() }.distinct()
 
 @Serializable
 data class Op(
@@ -84,11 +82,8 @@ data class Buff(
             .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }
     }
 
-    val icon = RIIC.javaClass
-        .getResourceAsStream("skill_icons/$iconName.png")
-        .readBytes()
-        .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }
-        .also { GaussianBlur(it, it, Size(3.0, 3.0), (3.0 - 1) / 6) }
+    val icon = RIIC.javaClass.getResourceAsStream("skill_icons/$iconName.png").readBytes()
+        .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }.also { GaussianBlur(it, it, Size(3.0, 3.0), (3.0 - 1) / 6) }
         .let { overlay(ICON_BACKGROUND, it) }
 
     val iconTemplate = splitMask(icon)
@@ -102,10 +97,7 @@ fun schBuffs(sch: Sch): List<Set<Buff>> {
 
 private fun allBuffs(op: Op, room: String): List<Set<Buff>> {
     val opID = OPERATOR_NAME_ID_MAP[op.name]
-    val buffs = BUILDING_DATA_JSON_OBJ
-        ?.getAsJsonObject("chars")
-        ?.getAsJsonObject(opID)
-        ?.getAsJsonArray("buffChar")
+    val buffs = BUILDING_DATA_JSON_OBJ?.getAsJsonObject("chars")?.getAsJsonObject(opID)?.getAsJsonArray("buffChar")
         ?.flatMap { buffChar ->
             buffChar.asJsonObject.getAsJsonArray("buffData").map { buffData ->
                 buffData.asJsonObject.getAsJsonObject("cond").let {
@@ -147,9 +139,8 @@ private val SKILLS_ROW_1 = Rect(400, 263, 880, 40)
 private val SKILLS_ROW_2 = Rect(400, 544, 880, 40)
 
 private fun recognize(screenshot: Mat, wantedBuffs: Set<Buff>): List<Pos> {
-    val unwantedBuffs = (TRADING_BUFFS + MANUFACTURE_BUFFS)
-        .filter { (it != wantedBuffs) && it.containsAll(wantedBuffs) }
-        .flatten()
+    val unwantedBuffs =
+        (TRADING_BUFFS + MANUFACTURE_BUFFS).filter { (it != wantedBuffs) && it.containsAll(wantedBuffs) }.flatten()
 
     val row1 = screenshot.submat(SKILLS_ROW_1)
     val row2 = screenshot.submat(SKILLS_ROW_2)
@@ -157,15 +148,10 @@ private fun recognize(screenshot: Mat, wantedBuffs: Set<Buff>): List<Pos> {
         val (template, mask) = buff.iconTemplate
         val res1 = Mat().also { matchTemplate(row1, template, it, TM_CCORR_NORMED, mask) }
         val res2 = Mat().also { matchTemplate(row2, template, it, TM_CCORR_NORMED, mask) }
-        listOf(
-            findMaxes(res1).map { Pos((it.maxLoc.x / SKILLS_ROW_1.width * 6).toInt(), 0) },
-            findMaxes(res2).map { Pos((it.maxLoc.x / SKILLS_ROW_2.width * 6).toInt(), 1) }
-        ).flatten()
-            .sortedBy { pt -> pt.x * 2 + pt.y }
-            .map { pt -> pt to buff }
-    }
-        .groupBy { (pos, buff) -> pos }
-        .map { (pos, buff) -> pos to buff.map { it.second }.toSet() }
+        listOf(findMaxes(res1).map { Pos((it.maxLoc.x / SKILLS_ROW_1.width * 6).toInt(), 0) },
+            findMaxes(res2).map { Pos((it.maxLoc.x / SKILLS_ROW_2.width * 6).toInt(), 1) }).flatten()
+            .sortedBy { pt -> pt.x * 2 + pt.y }.map { pt -> pt to buff }
+    }.groupBy { (pos, buff) -> pos }.map { (pos, buff) -> pos to buff.map { it.second }.toSet() }
 
     return result.filter { (pos, buffs) -> buffs == wantedBuffs }.map { (pos, buffs) -> pos }
 }
@@ -231,28 +217,43 @@ fun Device.doShiftAdv(schedule: Sch) {
 
     val selectedOperators = mutableSetOf<Op>()
     val selectedPoses = mutableSetOf<Pos>()
-    outer@ for (i in 0 until 3) {
-        val screenshot = cap().mat
+    var orderingChanged = false
 
-        schedule.ops.zip(schedule.buffs).forEach { (operator, operatorBuffs) ->
-            if (selectedOperators.size >= schedule.ops.size) return@forEach
-            if (operator in selectedOperators) return@forEach
+    outer@ for (i in 0 until 2) {
+        for (j in 0 until 3) {
+            val screenshot = cap().mat
 
-            val poses = recognize(screenshot, operatorBuffs.toSet())
-            for (pos in poses) {
+            schedule.ops.zip(schedule.buffs).forEach { (operator, operatorBuffs) ->
                 if (selectedOperators.size >= schedule.ops.size) return@forEach
-                if (pos in selectedPoses) continue
+                if (operator in selectedOperators) return@forEach
 
-                tap(pos.toScreenPos(), description = "选择${operator.name}")
-                selectedOperators += operator
-                selectedPoses += pos
-                break
+                val poses = recognize(screenshot, operatorBuffs.toSet())
+                for (pos in poses) {
+                    if (selectedOperators.size >= schedule.ops.size) return@forEach
+                    if (pos in selectedPoses) continue
+
+                    tap(pos.toScreenPos(), description = "选择${operator.name}")
+                    selectedOperators += operator
+                    selectedPoses += pos
+                    break
+                }
             }
+            if (selectedOperators.size >= schedule.ops.size) break@outer
+
+            dragv(640, 360, -895, 0, speed = 0.25, description = "拖拽到下一页面").nap()
+
+            selectedPoses.clear()
         }
         if (selectedOperators.size >= schedule.ops.size) break@outer
 
-        dragv(640, 360, -900, 0, speed = 0.15, description = "拖拽到下一页面").nap()
-        selectedPoses.clear()
+        swipev(640, 360, 2700, 0, speed = 10.0, description = "回到最左侧").nap()
+        tap(800, 45, description = "切换排序").nap()
+
+        orderingChanged = true
+        selectedOperators.indices.mapTo(selectedPoses) { Pos(it % 2, it / 2) }
+    }
+    if (orderingChanged) {
+        tap(800, 45, description = "切换排序")
     }
 }
 
@@ -342,10 +343,4 @@ data class Plan(
         }
     }
 
-}
-
-fun main() {
-    var screenshot = imread("C:\\Users\\Flandia\\Desktop\\a.png")
-    val recognize = recognize(screenshot, buffs(Op("森蚺"), 房间.制造站.id))
-    println(recognize)
 }
