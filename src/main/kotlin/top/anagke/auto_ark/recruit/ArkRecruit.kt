@@ -101,8 +101,7 @@ class ArkRecruit(
             val slotStatus = assert(slot.isAvailable, slot.isRecruiting, slot.isCompleted)
             Logger.info("检查槽位：${slot.name}，状态：${slotStatus.name}，存在招募许可：${hasRecruitmentPermit}，存在加急许可：$hasExpeditedPlan")
             when (slotStatus) {
-                slot.isAvailable -> if (hasRecruitmentPermit) startRecruit(slot) else break
-                slot.isRecruiting -> if (hasExpeditedPlan) expediteRecruit(slot) else break
+                slot.isAvailable -> startRecruit(slot)
                 slot.isCompleted -> completeRecruit(slot)
             }
         }
@@ -130,53 +129,56 @@ class ArkRecruit(
 
 
     private fun startRecruit(slot: RecruitSlot) = device.apply {
-        Logger.info("开始招募槽位：${slot.name}")
-        val exitRecruit = {
-            back()
-            await(公开招募界面)
-        }
-        tapSlot(slot)
-        while (true) {
-            val tags = parseTags()
-            val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
-            Logger.info("标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators")
-
-            val minimumRarity = possibleOperators.minOf(RecruitOperator::rarity)
-            Logger.info("最低可能星级：$minimumRarity")
-            if (minimumRarity >= 4) {
-                Logger.info("最低可能星级大于等于五星，退出")
-                skippingSlotList += slot
-                exitRecruit()
-                break
+        if (hasRecruitmentPermit) {
+            Logger.info("开始招募槽位：${slot.name}")
+            val exitRecruit = {
+                back()
+                await(公开招募界面)
             }
-            if (minimumRarity <= 2 && match(可刷新标签)) {
-                Logger.info("最低可能星级小于等于三星且可刷新，刷新")
-                tap(972, 408) //刷新TAG
-                tap(877, 508) //确认刷新TAG
+            tapSlot(slot)
+            while (true) {
+                val tags = parseTags()
+                val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
+                Logger.info("标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators")
+
+                val minimumRarity = possibleOperators.minOf(RecruitOperator::rarity)
+                Logger.info("最低可能星级：$minimumRarity")
+                if (minimumRarity >= 4) {
+                    Logger.info("最低可能星级大于等于五星，退出")
+                    skippingSlotList += slot
+                    exitRecruit()
+                    break
+                }
+                if (minimumRarity <= 2 && match(可刷新标签)) {
+                    Logger.info("最低可能星级小于等于三星且可刷新，刷新")
+                    tap(972, 408) //刷新TAG
+                    tap(877, 508) //确认刷新TAG
+                    sleep()
+                    continue
+                }
+
+                if (tags[TAG1] in tagCombination) tap(438, 383)
+                if (tags[TAG2] in tagCombination) tap(613, 379)
+                if (tags[TAG3] in tagCombination) tap(771, 383)
+                if (tags[TAG4] in tagCombination) tap(452, 456)
+                if (tags[TAG5] in tagCombination) tap(601, 451)
+
+                tap(450, 300) //增加时限到”9：00：00“
+                tap(977, 588) // 开始招募
                 sleep()
-                continue
+
+                await(公开招募界面, 公开招募面板)
+                if (matched(公开招募面板)) {
+                    hasRecruitmentPermit = false
+                    Logger.info("招募许可不足，完成招募槽位：${slot.name}")
+                    exitRecruit()
+                    break
+                } else {
+                    Logger.info("开始招募槽位：${slot.name}，完毕")
+                    break
+                }
             }
-
-            if (tags[TAG1] in tagCombination) tap(438, 383)
-            if (tags[TAG2] in tagCombination) tap(613, 379)
-            if (tags[TAG3] in tagCombination) tap(771, 383)
-            if (tags[TAG4] in tagCombination) tap(452, 456)
-            if (tags[TAG5] in tagCombination) tap(601, 451)
-
-            tap(450, 300) //增加时限到”9：00：00“
-            tap(977, 588) // 开始招募
-            sleep()
-
-            await(公开招募界面, 公开招募面板)
-            if (matched(公开招募面板)) {
-                hasRecruitmentPermit = false
-                Logger.info("招募许可不足，完成招募槽位：${slot.name}")
-                exitRecruit()
-                break
-            } else {
-                Logger.info("开始招募槽位：${slot.name}，完毕")
-                break
-            }
+            if (hasExpeditedPlan) expediteRecruit(slot)
         }
     }
 
