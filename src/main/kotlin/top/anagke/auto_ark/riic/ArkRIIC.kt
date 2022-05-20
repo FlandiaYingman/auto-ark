@@ -4,7 +4,7 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.Pos
 import top.anagke.auto_ark.*
 
-class ArkRiic(
+class ArkRIIC(
     auto: AutoArk,
 ) : ArkModule(auto) {
 
@@ -22,7 +22,7 @@ class ArkRiic(
 
         @JvmStatic
         fun main(args: Array<String>) {
-            ArkRiic(App.defaultAutoArk()).run()
+            ArkRIIC(App.defaultAutoArk()).run()
         }
     }
 
