@@ -1,5 +1,6 @@
 package top.anagke.auto_android.util
 
+@kotlinx.serialization.Serializable
 data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
     override fun toString(): String = "($x, $y)"
 
