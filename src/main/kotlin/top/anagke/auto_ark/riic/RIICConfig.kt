@@ -3,11 +3,14 @@ package top.anagke.auto_ark.riic
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
+import top.anagke.auto_android.util.Pos
 
 @Serializable
 data class RIICConfig(
     val 高级模式: Boolean = false,
     val 宿舍保留: List<Int> = listOf(2, 2, 2, 0),
+    val 无人机房间: Pos = Pos(20, 410),
+    val 无人机房间类型: String = "MANUFACTURE",
     val 计划: List<Plan> = listOf(
         Plan(
             listOf("B101", "B102"),
@@ -43,9 +46,11 @@ data class RIICConfig(
             ),
         ),
     )
-)
-
-
-fun main() {
-    println(Yaml.default.encodeToString(RIICConfig()))
+) {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println(Yaml.default.encodeToString(RIICConfig()))
+        }
+    }
 }

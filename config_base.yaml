@@ -37,6 +37,10 @@ operateConfig:
     - 2
     - 2
     - 0
+  无人机房间:
+    x: 20
+    y: 410
+  无人机房间类型: "MANUFACTURE"
   计划:
     - rooms:
         - "B101"

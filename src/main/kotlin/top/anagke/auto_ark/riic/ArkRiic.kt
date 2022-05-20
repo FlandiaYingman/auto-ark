@@ -48,11 +48,14 @@ class ArkRiic(
 
     private fun 收取基建() = device.apply {
         收取基建产出()
-        收取会客室()
-        listOf(
-            { 无人机加速贸易站(贸易站 = Pos(60, 307)) },
-            { 无人机加速制造站(制造站 = Pos(275, 522)) }
-        ).random()()
+//        收取会客室()
+        jumpOut()
+        进入基建()
+        when (conf.无人机房间类型) {
+            "MANUFACTURE" -> 无人机加速制造站(制造站 = conf.无人机房间)
+            "TRADING" -> 无人机加速贸易站(贸易站 = conf.无人机房间)
+        }
+        收取基建产出()
     }
 
     private fun Device.收取基建产出() {
@@ -143,9 +146,10 @@ class ArkRiic(
         tap(962, 335, description = "最多").nap()
         tap(935, 585, description = "确定").sleep()
         tap(1125, 639, description = "收取").sleep()
-        back().nap()
-        back().nap()
-        await(基建界面)
+
+        whileNotMatch(基建界面) {
+            back(description = "返回基建界面").sleep()
+        }
     }
 
     private val conf = config.基建
