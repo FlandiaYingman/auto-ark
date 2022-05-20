@@ -8,6 +8,12 @@ import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import top.anagke.auto_android.util.minutes
+import top.anagke.auto_ark.operate.OperateOperations.CA_5
+import top.anagke.auto_ark.operate.OperateOperations.CE_5
+import top.anagke.auto_ark.operate.OperateOperations.CE_6
+import top.anagke.auto_ark.operate.OperateOperations.LS_5
+import top.anagke.auto_ark.operate.OperateOperations.LS_6
+import top.anagke.auto_ark.operate.OperateOperations.MAIN_1_7
 import top.anagke.auto_ark.operate.OperatePoses.终端_副活动
 import top.anagke.auto_ark.operate.OperatePoses.终端_活动
 import top.anagke.auto_ark.tmpl
@@ -23,8 +29,14 @@ object OperatePoses {
     internal val PR_X_1 = Pos(328, 443)
     internal val PR_X_2 = Pos(783, 247)
 
-    // LS-5、CE-5、CA-5 等。
+    // CA-5 等。
+    internal val XX_5_OLD = Pos(879, 178)
+
+    // LS-5、CE-5。
     internal val XX_5 = Pos(918, 292)
+
+    // LS-6、CE-6。
+    internal val XX_6 = Pos(968, 175)
 
     internal val 终端_活动 = Pos(1096, 143)
     internal val 终端_副活动 = Pos(1096, 243)
@@ -65,23 +77,35 @@ object OperateTemplates {
 }
 
 object OperateOperations {
+    internal val LS_6 = Operation("LS-6", "作战记录") {
+        进入_终端_资源收集_材料()
+        val pos = 资源收集_材料.战术演习.where(this) ?: return@Operation
+        tap(pos, description = "战术演习").nap()
+        tap(OperatePoses.XX_6).nap() //LS-6
+    }
+    internal val CE_6 = Operation("CE-6", "龙门币") {
+        进入_终端_资源收集_材料()
+        val pos = 资源收集_材料.货物运送.where(this) ?: return@Operation
+        tap(pos, description = "货物运送").nap()
+        tap(OperatePoses.XX_6).nap() //CE-6
+    }
     internal val LS_5 = Operation("LS-5", "作战记录") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        tap(643, 363).sleep() //战术演习
+        进入_终端_资源收集_材料()
+        val pos = 资源收集_材料.战术演习.where(this) ?: return@Operation
+        tap(pos, description = "战术演习").nap()
         tap(OperatePoses.XX_5).nap() //LS-5
     }
     internal val CE_5 = Operation("CE-5", "龙门币") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        tap(438, 349).sleep() //资源保障
+        进入_终端_资源收集_材料()
+        val pos = 资源收集_材料.货物运送.where(this) ?: return@Operation
+        tap(pos, description = "货物运送").nap()
         tap(OperatePoses.XX_5).nap() //CE-5
     }
     internal val CA_5 = Operation("CA-5", "技巧概要") {
-        tap(OperatePoses.终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
-        tap(229, 357).sleep() //空中威胁
-        tap(OperatePoses.XX_5).nap() //CA-5
+        进入_终端_资源收集_材料()
+        val pos = 资源收集_材料.空中威胁.where(this) ?: return@Operation
+        tap(pos, description = "空中威胁").nap()
+        tap(OperatePoses.XX_5_OLD).nap() //CA-5
     }
 
     private enum class 资源收集芯片 {
@@ -158,6 +182,12 @@ object OperateOperations {
         tap(OperatePoses.终端_资源收集).nap()
         dragv(640, 360, -600, 0)
         tap(1230, 50).nap()
+    }
+
+    private fun Device.进入_终端_资源收集_材料() {
+        tap(OperatePoses.终端).sleep()
+        tap(OperatePoses.终端_资源收集).nap()
+        swipev(640, 360, 600, 0, speed = 1.0).nap()
     }
 
     internal val 剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 15.minutes) {
@@ -295,12 +325,32 @@ object OperateOperations {
 // 策略
 // 1. 永远优先龙门币。
 // 2. 然后刷 1-7 和 经验。
-fun dailyOperation() = when (today()) {
-    DayOfWeek.MONDAY -> OperateOperations.LS_5
-    DayOfWeek.TUESDAY -> OperateOperations.CE_5
-    DayOfWeek.WEDNESDAY -> OperateOperations.MAIN_1_7
-    DayOfWeek.THURSDAY -> OperateOperations.CE_5
-    DayOfWeek.FRIDAY -> OperateOperations.MAIN_1_7
-    DayOfWeek.SATURDAY -> OperateOperations.CE_5
-    DayOfWeek.SUNDAY -> OperateOperations.CE_5
+fun dailyOps() = when (today()) {
+    DayOfWeek.MONDAY -> listOf(LS_6, LS_5)
+    DayOfWeek.TUESDAY -> listOf(CE_6, CE_5)
+    DayOfWeek.WEDNESDAY -> listOf(CA_5)
+    DayOfWeek.THURSDAY -> listOf(CE_6, CE_5)
+    DayOfWeek.FRIDAY -> listOf(MAIN_1_7)
+    DayOfWeek.SATURDAY -> listOf(CE_6, CE_5)
+    DayOfWeek.SUNDAY -> listOf(CE_6, CE_5)
+}
+
+private enum class 资源收集_材料 {
+    战术演习, 货物运送, 空中威胁, 资源保障, 粉碎防御;
+
+    val chipTextRegion = listOf(
+        Rect(Pos(94 + 207 * 0, 453), Size(137, 49)),
+        Rect(Pos(94 + 207 * 1, 453), Size(137, 49)),
+        Rect(Pos(94 + 207 * 2, 453), Size(137, 49)),
+        Rect(Pos(94 + 207 * 3, 453), Size(137, 49))
+    )
+
+    fun where(dev: Device): Pos? {
+        val cap = dev.cap()
+        return chipTextRegion.find {
+            val image = cap.crop(it)
+            val words = values().map(资源收集_材料::name)
+            ocrWord(image, words = words) == name
+        }?.center()
+    }
 }
