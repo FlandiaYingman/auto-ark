@@ -7,7 +7,7 @@ import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.operate.OperateOperations.CE_6
+import top.anagke.auto_ark.operate.OperateOperations.SV_9
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
@@ -32,7 +32,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(CE_6, 2)
+            farm(SV_9, 2)
         }
 
         private fun farm(o: Operation, n: Int) {

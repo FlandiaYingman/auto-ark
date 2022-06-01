@@ -311,6 +311,15 @@ object OperateOperations {
     }
 
 
+    internal val SV_9 = Operation("SV-9", description = "覆潮之下、全新装置") {
+        tap(终端_活动).sleepl()
+        tap(1207, 447, description = "荒败盐风").sleepl()
+
+        swipev(640, 360, -2560, 0, speed = 10.0).sleep()
+        tap(382, 267, description = "SV-9").sleep()
+    }
+
+
     private fun Device.enterPrimaryEvent(x: Int, y: Int) {
         tap(终端_活动).sleep().sleep()
         tap(x, y).sleep().sleep()
