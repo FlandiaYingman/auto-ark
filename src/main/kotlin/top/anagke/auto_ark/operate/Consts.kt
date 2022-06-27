@@ -351,7 +351,8 @@ private enum class 资源收集_材料 {
         Rect(Pos(94 + 207 * 0, 453), Size(137, 49)),
         Rect(Pos(94 + 207 * 1, 453), Size(137, 49)),
         Rect(Pos(94 + 207 * 2, 453), Size(137, 49)),
-        Rect(Pos(94 + 207 * 3, 453), Size(137, 49))
+        Rect(Pos(94 + 207 * 3, 453), Size(137, 49)),
+        Rect(Pos(94 + 207 * 4, 453), Size(137, 49))
     )
 
     fun where(dev: Device): Pos? {
@@ -359,7 +360,8 @@ private enum class 资源收集_材料 {
         return chipTextRegion.find {
             val image = cap.crop(it)
             val words = values().map(资源收集_材料::name)
-            ocrWord(image, words = words) == name
+            val word = ocrWord(image, words = words)
+            word == name
         }?.center()
     }
 }
