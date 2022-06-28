@@ -16,6 +16,7 @@ class Operation(
     val name: String,
     val description: String,
     val timeout: Long = 5.minutes,
+    val type: OperationType = OperationType.常规,
     val enter: Device.() -> Unit = {},
 ) {
 
@@ -33,6 +34,10 @@ class Operation(
 
 enum class OperationState {
     OPEN, NOT_OPEN,
+}
+
+enum class OperationType {
+    常规, 剿灭
 }
 
 fun Device.enter(operation: Operation): OperationState {
