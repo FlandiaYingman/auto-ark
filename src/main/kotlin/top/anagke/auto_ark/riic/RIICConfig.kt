@@ -3,7 +3,7 @@ package top.anagke.auto_ark.riic
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
-import top.anagke.auto_android.util.Pos
+import top.anagke.auto_android.img.Pos
 
 @Serializable
 data class RIICConfig(

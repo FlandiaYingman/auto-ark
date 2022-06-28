@@ -1,8 +1,8 @@
 package top.anagke.auto_ark.store
 
 import top.anagke.auto_android.device.*
+import top.anagke.auto_android.img.Pos
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.util.Pos
 import top.anagke.auto_ark.*
 
 class ArkStore(

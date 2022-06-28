@@ -10,18 +10,43 @@ import kotlin.reflect.KProperty
 fun tmpl(diff: Double = 0.05) = TmplDelegate(diff)
 
 class TmplDelegate(private val diff: Double) {
+
     private var tmpl: Tmpl? = null
+
     operator fun getValue(thisRef: Any?, property: KProperty<*>): Tmpl {
         if (tmpl == null) {
-            val name = "${property.name}.png"
+            val name = property.name
             val kClass = thisRef?.let { it::class.java } ?: AutoArk::class.java
-            val tmplBytes = kClass
-                .getResource(name)!!
-                .readBytes()
-            tmpl = Tmpl(name, diff, Img.decode(tmplBytes)!!)
+            tmpl = findSingle(name, kClass) ?: findMultiple(name, kClass)
+                    ?: throw Exception("cannot find template with given name '$name'")
         }
         return tmpl!!
     }
+
+    private fun findSingle(name: String, kClass: Class<*>): Tmpl? {
+        return kClass
+            .getResource("${name}.png")
+            ?.readBytes()
+            ?.let { Tmpl(name, diff, listOf(Img.decode(it)!!)) }
+    }
+
+    private fun findMultiple(name: String, kClass: Class<*>): Tmpl? {
+        val imgs = mutableListOf<Img>()
+        var i = 0
+        while (true) {
+            val img = kClass
+                .getResource("${name}_${i++}.png")
+                ?.readBytes()
+                ?.let { Img.decode(it) }
+            if (img == null) {
+                break
+            } else {
+                imgs += img
+            }
+        }
+        return Tmpl("${name}.png", diff, imgs)
+    }
+
 }
 
 fun today(): DayOfWeek {

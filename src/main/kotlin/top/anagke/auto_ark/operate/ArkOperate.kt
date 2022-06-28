@@ -12,11 +12,7 @@ import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭_0
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭_1
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启_0
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启_1
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_行动结束
 import top.anagke.auto_ark.operate.OperateTemplates.理智不足_可使用源石
 import top.anagke.auto_ark.operate.OperateTemplates.理智不足_可使用药剂
@@ -131,8 +127,6 @@ class ArkOperate(
                 Logger.info("进入关卡：$operation，完毕")
                 assert(
                     关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
-                    关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥关闭_0,
-                    关卡信息界面_代理指挥开启_1, 关卡信息界面_代理指挥关闭_1
                 )
                 true
             }
@@ -147,10 +141,8 @@ class ArkOperate(
         Logger.info("代理指挥关卡：$operation，理智策略：${operateConfig.strategy}")
         assert(
             关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
-            关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥关闭_0,
-            关卡信息界面_代理指挥开启_1, 关卡信息界面_代理指挥关闭_1
         )
-        if (matched(关卡信息界面_代理指挥关闭, 关卡信息界面_代理指挥关闭_0, 关卡信息界面_代理指挥关闭_1)) {
+        if (matched(关卡信息界面_代理指挥关闭)) {
             Logger.info("代理指挥关卡：$operation，代理指挥关闭，开启")
             tap(1067, 592) // 开启“代理指挥”
         }
@@ -167,7 +159,7 @@ class ArkOperate(
         if (matched(理智不足_可使用药剂) && strategy.canUsePotion() || matched(理智不足_可使用源石) && strategy.canUseOriginite()) {
             Logger.info("代理指挥关卡：$operation，理智不足，恢复")
             tap(1088, 577) // 恢复理智
-            await(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥开启_1)
+            await(关卡信息界面_代理指挥开启)
             tap(1078, 661)
             await(编队界面)
         }
@@ -176,7 +168,7 @@ class ArkOperate(
         if (matched(理智不足_可使用药剂, 理智不足_可使用源石)) {
             Logger.info("代理指挥关卡：$operation，理智不足，退出")
             tap(783, 580)
-            await(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥开启_1)
+            await(关卡信息界面_代理指挥开启)
             return EMPTY_SANITY
         }
 
@@ -188,7 +180,7 @@ class ArkOperate(
         }
         tap(640, 360).sleep()
         tap(640, 360).nap()
-        await(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥开启_1)
+        await(关卡信息界面_代理指挥开启)
         Logger.info("代理指挥关卡：$operation，完毕")
         return OperateResult.SUCCESS
     }

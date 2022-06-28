@@ -5,11 +5,7 @@ import top.anagke.auto_android.device.notMatch
 import top.anagke.auto_android.util.minutes
 import top.anagke.auto_ark.jumpOut
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭_0
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭_1
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启_0
-import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启_1
 import java.util.concurrent.CopyOnWriteArrayList
 
 class Operation(
@@ -42,12 +38,7 @@ enum class OperationType {
 
 fun Device.enter(operation: Operation): OperationState {
     with(operation) { enter() }
-    if (notMatch(
-            关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
-            关卡信息界面_代理指挥开启_0, 关卡信息界面_代理指挥关闭_0,
-            关卡信息界面_代理指挥开启_1, 关卡信息界面_代理指挥关闭_1
-        )
-    ) {
+    if (notMatch(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)) {
         jumpOut()
         return OperationState.NOT_OPEN
     }

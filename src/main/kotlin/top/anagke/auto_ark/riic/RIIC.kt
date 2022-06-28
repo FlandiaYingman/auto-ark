@@ -13,7 +13,7 @@ import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.nap
 import top.anagke.auto_android.device.whileNotMatch
 import top.anagke.auto_android.img.OpenCV
-import top.anagke.auto_android.util.Pos
+import top.anagke.auto_android.img.Pos
 import top.anagke.auto_ark.riic.ArkRIIC.Companion.心情增序
 import top.anagke.auto_ark.riic.ArkRIIC.Companion.未进驻筛选
 import java.time.LocalTime

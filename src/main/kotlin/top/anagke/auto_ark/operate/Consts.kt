@@ -3,8 +3,8 @@
 package top.anagke.auto_ark.operate
 
 import top.anagke.auto_android.device.*
+import top.anagke.auto_android.img.Pos
 import top.anagke.auto_android.img.ocrWord
-import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import top.anagke.auto_android.util.minutes
@@ -52,11 +52,7 @@ object OperateTemplates {
     internal val 关卡信息界面_代理指挥开启 by tmpl(diff = 0.01)
 
     // 关卡准备页面，且代理指挥关闭
-    internal val 关卡信息界面_代理指挥关闭 by tmpl(diff = 0.02)
-    internal val 关卡信息界面_代理指挥开启_0 by tmpl(diff = 0.01)
-    internal val 关卡信息界面_代理指挥关闭_0 by tmpl(diff = 0.01)
-    internal val 关卡信息界面_代理指挥开启_1 by tmpl(diff = 0.01)
-    internal val 关卡信息界面_代理指挥关闭_1 by tmpl(diff = 0.01)
+    internal val 关卡信息界面_代理指挥关闭 by tmpl(diff = 0.01)
 
     // 等待“开始行动”
     internal val 编队界面 by tmpl(diff = 0.01)
@@ -86,7 +82,7 @@ object OperateOperations {
     @JvmStatic
     fun main(args: Array<String>) {
         App.defaultAutoArk().run {
-            device.enter(剿灭作战)
+            device.enter(MAIN_1_7)
         }
     }
 
