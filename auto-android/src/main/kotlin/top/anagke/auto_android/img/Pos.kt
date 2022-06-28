@@ -1,4 +1,4 @@
-package top.anagke.auto_android.util
+package top.anagke.auto_android.img
 
 @kotlinx.serialization.Serializable
 data class Pos(val x: Int, val y: Int) : Comparable<Pos> {

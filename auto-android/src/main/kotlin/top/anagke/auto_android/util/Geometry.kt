@@ -1,5 +1,6 @@
 package top.anagke.auto_android.util
 
+import top.anagke.auto_android.img.Pos
 import kotlin.math.pow
 import kotlin.math.sqrt
 

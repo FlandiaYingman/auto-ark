@@ -10,7 +10,6 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc.*
 import org.tinylog.kotlin.Logger
-import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import java.nio.ByteBuffer
@@ -139,28 +138,6 @@ private constructor(val mat: Mat) {
 
 private fun Point.toPos(): Pos {
     return Pos(x.roundToInt(), y.roundToInt())
-}
-
-data class Tmpl(
-    val name: String,
-    val threshold: Double,
-    val img: Img,
-) {
-
-    fun diff(img: Img): Double {
-        return img.match(this.img)
-    }
-
-    fun find(img: Img): Pair<Pos, Double> {
-        return img.find(this.img)
-    }
-
-    fun findEdge(img: Img): Pair<Pos, Double> {
-        return img.blur(1.0).canny().find(this.img)
-    }
-
-    override fun toString() = "Tmpl($name)"
-
 }
 
 

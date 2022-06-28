@@ -4,11 +4,11 @@ package top.anagke.auto_android.device
 
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.img.Img
+import top.anagke.auto_android.img.Pos
 import top.anagke.auto_android.native.ProcessOutput
 import top.anagke.auto_android.native.waitRaw
 import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.BinResources
-import top.anagke.auto_android.util.Pos
 import top.anagke.auto_android.util.distance
 import top.anagke.auto_android.util.minutes
 import kotlin.math.roundToInt
