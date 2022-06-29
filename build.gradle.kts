@@ -1,10 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
-
-    application
+    kotlin("jvm") version "1.7.0"
+    kotlin("plugin.serialization") version "1.7.0"
 }
 
 group = "top.anagke.auto_ark"
@@ -30,8 +28,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation("org.jsoup:jsoup:1.14.3")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
-    implementation("com.charleskorn.kaml:kaml:0.43.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
+    implementation("com.charleskorn.kaml:kaml:0.45.0")
     implementation("com.google.code.gson:gson:2.9.0")
 
 
@@ -40,7 +38,7 @@ dependencies {
 
     // Config Parsing
     implementation("com.sksamuel.hoplite:hoplite:1.0.3")
-    implementation("com.sksamuel.hoplite:hoplite-yaml:2.1.2")
+    implementation("com.sksamuel.hoplite:hoplite-yaml:2.1.5")
 
 
     // CLI Argument Parsing
@@ -59,21 +57,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.wrapper {
-    gradleVersion = "7.3.2"
-}
-
-distributions {
-    main {
-        contents {
-            from(".") {
-                include("bin/**")
-                include("config_base.yaml")
-            }
-        }
-    }
-}
-
-application {
-    mainClass.set("top.anagke.auto_ark.AppKt")
-    executableDir = ""
+    gradleVersion = "7.4.2"
 }
