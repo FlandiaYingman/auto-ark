@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
+
+    application
 }
 
 group = "top.anagke.auto_ark"
@@ -58,4 +60,20 @@ tasks.withType<KotlinCompile> {
 
 tasks.wrapper {
     gradleVersion = "7.4.2"
+}
+
+distributions {
+    main {
+        contents {
+            from(".") {
+                include("bin/**")
+                include("config_base.yaml")
+            }
+        }
+    }
+}
+
+application {
+    mainClass.set("top.anagke.auto_ark.AppKt")
+    executableDir = ""
 }
