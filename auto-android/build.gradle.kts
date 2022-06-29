@@ -1,14 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
-
-    application
+    kotlin("jvm") version "1.7.0"
+    kotlin("plugin.serialization") version "1.7.0"
 }
 
 group = "top.anagke"
-version = "0.1.1"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
@@ -36,7 +34,7 @@ dependencies {
     implementation("net.java.dev.jna:jna-platform:5.11.0")
 
     //Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
@@ -52,21 +50,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.wrapper {
-    gradleVersion = "7.3.2"
-}
-
-distributions {
-    main {
-        contents {
-            from(".") {
-                include("bin/**")
-                include("base-config.toml")
-            }
-        }
-    }
-}
-
-application {
-    mainClass.set("top.anagke.MainKt")
-    executableDir = ""
+    gradleVersion = "7.4.2"
 }
