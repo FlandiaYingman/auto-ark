@@ -156,7 +156,7 @@ class Device(
 
     fun install(apk: String, description: String = "") {
         Logger.debug(genLogMessage("Install APK $apk", description))
-        cmd("install", "-r", apk).waitText(5.minutes)
+        cmd("install", "-r", apk).waitText(15.minutes)
     }
 
 
