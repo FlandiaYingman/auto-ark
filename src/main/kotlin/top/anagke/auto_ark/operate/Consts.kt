@@ -320,6 +320,27 @@ object OperateOperations {
     }
 
 
+    internal val DV_8 = Operation("DV-8", description = "绿野幻梦、炽合金") {
+        tap(终端_活动, description = "活动：绿野幻梦").sleepl()
+        tap(1056, 276, description = "Zone：试验基地").sleep()
+        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
+        tap(410, 390, description = "DV-8").nap()
+    }
+    internal val DV_7 = Operation("DV-7", description = "绿野幻梦、扭转醇") {
+        tap(终端_活动, description = "活动：绿野幻梦").sleepl()
+        tap(1056, 276, description = "Zone：试验基地").sleep()
+        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
+        tap(178, 447, description = "DV-7").nap()
+    }
+    internal val DV_6 = Operation("DV-6", description = "绿野幻梦、聚酸酯组") {
+        tap(终端_活动, description = "活动：绿野幻梦").sleepl()
+        tap(1056, 276, description = "Zone：试验基地").sleep()
+        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
+        dragv(1280 / 2, 960 / 2, 323, 0, description = "显示DV-6").nap()
+        tap(410, 390, description = "DV-6").nap()
+    }
+
+
     private fun Device.enterPrimaryEvent(x: Int, y: Int) {
         tap(终端_活动).sleep().sleep()
         tap(x, y).sleep().sleep()
