@@ -19,4 +19,6 @@ data class Pos(val x: Int, val y: Int) : Comparable<Pos> {
         return Pos(this.x - that.x, this.y - that.y)
     }
 
+    fun weight(w: Double) = WPos(x, y, w)
+
 }

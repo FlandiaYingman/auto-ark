@@ -83,7 +83,7 @@ private constructor(val mat: Mat) {
         }
     }
 
-    fun find(tmpl: Img): Pair<Pos, Double> {
+    fun find(tmpl: Img): WPos {
         val sceneImg = discardAlpha(this.mat)
         val tmplImg = discardAlpha(tmpl.mat)
         val result = if (hasAlpha(tmpl.mat)) {
@@ -93,7 +93,7 @@ private constructor(val mat: Mat) {
             Mat().also { matchTemplate(sceneImg, tmplImg, it, TM_CCORR_NORMED) }
         }
         val loc = Core.minMaxLoc(result)
-        return loc.maxLoc.toPos() to (1.0 - loc.maxVal)
+        return loc.maxLoc.toPos().weight(1.0 - loc.maxVal)
     }
 
     fun crop(rect: Rect): Img {

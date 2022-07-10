@@ -109,6 +109,7 @@ data class ProcessOutput<O, E>(
 fun openProc(vararg command: String): Process {
     val procBuilder = ProcessBuilder(*command)
     return procBuilder.start()
+        .also { Logger.debug("open process $it") }
 }
 
 fun killProc(processName: String): Process {
