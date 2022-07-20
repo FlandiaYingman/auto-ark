@@ -86,7 +86,7 @@ object OperateOperations {
         }
     }
 
-    internal val 剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 15.minutes, type = 剿灭) {
+    internal val 剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 30.minutes, type = 剿灭) {
         tap(终端).sleep()
         tap(终端_常态事务).nap()
         if (notMatch(剿灭_已刷满)) {
