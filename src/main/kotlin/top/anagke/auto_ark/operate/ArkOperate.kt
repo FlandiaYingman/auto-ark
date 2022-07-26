@@ -7,7 +7,7 @@ import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.jumpOut
-import top.anagke.auto_ark.operate.OperateOperations.MAIN_1_7
+import top.anagke.auto_ark.operate.OperateOperations.DH_7
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
@@ -28,7 +28,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(MAIN_1_7, 100)
+            farm(DH_7, 100)
         }
 
         private fun farm(o: Operation, n: Int) {
@@ -130,6 +130,7 @@ class ArkOperate(
                 )
                 true
             }
+
             OperationState.NOT_OPEN -> {
                 Logger.info("进入关卡：$operation，关卡未开放，退出")
                 false

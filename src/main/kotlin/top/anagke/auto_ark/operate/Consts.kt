@@ -283,7 +283,6 @@ object OperateOperations {
         tap(1200, 470).nap()
     }
 
-
     internal val SN_8 = Operation("SN-8", description = "愚人号、异铁块") {
         tap(终端_活动).sleepl()
         tap(267, 495).sleepl() // 失落旗舰
@@ -291,7 +290,6 @@ object OperateOperations {
         // 屏幕总是自动移动到最右侧，所以无需手动移动
         tap(381, 207).sleep() // SN-8
     }
-
     internal val SN_9 = Operation("SN-9", description = "愚人号、轻锰矿") {
         tap(终端_活动).sleepl()
         tap(353, 571).sleepl() // 无名之海
@@ -300,7 +298,6 @@ object OperateOperations {
         dragv(640, 360, 700, 0)
         tap(83, 442).sleep() // SN-9
     }
-
     internal val SN_10 = Operation("SN-10", description = "愚人号、化合切削液") {
         tap(终端_活动).sleepl()
         tap(353, 571).sleepl() // 无名之海
@@ -310,7 +307,6 @@ object OperateOperations {
         tap(148, 339).sleep() // SN-10
     }
 
-
     internal val SV_9 = Operation("SV-9", description = "覆潮之下、全新装置") {
         tap(终端_活动).sleepl()
         tap(1207, 447, description = "荒败盐风").sleepl()
@@ -318,7 +314,6 @@ object OperateOperations {
         swipev(640, 360, -2560, 0, speed = 10.0).sleep()
         tap(382, 267, description = "SV-9").sleep()
     }
-
 
     internal val DV_8 = Operation("DV-8", description = "绿野幻梦、炽合金") {
         tap(终端_活动, description = "活动：绿野幻梦").sleepl()
@@ -338,6 +333,13 @@ object OperateOperations {
         swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
         dragv(1280 / 2, 960 / 2, 323, 0, description = "显示DV-6").nap()
         tap(410, 390, description = "DV-6").nap()
+    }
+
+    internal val DH_7 = Operation("DH-7", description = "多索雷斯假日") {
+        enterPrimaryEvent(947, 327)
+        swipev(4096, 0, speed = 10.0, description = "移动到最左").nap()
+        dragv(-775, 0, description = "显示DH-7").nap()
+        tap(1240, 317, description = "DH-7").nap()
     }
 
 
