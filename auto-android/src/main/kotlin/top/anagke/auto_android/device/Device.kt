@@ -110,6 +110,9 @@ class Device(
         sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
     }
 
+    fun swipev(vx: Int, vy: Int, speed: Double = 0.5, description: String = "") =
+        swipev(1280 / 2, 720 / 2, vx, vy, speed, description)
+
     fun dragv(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.15, description: String = "") {
         Logger.debug(genLogMessage("Drag Variation ($sx, $sy, $vx, $vy, $speed)", description))
         val ex = sx + vx
@@ -120,6 +123,9 @@ class Device(
             "exact", "$sx", "$sy", "$ex", "$ey", "$speed"
         ).waitText()
     }
+
+    fun dragv(vx: Int, vy: Int, speed: Double = 0.15, description: String = "") =
+        dragv(1280 / 2, 720 / 2, vx, vy, speed, description)
 
     fun back(description: String = "") {
         Logger.debug(genLogMessage("Back", description))
