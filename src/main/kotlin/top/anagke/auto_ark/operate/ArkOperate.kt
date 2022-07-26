@@ -43,15 +43,6 @@ class ArkOperate(
     override fun init() {
         // To initialize the operations
         OperateOperations
-
-        Operation.operations
-            .map { it.name }
-            .associateWith { 0 }
-            .toMutableMap()
-            .apply {
-                putAll(savedata.farmingPlan)
-                savedata.farmingPlan = this
-            }
     }
 
     override fun run() {
