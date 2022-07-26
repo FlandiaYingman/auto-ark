@@ -65,7 +65,7 @@ class ArkOperate(
         Logger.info("刷计划副本：${operateConfig.doFarmPlan}")
         if (!operateConfig.doFarmPlan) return
 
-        for (entry in savedata.farmingPlan) {
+        for (entry in savedata.farmingPlan.entries.shuffled()) {
             val operationName = entry.key
             val farmTimes = entry.value
             if (farmTimes == 0) continue
