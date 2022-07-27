@@ -9,11 +9,7 @@ class ArkLogin(
     auto: AutoArk
 ) : ArkModule(auto) {
 
-    companion object {
-
-        private val 开始界面 by tmpl(diff = 0.01)
-
-    }
+    companion object;
 
     override val name: String = "登录模块"
 

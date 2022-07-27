@@ -1,6 +1,7 @@
 package top.anagke.auto_ark
 
 import top.anagke.auto_android.device.BlueStacks
+import top.anagke.auto_android.device.Device
 import kotlin.io.path.Path
 
 object App {
@@ -21,6 +22,11 @@ object App {
         val config = AutoArkConfig.loadConfig(Path(CONFIG_PATH))
         val savedata = AutoArkSavedata.loadSavedata(Path(SAVEDATA_PATH))
         return AutoArk(config, savedata, BlueStacks(config.emulator).launch().device)
+    }
+
+    fun defaultDevice(): Device {
+        val config = AutoArkConfig.loadConfig(Path(CONFIG_PATH))
+        return BlueStacks(config.emulator).launch().device
     }
 
 }

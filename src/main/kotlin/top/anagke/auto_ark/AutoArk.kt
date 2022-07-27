@@ -1,9 +1,10 @@
 package top.anagke.auto_ark
 
 import top.anagke.auto_android.AutoAndroid
+import top.anagke.auto_android.AutoInterruptedException
 import top.anagke.auto_android.AutoModule
 import top.anagke.auto_android.device.Device
-import top.anagke.auto_android.device.match
+import top.anagke.auto_android.device.which
 import top.anagke.auto_ark.login.ArkLogin
 import top.anagke.auto_ark.mission.ArkMission
 import top.anagke.auto_ark.operate.ArkOperate
@@ -47,9 +48,13 @@ class AutoArk(
         },
     )
 
-    override fun isAtMain(): Boolean = device.match(主界面)
+    override fun isInterfaceAtMain(): Boolean {
+        return device.which(主界面, 登录认证失效).also {
+            if (it == 登录认证失效) throw AutoInterruptedException("登录认证失效")
+        } == 主界面
+    }
 
-    override fun returnToMain() = device.jumpOut()
+    override fun setInterfaceToMain() = device.resetInterface()
 
 
     override fun beforeModule() {
