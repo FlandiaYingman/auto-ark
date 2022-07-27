@@ -1,6 +1,5 @@
 package top.anagke.auto_android.util
 
-
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.tinylog.kotlin.Logger
@@ -9,9 +8,6 @@ import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.outputStream
-
-
-
 
 internal object BinResources {
 
