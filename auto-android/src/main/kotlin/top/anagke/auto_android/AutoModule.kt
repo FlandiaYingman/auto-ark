@@ -29,7 +29,7 @@ abstract class AutoModule<Auto : AutoAndroid<*>>(
      * The [AutoModule] starts at the main interface, also
      * ends at the main interface. If an error occurs during
      * [run], it doesn't need to return to the main interface -
-     * [AutoAndroid.returnToMain] is called.
+     * [AutoAndroid.setInterfaceToMain] is called.
      */
     abstract fun run()
 
