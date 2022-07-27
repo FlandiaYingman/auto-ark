@@ -42,7 +42,7 @@ class ArkLogin(
             back().nap()
             tap(130, 489).nap() //防止卡在返回界面
         }
-        jumpOut()
+        resetInterface()
 
         await(主界面)
         Logger.info("登录明日方舟（官服），完成登录")
@@ -55,7 +55,7 @@ class ArkLogin(
             back().nap()
             tap(130, 489).nap() //防止卡在返回界面
         }
-        jumpOut()
+        resetInterface()
 
         await(主界面)
         Logger.info("登录明日方舟（B服），完成登录")

@@ -36,7 +36,7 @@ class ArkMission(
             tap(1115, 150).sleep() //确认
         }
 
-        jumpOut()
+        resetInterface()
         await(主界面)
     }
 

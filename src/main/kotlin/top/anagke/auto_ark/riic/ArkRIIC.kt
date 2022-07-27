@@ -33,11 +33,11 @@ class ArkRIIC(
 
         进入基建()
         换班()
-        jumpOut()
+        resetInterface()
 
         进入基建()
         收取基建()
-        jumpOut()
+        resetInterface()
     }
 
     private fun 进入基建() = device.apply {
@@ -49,7 +49,7 @@ class ArkRIIC(
     private fun 收取基建() = device.apply {
         收取基建产出()
 //        收取会客室()
-        jumpOut()
+        resetInterface()
         进入基建()
         when (conf.无人机房间类型) {
             "MANUFACTURE" -> 无人机加速制造站(制造站 = conf.无人机房间)

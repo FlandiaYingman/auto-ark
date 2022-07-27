@@ -22,7 +22,7 @@ class ArkStore(
 
         enterStore()
         autoCreditStore()
-        jumpOut()
+        resetInterface()
     }
 
     private fun enterStore() = device.apply {

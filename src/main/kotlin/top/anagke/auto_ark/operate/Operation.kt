@@ -3,7 +3,7 @@ package top.anagke.auto_ark.operate
 import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.notMatch
 import top.anagke.auto_android.util.minutes
-import top.anagke.auto_ark.jumpOut
+import top.anagke.auto_ark.resetInterface
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启
 import java.util.concurrent.CopyOnWriteArrayList
@@ -39,7 +39,7 @@ enum class OperationType {
 fun Device.enter(operation: Operation): OperationState {
     with(operation) { enter() }
     if (notMatch(关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭)) {
-        jumpOut()
+        resetInterface()
         return OperationState.NOT_OPEN
     }
     return OperationState.OPEN

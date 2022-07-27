@@ -88,7 +88,7 @@ class ArkRecruit(
             autoSlot(slot)
         }
 
-        jumpOut()
+        resetInterface()
         Logger.info("结束模块：公开招募")
     }
 

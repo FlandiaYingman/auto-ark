@@ -68,7 +68,8 @@ val 主界面 by tmpl()
 // 可跳回主界面
 val 可跳出 by tmpl(0.01)
 
-fun Device.jumpOut() {
+
+fun Device.resetInterface() {
     if (match(可跳出)) {
         tap(267, 36).nap()
         tap(92, 169).nap()

@@ -6,7 +6,7 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.jumpOut
+import top.anagke.auto_ark.resetInterface
 import top.anagke.auto_ark.operate.OperateOperations.DH_7
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
@@ -105,7 +105,7 @@ class ArkOperate(
             if (result == EMPTY_SANITY) break
             actualTimes++
         }
-        jumpOut()
+        resetInterface()
 
         Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes 次")
         actualTimes
