@@ -11,6 +11,7 @@ import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.BinResources
 import top.anagke.auto_android.util.distance
 import top.anagke.auto_android.util.minutes
+import top.anagke.auto_android.util.seconds
 import kotlin.math.roundToInt
 
 class Device(
@@ -54,7 +55,7 @@ class Device(
      */
     fun cap(): Img {
         val raw = cmd("exec-out", "screencap")
-            .waitRaw()
+            .waitRaw(timeout = 1.seconds)
             .stdout
         return Img.decodeRaw(1280, 720, raw)
     }
