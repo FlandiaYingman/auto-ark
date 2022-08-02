@@ -1,5 +1,6 @@
 package top.anagke.auto_android.device
 
+import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.native.Platform
 import top.anagke.auto_android.native.openProc
 import top.anagke.auto_android.native.waitText
@@ -60,16 +61,21 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
 
 
     override fun launch(): EmulatorHandle {
+        Logger.info("启动蓝叠模拟器中")
+
         val adb = ADB(File(blueStacksHome, "HD-Adb.exe").canonicalPath)
         adb.cmd("start-server", serial = null).waitText()
+        Logger.info("启动蓝叠模拟器的 ADB 模块")
 
         val (instance, mutex) = grabInstance() ?: throw Exception("no available instance was found")
+        Logger.info("启动蓝叠模拟器的 ${instance.instance} 实例")
 
         while (true) {
             val adbHost = "127.0.0.1"
             val adbPort = instance.port()
             val device = connect(adb, adbHost, adbPort)
             if (device != null) {
+                Logger.info("启动蓝叠模拟器的 ${instance.instance} 实例，启动完成")
                 return EmulatorHandle(device, mutex)
             }
         }
@@ -126,4 +132,3 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
     }
 
 }
-
