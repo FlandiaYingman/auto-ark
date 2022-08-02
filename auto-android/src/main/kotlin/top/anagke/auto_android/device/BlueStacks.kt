@@ -6,6 +6,7 @@ import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.MutexException
 import top.anagke.auto_android.util.OsMutex
 import top.anagke.auto_android.util.Win32
+import top.anagke.auto_android.util.seconds
 import java.io.File
 import java.util.*
 
@@ -91,7 +92,7 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
 
         private fun connect(adb: ADB, adbHost: String, adbPort: Int): Device? {
             val addr = "${adbHost}:${adbPort}"
-            val (stdout, stderr) = adb.cmd("devices", serial = null).waitText()
+            val (stdout, stderr) = adb.cmd("devices", serial = null).waitText(timeout = 1.seconds)
             when {
                 // the stderr prints some message: reset ADB
                 stderr.isNotBlank() -> {
@@ -103,12 +104,12 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
                 }
                 // the address exist, but the state is offline: reconnect device
                 stdout.contains(Regex("$addr\\s*offline")) -> {
-                    adb.cmd("reconnect", serial = addr).waitText()
+                    adb.cmd("reconnect", serial = addr).waitText(timeout = 5.seconds)
                     return null
                 }
                 // the address doesn't even exist - not connected
                 else -> {
-                    adb.cmd("connect", addr, serial = null).waitText()
+                    adb.cmd("connect", addr, serial = null).waitText(timeout = 5.seconds)
                     return null
                 }
             }
