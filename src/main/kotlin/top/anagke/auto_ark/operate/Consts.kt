@@ -335,11 +335,11 @@ object OperateOperations {
         tap(410, 390, description = "DV-6").nap()
     }
 
-    internal val DH_7 = Operation("DH-7", description = "多索雷斯假日") {
+    internal val DH_9 = Operation("DH-9", description = "多索雷斯假日") {
         enterPrimaryEvent(947, 327)
         swipev(4096, 0, speed = 10.0, description = "移动到最左").nap()
-        dragv(-775, 0, description = "显示DH-7").nap()
-        tap(1240, 317, description = "DH-7").nap()
+        dragv(-1484, 0, description = "显示DH-7").nap()
+        tap(1216, 199, description = "DH-7").nap()
     }
 
 
