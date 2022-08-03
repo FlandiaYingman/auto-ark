@@ -104,10 +104,11 @@ class ArkOperate(
             val result = operateOperation(operation)
             if (result == EMPTY_SANITY) break
             actualTimes++
+            Logger.info("刷副本：$operation 中，实际刷 $actualTimes/$farmTimes 次")
         }
         resetInterface()
 
-        Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes 次")
+        Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes/$farmTimes 次")
         actualTimes
     }
 
