@@ -6,8 +6,7 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.resetInterface
-import top.anagke.auto_ark.operate.OperateOperations.DH_7
+import top.anagke.auto_ark.operate.OperateOperations.DH_9
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
@@ -20,6 +19,7 @@ import top.anagke.auto_ark.operate.OperateTemplates.理智不足_药剂即将到
 import top.anagke.auto_ark.operate.OperateTemplates.等级提升
 import top.anagke.auto_ark.operate.OperateTemplates.编队界面
 import top.anagke.auto_ark.operate.OperateTemplates.行动结束
+import top.anagke.auto_ark.resetInterface
 
 class ArkOperate(
     auto: AutoArk,
@@ -28,7 +28,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(DH_7, 100)
+            farm(DH_9, 4)
         }
 
         private fun farm(o: Operation, n: Int) {
