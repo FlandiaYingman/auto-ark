@@ -1,6 +1,7 @@
 package top.anagke.auto_ark
 
 import com.sksamuel.hoplite.ConfigLoader
+import com.sksamuel.hoplite.addPathSource
 import top.anagke.auto_android.device.BlueStacksConf
 import top.anagke.auto_ark.operate.OperateConfig
 import top.anagke.auto_ark.riic.RIICConfig
@@ -24,7 +25,11 @@ data class AutoArkConfig(
             if (configFile.notExists()) {
                 baseConfigFile.copyTo(configFile)
             }
-            return ConfigLoader().loadConfigOrThrow(listOfNotNull(configFile.toString(), baseConfigFile.toString()))
+            return ConfigLoader.builder()
+                .addPathSource(configFile)
+                .addPathSource(baseConfigFile)
+                .build()
+                .loadConfigOrThrow()
         }
 
     }
