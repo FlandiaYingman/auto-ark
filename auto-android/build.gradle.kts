@@ -38,11 +38,6 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "17"
@@ -50,5 +45,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.wrapper {
-    gradleVersion = "7.4.2"
+    gradleVersion = "7.5"
 }
