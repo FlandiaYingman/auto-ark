@@ -31,7 +31,7 @@ dependencies {
     implementation("org.jsoup:jsoup:1.14.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
-    implementation("com.charleskorn.kaml:kaml:0.45.0")
+    implementation("com.charleskorn.kaml:kaml:0.46.0")
     implementation("com.google.code.gson:gson:2.9.0")
 
 
@@ -40,16 +40,10 @@ dependencies {
 
     // Config Parsing
     implementation("com.sksamuel.hoplite:hoplite:1.0.3")
-    implementation("com.sksamuel.hoplite:hoplite-yaml:2.1.5")
-
+    implementation("com.sksamuel.hoplite:hoplite-yaml:2.4.0")
 
     // CLI Argument Parsing
-    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.4")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
 }
 
 tasks.withType<KotlinCompile> {
@@ -59,21 +53,11 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.wrapper {
-    gradleVersion = "7.4.2"
-}
-
-distributions {
-    main {
-        contents {
-            from(".") {
-                include("bin/**")
-                include("config_base.yaml")
-            }
-        }
-    }
+    gradleVersion = "7.5"
 }
 
 application {
     mainClass.set("top.anagke.auto_ark.AppKt")
     executableDir = ""
+    applicationDefaultJvmArgs = listOf("-Dfile.encoding=UTF-8")
 }
