@@ -60,25 +60,25 @@ class Device(
         return Img.decodeRaw(1280, 720, raw)
     }
 
-    fun tap(pos: Pos, description: String = "") = tap(pos.x, pos.y, description = description)
+    fun tap(pos: Pos, desc: String = "") = tap(pos.x, pos.y, desc = desc)
 
-    fun tap(x: Int, y: Int, description: String = "") {
-        Logger.debug(genLogMessage("Tap ($x, $y)", description))
+    fun tap(x: Int, y: Int, desc: String = "") {
+        Logger.debug(formatMsg("Tap ($x, $y)", desc))
         sh("input", "tap", "$x", "$y").waitText()
     }
 
-    fun tapd(x: Int, y: Int, description: String = "") {
-        Logger.debug(genLogMessage("Double Tap ($x, $y)", description))
+    fun tapd(x: Int, y: Int, desc: String = "") {
+        Logger.debug(formatMsg("Double Tap ($x, $y)", desc))
         sh("input", "tap", "$x", "$y", ";", "input", "tap", "$x", "$y").waitText()
     }
 
-    fun tapl(x: Int, y: Int, duration: Int = 1000, description: String = "") {
-        Logger.debug(genLogMessage("Long Tap ($x, $y)", description))
+    fun tapl(x: Int, y: Int, duration: Int = 1000, desc: String = "") {
+        Logger.debug(formatMsg("Long Tap ($x, $y)", desc))
         sh("input", "swipe", "$x", "$y", "$x", "$y", "$duration").waitText()
     }
 
-    fun tapm(vararg pos: Pos, description: String = "") {
-        Logger.debug(genLogMessage("Multiple Tap (${pos.toList()})", description))
+    fun tapm(vararg pos: Pos, desc: String = "") {
+        Logger.debug(formatMsg("Multiple Tap (${pos.toList()})", desc))
         val cmds = pos
             .map { listOf("input", "tap", "${it.x}", "${it.y}", ";") }
             .flatten()
@@ -86,15 +86,15 @@ class Device(
         sh(*cmds).waitText()
     }
 
-    fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, description: String = "") {
-        Logger.debug(genLogMessage("Swipe ($sx, $sy, $ex, $ey, $speed)", description))
+    fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, desc: String = "") {
+        Logger.debug(formatMsg("Swipe ($sx, $sy, $ex, $ey, $speed)", desc))
         val k = 1.0
         val duration = (distance(Pos(sx, sy), Pos(ex, ey)) / speed * k).roundToInt()
         sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
     }
 
-    fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, description: String = "") {
-        Logger.debug(genLogMessage("Drag ($sx, $sy, $ex, $ey, $speed)", description))
+    fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, desc: String = "") {
+        Logger.debug(formatMsg("Drag ($sx, $sy, $ex, $ey, $speed)", desc))
         app_process(
             "/data/local/tmp/swipee.jar",
             "top.anagke.Swipee",
@@ -102,8 +102,8 @@ class Device(
         ).waitText()
     }
 
-    fun swipev(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.5, description: String = "") {
-        Logger.debug(genLogMessage("Swipe Variation ($sx, $sy, $vx, $vy, $speed)", description))
+    fun swipev(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.5, desc: String = "") {
+        Logger.debug(formatMsg("Swipe Variation ($sx, $sy, $vx, $vy, $speed)", desc))
         val ex = sx + vx
         val ey = sy + vy
         val k = 1.0
@@ -111,11 +111,11 @@ class Device(
         sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
     }
 
-    fun swipev(vx: Int, vy: Int, speed: Double = 0.5, description: String = "") =
-        swipev(1280 / 2, 720 / 2, vx, vy, speed, description)
+    fun swipev(vx: Int, vy: Int, speed: Double = 0.5, desc: String = "") =
+        swipev(1280 / 2, 720 / 2, vx, vy, speed, desc)
 
-    fun dragv(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.15, description: String = "") {
-        Logger.debug(genLogMessage("Drag Variation ($sx, $sy, $vx, $vy, $speed)", description))
+    fun dragv(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.15, desc: String = "") {
+        Logger.debug(formatMsg("Drag Variation ($sx, $sy, $vx, $vy, $speed)", desc))
         val ex = sx + vx
         val ey = sy + vy
         app_process(
@@ -125,59 +125,59 @@ class Device(
         ).waitText()
     }
 
-    fun dragv(vx: Int, vy: Int, speed: Double = 0.15, description: String = "") =
-        dragv(1280 / 2, 720 / 2, vx, vy, speed, description)
+    fun dragv(vx: Int, vy: Int, speed: Double = 0.15, desc: String = "") =
+        dragv(1280 / 2, 720 / 2, vx, vy, speed, desc)
 
     fun back(description: String = "") {
-        Logger.debug(genLogMessage("Back", description))
+        Logger.debug(formatMsg("Back", description))
         sh("input", "keyevent", "4").waitText()
     }
 
 
-    fun input(str: String, description: String = "") {
-        Logger.debug(genLogMessage("Input '$str'", description))
+    fun input(str: String, desc: String = "") {
+        Logger.debug(formatMsg("Input '$str'", desc))
         sh("input", "text", str).waitText()
     }
 
-    fun inputSecret(str: String, description: String = "") {
-        Logger.debug(genLogMessage("Input '${str.replace(Regex("."), "*")}'", description))
+    fun inputSecret(str: String, desc: String = "") {
+        Logger.debug(formatMsg("Input '${str.replace(Regex("."), "*")}'", desc))
         sh("input", "text", str).waitText()
     }
 
 
-    fun launch(activity: AndroidActivity, description: String = "") {
-        Logger.debug(genLogMessage("Launch $activity", description))
+    fun launch(activity: AndroidActivity, desc: String = "") {
+        Logger.debug(formatMsg("Launch $activity", desc))
         sh("monkey", "-p", activity.packageName, "1").waitText()
     }
 
-    fun stop(activity: AndroidActivity, description: String = "") {
-        Logger.debug(genLogMessage("Stop activity $activity", description))
+    fun stop(activity: AndroidActivity, desc: String = "") {
+        Logger.debug(formatMsg("Stop activity $activity", desc))
         sh("am", "force-stop", activity.packageName).waitText()
     }
 
 
-    fun dumpsys(activity: AndroidActivity, description: String = ""): ProcessOutput<String, String> {
-        Logger.debug(genLogMessage("Dumpsys", description))
+    fun dumpsys(activity: AndroidActivity, desc: String = ""): ProcessOutput<String, String> {
+        Logger.debug(formatMsg("Dumpsys", desc))
         return sh("dumpsys", "package", activity.packageName).waitText()
     }
 
     fun install(apk: String, description: String = "") {
-        Logger.debug(genLogMessage("Install APK $apk", description))
+        Logger.debug(formatMsg("Install APK $apk", description))
         cmd("install", "-r", apk).waitText(15.minutes)
     }
 
 
-    fun push(local: String, remote: String, description: String = "") {
-        Logger.debug(genLogMessage("Push $remote to $local", description))
+    fun push(local: String, remote: String, desc: String = "") {
+        Logger.debug(formatMsg("Push $remote to $local", desc))
         cmd("push", local, remote).waitText()
     }
 
-    fun pull(remote: String, local: String, description: String = "") {
-        Logger.debug(genLogMessage("Pull $remote to $local", description))
+    fun pull(remote: String, local: String, desc: String = "") {
+        Logger.debug(formatMsg("Pull $remote to $local", desc))
         cmd("pull", remote, local).waitText()
     }
 
-    private fun genLogMessage(message: String, description: String) = "$description; $this: $message"
+    private fun formatMsg(message: String, desc: String) = "$desc; $this: $message"
 
 
     override fun toString(): String {
