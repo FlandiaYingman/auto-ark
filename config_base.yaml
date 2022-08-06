@@ -11,9 +11,10 @@ emulator:
   blueStacksData: null
 #  blueStacksData: "D:\ProgramData\BlueStacks_nxt"
 
-riicConfig:
-  autoAssigning: true
-  autoAssignControlCenter: false
+loginConf:
+  doSwitchAccount: false
+  username: ""
+  password: ""
 
 # 行动配置
 operateConfig:

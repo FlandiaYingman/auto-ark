@@ -44,7 +44,7 @@ class AutoArk(
 
     override val finalModules: List<AutoModule<AutoArk>> = listOf(
         createModule("清理模块") {
-            device.stop(config.server.activity, description = "停止明日方舟")
+            device.stop(ArkServer.OFFICIAL.activity, description = "停止明日方舟")
         },
     )
 

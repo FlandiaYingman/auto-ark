@@ -3,6 +3,7 @@ package top.anagke.auto_ark
 import com.sksamuel.hoplite.ConfigLoader
 import com.sksamuel.hoplite.addPathSource
 import top.anagke.auto_android.device.BlueStacksConf
+import top.anagke.auto_ark.login.ArkLoginConf
 import top.anagke.auto_ark.operate.OperateConfig
 import top.anagke.auto_ark.riic.RIICConfig
 import java.nio.file.Path
@@ -13,6 +14,7 @@ import kotlin.io.path.notExists
 data class AutoArkConfig(
     val server: ArkServer,
     val emulator: BlueStacksConf,
+    val loginConf: ArkLoginConf,
     val operateConfig: OperateConfig,
     val 基建: RIICConfig
 ) {

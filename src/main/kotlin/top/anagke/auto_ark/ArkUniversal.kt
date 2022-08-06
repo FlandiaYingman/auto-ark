@@ -87,5 +87,5 @@ enum class ArkServer(
     val activity: AndroidActivity,
 ) {
     OFFICIAL(AndroidActivity("com.hypergryph.arknights", "com.u8.sdk.U8UnityContext")),
-    BILIBILI(AndroidActivity("com.hypergryph.arknights.bilibili", ""))
+//    BILIBILI(AndroidActivity("com.hypergryph.arknights.bilibili", ""))
 }

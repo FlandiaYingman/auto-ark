@@ -36,7 +36,7 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
     private fun downloadLatest(location: Path) {
         val url = when (config.server) {
             ArkServer.OFFICIAL -> ArkUrls.officialApkUrl
-            ArkServer.BILIBILI -> ArkUrls.bilibiliApkUrl
+//            ArkServer.BILIBILI -> ArkUrls.bilibiliApkUrl
         }
         url.openStream().use {
             Files.copy(it, location)
