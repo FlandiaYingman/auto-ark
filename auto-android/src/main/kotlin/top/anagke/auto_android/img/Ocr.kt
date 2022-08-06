@@ -8,7 +8,6 @@ import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.BinResources
 
 
-
 fun ocrWord(img: Img, words: List<String> = emptyList()): String {
     BinResources.init()
 

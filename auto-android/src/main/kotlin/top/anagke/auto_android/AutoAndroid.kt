@@ -114,13 +114,12 @@ abstract class AutoAndroid<Self : AutoAndroid<Self>>(
 
 
     /**
-     * [isInterfaceAtMain] indicates whether this device is at the main interface.
+     * [isInterfaceAtMain] indicates whether this device is at the main
+     * interface.
      */
     abstract fun isInterfaceAtMain(): Boolean
 
-    /**
-     * [setInterfaceToMain] returns this device to the main interface.
-     */
+    /** [setInterfaceToMain] returns this device to the main interface. */
     abstract fun setInterfaceToMain()
 
     private fun resetInterface() {

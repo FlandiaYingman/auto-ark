@@ -7,6 +7,7 @@ interface Platform {
                 com.sun.jna.Platform.isWindows() -> {
                     return Windows
                 }
+
                 else -> throw UnsupportedOperationException("osType = ${com.sun.jna.Platform.getOSType()}")
             }
         }
