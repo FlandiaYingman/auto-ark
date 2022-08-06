@@ -86,11 +86,22 @@ object OperateOperations {
         }
     }
 
-    internal val 剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 30.minutes, type = 剿灭) {
+    internal val 当期剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 30.minutes, type = 剿灭) {
         tap(终端).sleep()
         tap(终端_常态事务).nap()
         if (notMatch(剿灭_已刷满)) {
             tap(769, 456, description = "当期剿灭作战").sleep()
+        }
+    }
+
+    internal val 剿灭作战_龙门外环 = Operation("剿灭作战、龙门外环", "合成玉", timeout = 30.minutes, type = 剿灭) {
+        tap(终端).sleep()
+        tap(终端_常态事务).nap()
+        if (notMatch(剿灭_已刷满)) {
+            tap(769, 456, description = "当期剿灭作战").sleep()
+            back(description = "退出作战准备界面").nap()
+            tap(1240, 649, description = "切换剿灭").sleep()
+            tap(1013, 265, description = "龙门外环").sleep()
         }
     }
 
@@ -357,14 +368,35 @@ object OperateOperations {
 // 策略
 // 1. 永远优先龙门币。
 // 2. 然后刷 1-7 和 经验。
-fun dailyOps() = when (today()) {
-    DayOfWeek.MONDAY -> listOf(LS_6, LS_5)
-    DayOfWeek.TUESDAY -> listOf(CE_6, CE_5)
-    DayOfWeek.WEDNESDAY -> listOf(CA_5)
-    DayOfWeek.THURSDAY -> listOf(CE_6, CE_5)
-    DayOfWeek.FRIDAY -> listOf(MAIN_1_7)
-    DayOfWeek.SATURDAY -> listOf(CE_6, CE_5)
-    DayOfWeek.SUNDAY -> listOf(CE_6, CE_5)
+fun dailyOps(level: 资源关种类) = when (today()) {
+    DayOfWeek.MONDAY -> when (level) {
+        资源关种类.LEVEL_5 -> LS_5
+        资源关种类.LEVEL_6 -> LS_6
+    }
+
+    DayOfWeek.TUESDAY -> when (level) {
+        资源关种类.LEVEL_5 -> CE_5
+        资源关种类.LEVEL_6 -> CE_6
+    }
+
+    DayOfWeek.WEDNESDAY -> CA_5
+
+    DayOfWeek.THURSDAY -> when (level) {
+        资源关种类.LEVEL_5 -> CE_5
+        资源关种类.LEVEL_6 -> CE_6
+    }
+
+    DayOfWeek.FRIDAY -> MAIN_1_7
+
+    DayOfWeek.SATURDAY -> when (level) {
+        资源关种类.LEVEL_5 -> CE_5
+        资源关种类.LEVEL_6 -> CE_6
+    }
+
+    DayOfWeek.SUNDAY -> when (level) {
+        资源关种类.LEVEL_5 -> CE_5
+        资源关种类.LEVEL_6 -> CE_6
+    }
 }
 
 private enum class 资源收集_材料 {

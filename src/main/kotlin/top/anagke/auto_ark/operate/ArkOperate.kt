@@ -7,7 +7,8 @@ import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.operate.OperateOperations.DH_9
-import top.anagke.auto_ark.operate.OperateOperations.剿灭作战
+import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_龙门外环
+import top.anagke.auto_ark.operate.OperateOperations.当期剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
 import top.anagke.auto_ark.operate.OperateStrategy.*
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭
@@ -38,7 +39,7 @@ class ArkOperate(
         }
     }
 
-    private val operateConfig = config.行动配置
+    private val conf = config.行动配置
 
     override fun init() {
         // To initialize the operations
@@ -55,15 +56,19 @@ class ArkOperate(
     override val name = "行动模块"
 
     private fun farmAnnihilation() {
-        Logger.info("刷剿灭委托：${operateConfig.刷剿灭}")
-        if (!operateConfig.刷剿灭) return
+        Logger.info("刷剿灭委托：${conf.刷剿灭}")
+        if (!conf.刷剿灭) return
 
-        farm(剿灭作战, 1)
+        if (conf.刷当期剿灭) {
+            farm(当期剿灭作战, 1)
+        } else {
+            farm(剿灭作战_龙门外环, 1)
+        }
     }
 
     private fun farmPlan() {
-        Logger.info("刷计划副本：${operateConfig.刷计划}")
-        if (!operateConfig.刷计划) return
+        Logger.info("刷计划副本：${conf.刷计划}")
+        if (!conf.刷计划) return
 
         for (entry in savedata.farmingPlan.entries.shuffled()) {
             val operationName = entry.key
@@ -81,12 +86,10 @@ class ArkOperate(
     }
 
     private fun farmDaily() {
-        Logger.info("刷日常副本：${operateConfig.刷日常}")
-        if (!operateConfig.刷日常) return
+        Logger.info("刷日常副本：${conf.刷日常}")
+        if (!conf.刷日常) return
 
-        for (op in dailyOps()) {
-            farm(op)
-        }
+        farm(dailyOps(conf.资源关种类))
     }
 
 
@@ -131,7 +134,7 @@ class ArkOperate(
     }
 
     private fun Device.operateOperation(operation: Operation): OperateResult {
-        Logger.info("代理指挥关卡：$operation，理智策略：${operateConfig.理智策略}")
+        Logger.info("代理指挥关卡：$operation，理智策略：${conf.理智策略}")
         assert(
             关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
         )
@@ -143,7 +146,7 @@ class ArkOperate(
         tap(1078, 661)
         await(编队界面, 理智不足_可使用药剂, 理智不足_可使用源石)
 
-        var strategy = operateConfig.理智策略
+        var strategy = conf.理智策略
         if (strategy == IFF_EXPIRE_SOON) {
             strategy = (if (match(理智不足_药剂即将到期)) POTION else WAIT)
         }
