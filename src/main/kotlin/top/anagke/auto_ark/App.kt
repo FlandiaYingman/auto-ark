@@ -14,8 +14,11 @@ object App {
 
 
     fun run() {
+        Logger.info("启动自动方舟")
         val (config, savedata) = loadConfigAndSavedata()
+        Logger.info("已读取配置文件、储存文件")
         BlueStacks(config.emulator).launch().use {
+            Logger.info("已启动模拟器")
             AutoArk(config, savedata, it.device).doRoutine()
         }
     }
