@@ -90,7 +90,7 @@ object OperateOperations {
         tap(终端).sleep()
         tap(终端_常态事务).nap()
         if (notMatch(剿灭_已刷满)) {
-            tap(769, 456, description = "当期剿灭作战").sleep()
+            tap(769, 456, desc = "当期剿灭作战").sleep()
         }
     }
 
@@ -98,41 +98,41 @@ object OperateOperations {
         tap(终端).sleep()
         tap(终端_常态事务).nap()
         if (notMatch(剿灭_已刷满)) {
-            tap(769, 456, description = "当期剿灭作战").sleep()
+            tap(769, 456, desc = "当期剿灭作战").sleep()
             back(description = "退出作战准备界面").nap()
-            tap(1240, 649, description = "切换剿灭").sleep()
-            tap(1013, 265, description = "龙门外环").sleep()
+            tap(1240, 649, desc = "切换剿灭").sleep()
+            tap(1013, 265, desc = "龙门外环").sleep()
         }
     }
 
     internal val LS_6 = Operation("LS-6", "作战记录") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.战术演习.where(this) ?: return@Operation
-        tap(pos, description = "战术演习").nap()
+        tap(pos, desc = "战术演习").nap()
         tap(OperatePoses.XX_6).nap() //LS-6
     }
     internal val CE_6 = Operation("CE-6", "龙门币") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.货物运送.where(this) ?: return@Operation
-        tap(pos, description = "货物运送").nap()
+        tap(pos, desc = "货物运送").nap()
         tap(OperatePoses.XX_6).nap() //CE-6
     }
     internal val LS_5 = Operation("LS-5", "作战记录") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.战术演习.where(this) ?: return@Operation
-        tap(pos, description = "战术演习").nap()
+        tap(pos, desc = "战术演习").nap()
         tap(OperatePoses.XX_5).nap() //LS-5
     }
     internal val CE_5 = Operation("CE-5", "龙门币") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.货物运送.where(this) ?: return@Operation
-        tap(pos, description = "货物运送").nap()
+        tap(pos, desc = "货物运送").nap()
         tap(OperatePoses.XX_5).nap() //CE-5
     }
     internal val CA_5 = Operation("CA-5", "技巧概要") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.空中威胁.where(this) ?: return@Operation
-        tap(pos, description = "空中威胁").nap()
+        tap(pos, desc = "空中威胁").nap()
         tap(OperatePoses.XX_5_OLD).nap() //CA-5
     }
 
@@ -320,37 +320,37 @@ object OperateOperations {
 
     internal val SV_9 = Operation("SV-9", description = "覆潮之下、全新装置") {
         tap(终端_活动).sleepl()
-        tap(1207, 447, description = "荒败盐风").sleepl()
+        tap(1207, 447, desc = "荒败盐风").sleepl()
 
         swipev(640, 360, -2560, 0, speed = 10.0).sleep()
-        tap(382, 267, description = "SV-9").sleep()
+        tap(382, 267, desc = "SV-9").sleep()
     }
 
     internal val DV_8 = Operation("DV-8", description = "绿野幻梦、炽合金") {
-        tap(终端_活动, description = "活动：绿野幻梦").sleepl()
-        tap(1056, 276, description = "Zone：试验基地").sleep()
-        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
-        tap(410, 390, description = "DV-8").nap()
+        tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
+        tap(1056, 276, desc = "Zone：试验基地").sleep()
+        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
+        tap(410, 390, desc = "DV-8").nap()
     }
     internal val DV_7 = Operation("DV-7", description = "绿野幻梦、扭转醇") {
-        tap(终端_活动, description = "活动：绿野幻梦").sleepl()
-        tap(1056, 276, description = "Zone：试验基地").sleep()
-        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
-        tap(178, 447, description = "DV-7").nap()
+        tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
+        tap(1056, 276, desc = "Zone：试验基地").sleep()
+        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
+        tap(178, 447, desc = "DV-7").nap()
     }
     internal val DV_6 = Operation("DV-6", description = "绿野幻梦、聚酸酯组") {
-        tap(终端_活动, description = "活动：绿野幻梦").sleepl()
-        tap(1056, 276, description = "Zone：试验基地").sleep()
-        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, description = "拉到最右").nap()
-        dragv(1280 / 2, 960 / 2, 323, 0, description = "显示DV-6").nap()
-        tap(410, 390, description = "DV-6").nap()
+        tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
+        tap(1056, 276, desc = "Zone：试验基地").sleep()
+        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
+        dragv(1280 / 2, 960 / 2, 323, 0, desc = "显示DV-6").nap()
+        tap(410, 390, desc = "DV-6").nap()
     }
 
     internal val DH_9 = Operation("DH-9", description = "多索雷斯假日") {
         enterPrimaryEvent(947, 327)
-        swipev(4096, 0, speed = 10.0, description = "移动到最左").nap()
-        dragv(-1484, 0, description = "显示DH-7").nap()
-        tap(1216, 199, description = "DH-7").nap()
+        swipev(4096, 0, speed = 10.0, desc = "移动到最左").nap()
+        dragv(-1484, 0, desc = "显示DH-7").nap()
+        tap(1216, 199, desc = "DH-7").nap()
     }
 
 

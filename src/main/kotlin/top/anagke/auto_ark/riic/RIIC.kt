@@ -210,7 +210,7 @@ fun Device.doShift(room: String = "") {
 }
 
 fun Device.doShiftAdv(schedule: Sch) {
-    tap(510, 680, description = "清空选择").nap()
+    tap(510, 680, desc = "清空选择").nap()
 
     val selectedOperators = mutableSetOf<Op>()
     val selectedPoses = mutableSetOf<Pos>()
@@ -229,7 +229,7 @@ fun Device.doShiftAdv(schedule: Sch) {
                     if (selectedOperators.size >= schedule.ops.size) return@forEach
                     if (pos in selectedPoses) continue
 
-                    tap(pos.toScreenPos(), description = "选择${operator.name}")
+                    tap(pos.toScreenPos(), desc = "选择${operator.name}")
                     selectedOperators += operator
                     selectedPoses += pos
                     break
@@ -237,26 +237,26 @@ fun Device.doShiftAdv(schedule: Sch) {
             }
             if (selectedOperators.size >= schedule.ops.size) break@outer
 
-            dragv(640, 360, -895, 0, speed = 0.25, description = "拖拽到下一页面").nap()
+            dragv(640, 360, -895, 0, speed = 0.25, desc = "拖拽到下一页面").nap()
 
             selectedPoses.clear()
         }
         if (selectedOperators.size >= schedule.ops.size) break@outer
 
-        swipev(640, 360, 2700, 0, speed = 10.0, description = "回到最左侧").nap()
-        tap(800, 45, description = "切换排序").nap()
+        swipev(640, 360, 2700, 0, speed = 10.0, desc = "回到最左侧").nap()
+        tap(800, 45, desc = "切换排序").nap()
 
         orderingChanged = true
         selectedOperators.indices.mapTo(selectedPoses) { Pos(it % 2, it / 2) }
     }
     if (orderingChanged) {
-        tap(800, 45, description = "切换排序")
+        tap(800, 45, desc = "切换排序")
     }
 }
 
 fun Device.doShiftDorm(preserve: Int, init: Boolean = false) {
     if (init) {
-        tap(1180, 40, description = "").nap()
+        tap(1180, 40, desc = "").nap()
         whileNotMatch(心情增序) {
             tap(605, 170).nap()
         }

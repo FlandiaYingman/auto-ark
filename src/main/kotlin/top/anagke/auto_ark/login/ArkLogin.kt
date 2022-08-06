@@ -36,22 +36,22 @@ class ArkLogin(
         if (conf.切换账户) {
             Logger.info("登录明日方舟（官服），切换账号为：${conf.用户名}")
 
-            tap(923, 681, description = "账号管理").nap()
-            tap(525, 508, description = "账号登录").sleep()
+            tap(923, 681, desc = "账号管理").nap()
+            tap(525, 508, desc = "账号登录").sleep()
 
-            tap(508, 430, description = "用户名栏").nap()
-            input(conf.用户名, description = "输入用户名").nap()
-            tap(1198, 668, description = "完成输入").nap()
+            tap(508, 430, desc = "用户名栏").nap()
+            input(conf.用户名, desc = "输入用户名").nap()
+            tap(1198, 668, desc = "完成输入").nap()
 
-            tap(508, 484, description = "密码栏").nap()
-            inputSecret(conf.密码, description = "输入密码").nap()
-            tap(1198, 668, description = "完成输入").nap()
+            tap(508, 484, desc = "密码栏").nap()
+            inputSecret(conf.密码, desc = "输入密码").nap()
+            tap(1198, 668, desc = "完成输入").nap()
 
             Logger.info("登录明日方舟（官服），完成切换账号，登录")
-            tap(638, 578, description = "登录").sleepl()
+            tap(638, 578, desc = "登录").sleepl()
         } else {
             Logger.info("登录明日方舟（官服），检测到登录界面，登录")
-            tap(639, 507, description = "开始唤醒").sleepl()
+            tap(639, 507, desc = "开始唤醒").sleepl()
         }
 
         Logger.info("登录明日方舟（官服），等待登录完成")
