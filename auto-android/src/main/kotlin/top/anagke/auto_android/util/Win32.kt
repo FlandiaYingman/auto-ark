@@ -19,4 +19,12 @@ object Win32 {
         return str in output
     }
 
+    fun closeBy(where: String): Process {
+        return openProc("wmic", "process", where, "delete")
+    }
+
+    fun getBy(where: String): Process {
+        return openProc("wmic", "process", where, "get")
+    }
+
 }

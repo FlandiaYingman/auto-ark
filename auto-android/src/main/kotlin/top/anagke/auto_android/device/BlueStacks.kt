@@ -9,9 +9,13 @@ import top.anagke.auto_android.util.OsMutex
 import top.anagke.auto_android.util.Win32
 import top.anagke.auto_android.util.seconds
 import java.io.File
+import java.time.Duration
+import java.time.Instant
 import java.util.*
 
 class BlueStacks(config: BlueStacksConf) : Emulator {
+
+    val bsExec = "HD-Player.exe"
 
     val blueStacksHome: String =
         File(config.blueStacksHome ?: Platform.getPlatform().getBlueStacksInstallDir()).canonicalPath
@@ -38,18 +42,20 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
         }.map { BlueStacksInstance(it) }.distinct().toList()
 
 
-    inner class BlueStacksInstance(val instance: String) {
+    inner class BlueStacksInstance(val instance: String) : AutoCloseable {
 
-        fun isRunning(): Boolean {
-            val bsExec = "HD-Player.exe"
-            return Win32.procExists(bsExec) && Win32.procCmdExists(instance, bsExec)
-        }
+        private var mutex: OsMutex? = null
 
-        fun run(): OsMutex {
-            return OsMutex("bs_$instance.lock").also {
+        fun run() {
+            this.mutex = OsMutex("bs_$instance.lock").also {
                 val executable = File(blueStacksHome).resolve("HD-Player.exe")
                 openProc(executable.canonicalPath, "--instance", instance)
             }
+        }
+
+        override fun close() {
+            this.mutex?.close()
+            Win32.closeBy("Caption='$bsExec' AND CommandLine LIKE '%%$instance%%'").waitText()
         }
 
         fun port(): Int {
@@ -67,25 +73,30 @@ class BlueStacks(config: BlueStacksConf) : Emulator {
         adb.cmd("start-server", serial = null).waitText()
         Logger.info("启动蓝叠模拟器的 ADB 模块")
 
-        val (instance, mutex) = grabInstance() ?: throw Exception("no available instance was found")
+        val instance = grabInstance() ?: throw Exception("no available instance was found")
         Logger.info("启动蓝叠模拟器的 ${instance.instance} 实例")
 
+        val begin = Instant.now()
         while (true) {
             val adbHost = "127.0.0.1"
             val adbPort = instance.port()
             val device = connect(adb, adbHost, adbPort)
             if (device != null) {
                 Logger.info("启动蓝叠模拟器的 ${instance.instance} 实例，启动完成")
-                return EmulatorHandle(device, mutex)
+                return EmulatorHandle(device, instance)
+            } else if (Duration.between(begin, Instant.now()) > Duration.ofMinutes(3)) {
+                Logger.warn("启动蓝叠模拟器超时，重试中")
+                instance.close()
+                launch()
             }
         }
     }
 
-    private fun grabInstance(): Pair<BlueStacksInstance, OsMutex>? {
+    private fun grabInstance(): BlueStacksInstance? {
         for (instance in bsInstances) {
             try {
-                val mutex = instance.run()
-                return instance to mutex
+                instance.run()
+                return instance
             } catch (e: MutexException) {
                 continue
             }
