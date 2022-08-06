@@ -30,12 +30,12 @@ dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("org.lz4:lz4-java:1.8.0")
 
-    implementation("net.java.dev.jna:jna:5.11.0")
-    implementation("net.java.dev.jna:jna-platform:5.11.0")
+    implementation("net.java.dev.jna:jna:5.12.1")
+    implementation("net.java.dev.jna:jna-platform:5.12.1")
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    implementation("org.junit.jupiter:junit-jupiter:5.9.0")
 }
 
 tasks.withType<KotlinCompile> {
