@@ -21,6 +21,7 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
     private fun currentVersion(): String {
         val regex = Regex("versionName=(.*)")
         val dumpsys = device.dumpsys(config.server.activity).stdout
+        if (dumpsys.isBlank()) throw IllegalStateException("dumpsys 输出为空")
         val versionNumber = regex.find(dumpsys)?.groupValues?.get(1)
         return versionNumber ?: ""
     }
