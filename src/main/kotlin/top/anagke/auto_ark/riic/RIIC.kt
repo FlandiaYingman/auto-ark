@@ -308,11 +308,13 @@ data class Plan(
             now().equals(shiftTime2nd, planInterval / 2) -> true
             else -> false
         }
+
         room2 -> when {
             now().equals(shiftTime2nd, planInterval / 2) -> true
             now().equals(shiftTime3rd, planInterval / 2) -> true
             else -> false
         }
+
         else -> false
     }
 
@@ -322,6 +324,7 @@ data class Plan(
                 now().equals(shiftTime1st, planInterval / 2) -> doShiftAdv(schY)
                 now().equals(shiftTime2nd, planInterval / 2) -> doShiftAdv(schA)
             }
+
             room2 -> when {
                 now().equals(shiftTime2nd, planInterval / 2) -> doShiftAdv(schY)
                 now().equals(shiftTime3rd, planInterval / 2) -> doShiftAdv(schB)

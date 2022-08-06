@@ -11,9 +11,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.notExists
 
-/**
- * An Arknights module which checks whether the game has newer updates.
- */
+/** An Arknights module which checks whether the game has newer updates. */
 class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
 
     companion object;

@@ -202,9 +202,11 @@ class ArkRIIC(
                 if (runnable.size > 1) throw Exception("runnable plan $runnable > 1")
                 runnable.forEach { it.shift(room, this) }
             }
+
             in setOf("B104", "B204", "B304", "B404") -> {
                 doShiftDorm(conf.宿舍保留[room[1].toString().toInt() - 1], init = init)
             }
+
             else -> doShift(room)
         } else {
             doShift(room)
