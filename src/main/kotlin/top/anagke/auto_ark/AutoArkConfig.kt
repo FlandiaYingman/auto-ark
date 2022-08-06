@@ -4,19 +4,19 @@ import com.sksamuel.hoplite.ConfigLoader
 import com.sksamuel.hoplite.addPathSource
 import top.anagke.auto_android.device.BlueStacksConf
 import top.anagke.auto_ark.login.ArkLoginConf
-import top.anagke.auto_ark.operate.OperateConfig
-import top.anagke.auto_ark.riic.RIICConfig
+import top.anagke.auto_ark.operate.ArkOperateConf
+import top.anagke.auto_ark.riic.ArkRIICConf
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.notExists
 
 data class AutoArkConfig(
-    val server: ArkServer,
-    val emulator: BlueStacksConf,
-    val loginConf: ArkLoginConf,
-    val operateConfig: OperateConfig,
-    val 基建: RIICConfig
+    val 服务器: ArkServer,
+    val 模拟器: BlueStacksConf,
+    val 登录配置: ArkLoginConf,
+    val 行动配置: ArkOperateConf,
+    val 基建配置: ArkRIICConf,
 ) {
 
     companion object {

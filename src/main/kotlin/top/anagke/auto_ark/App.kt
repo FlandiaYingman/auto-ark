@@ -17,7 +17,7 @@ object App {
         Logger.info("启动自动方舟")
         val (config, savedata) = loadConfigAndSavedata()
         Logger.info("已读取配置文件、储存文件")
-        BlueStacks(config.emulator).launch().use {
+        BlueStacks(config.模拟器).launch().use {
             Logger.info("已启动模拟器")
             AutoArk(config, savedata, it.device).doRoutine()
         }
@@ -25,7 +25,7 @@ object App {
 
     fun defaultAutoArk(): AutoArk {
         val (config, savedata) = loadConfigAndSavedata()
-        return AutoArk(config, savedata, BlueStacks(config.emulator).launch().device)
+        return AutoArk(config, savedata, BlueStacks(config.模拟器).launch().device)
     }
 
     @OptIn(ExperimentalTime::class)
@@ -45,7 +45,7 @@ object App {
 
     fun defaultDevice(): Device {
         val (config, _) = loadConfigAndSavedata()
-        return BlueStacks(config.emulator).launch().device
+        return BlueStacks(config.模拟器).launch().device
     }
 
 }

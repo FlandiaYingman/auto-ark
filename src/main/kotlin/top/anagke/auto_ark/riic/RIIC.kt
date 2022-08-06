@@ -2,7 +2,6 @@ package top.anagke.auto_ark.riic
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.opencv.core.*
 import org.opencv.core.Core.*
@@ -48,14 +47,12 @@ private val MANUFACTURE_BUFFS =
 private val TRADING_BUFFS =
     OPERATOR_NAME_ID_MAP.keys.flatMap { allBuffs(Op(it), "TRADING") }.filter { buffs -> buffs.isNotEmpty() }.distinct()
 
-@Serializable
 data class Op(
     val name: String,
     val elite: Int = 2,
     val level: Int = 90,
 )
 
-@Serializable
 data class Sch(
     val ops: List<Op>, val room: String
 ) {
@@ -281,7 +278,6 @@ enum class 房间(val id: String) {
     贸易站("TRADING"), 制造站("MANUFACTURE"), 发电站("<发电站>"), 宿舍("<宿舍>")
 }
 
-@Serializable
 data class Plan(
     val rooms: List<String>,
     val schedule: List<Sch>,

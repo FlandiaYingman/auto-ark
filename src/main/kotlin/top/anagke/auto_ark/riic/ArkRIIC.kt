@@ -152,7 +152,7 @@ class ArkRIIC(
         }
     }
 
-    private val conf = config.基建
+    private val conf = config.基建配置
 
     private fun 换班() = device.apply {
         tap(74, 118) //进驻总览

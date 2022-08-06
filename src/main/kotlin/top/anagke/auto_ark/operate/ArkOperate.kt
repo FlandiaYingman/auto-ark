@@ -38,7 +38,7 @@ class ArkOperate(
         }
     }
 
-    private val operateConfig = config.operateConfig
+    private val operateConfig = config.行动配置
 
     override fun init() {
         // To initialize the operations
@@ -55,15 +55,15 @@ class ArkOperate(
     override val name = "行动模块"
 
     private fun farmAnnihilation() {
-        Logger.info("刷剿灭委托：${operateConfig.doFarmAnnihilation}")
-        if (!operateConfig.doFarmAnnihilation) return
+        Logger.info("刷剿灭委托：${operateConfig.刷剿灭}")
+        if (!operateConfig.刷剿灭) return
 
         farm(剿灭作战, 1)
     }
 
     private fun farmPlan() {
-        Logger.info("刷计划副本：${operateConfig.doFarmPlan}")
-        if (!operateConfig.doFarmPlan) return
+        Logger.info("刷计划副本：${operateConfig.刷计划}")
+        if (!operateConfig.刷计划) return
 
         for (entry in savedata.farmingPlan.entries.shuffled()) {
             val operationName = entry.key
@@ -81,8 +81,8 @@ class ArkOperate(
     }
 
     private fun farmDaily() {
-        Logger.info("刷日常副本：${operateConfig.doFarmDaily}")
-        if (!operateConfig.doFarmDaily) return
+        Logger.info("刷日常副本：${operateConfig.刷日常}")
+        if (!operateConfig.刷日常) return
 
         for (op in dailyOps()) {
             farm(op)
@@ -131,7 +131,7 @@ class ArkOperate(
     }
 
     private fun Device.operateOperation(operation: Operation): OperateResult {
-        Logger.info("代理指挥关卡：$operation，理智策略：${operateConfig.strategy}")
+        Logger.info("代理指挥关卡：$operation，理智策略：${operateConfig.理智策略}")
         assert(
             关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
         )
@@ -143,7 +143,7 @@ class ArkOperate(
         tap(1078, 661)
         await(编队界面, 理智不足_可使用药剂, 理智不足_可使用源石)
 
-        var strategy = operateConfig.strategy
+        var strategy = operateConfig.理智策略
         if (strategy == IFF_EXPIRE_SOON) {
             strategy = (if (match(理智不足_药剂即将到期)) POTION else WAIT)
         }

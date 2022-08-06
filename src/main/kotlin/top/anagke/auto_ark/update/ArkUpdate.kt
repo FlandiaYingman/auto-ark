@@ -20,7 +20,7 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
 
     private fun currentVersion(): String {
         val regex = Regex("versionName=(.*)")
-        val dumpsys = device.dumpsys(config.server.activity).stdout
+        val dumpsys = device.dumpsys(config.服务器.activity).stdout
         if (dumpsys.isBlank()) throw IllegalStateException("dumpsys 输出为空")
         val versionNumber = regex.find(dumpsys)?.groupValues?.get(1)
         return versionNumber ?: ""
@@ -34,7 +34,7 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
     }
 
     private fun downloadLatest(location: Path) {
-        val url = when (config.server) {
+        val url = when (config.服务器) {
             ArkServer.OFFICIAL -> ArkUrls.officialApkUrl
 //            ArkServer.BILIBILI -> ArkUrls.bilibiliApkUrl
         }
