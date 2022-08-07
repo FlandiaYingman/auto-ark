@@ -8,6 +8,8 @@ import top.anagke.auto_android.device.which
 import top.anagke.auto_ark.login.ArkLogin
 import top.anagke.auto_ark.mission.ArkMission
 import top.anagke.auto_ark.operate.ArkOperate
+import top.anagke.auto_ark.recruit.ArkRecruit
+import top.anagke.auto_ark.riic.ArkRIIC
 import top.anagke.auto_ark.store.ArkStore
 import top.anagke.auto_ark.update.ArkUpdate
 import kotlin.io.path.Path
@@ -33,8 +35,8 @@ class AutoArk(
     )
 
     override val workModules: List<AutoModule<AutoArk>> = listOf(
-//        ArkRIIC(this),
-//        ArkRecruit(this),
+        ArkRIIC(this),
+        ArkRecruit(this),
         ArkOperate(this),
         ArkStore(this),
         ArkMission(this),
