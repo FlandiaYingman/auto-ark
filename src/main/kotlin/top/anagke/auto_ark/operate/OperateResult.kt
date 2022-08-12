@@ -1,5 +1,5 @@
 package top.anagke.auto_ark.operate
 
 enum class OperateResult {
-    SUCCESS, EMPTY_SANITY
+    成功, 理智已不足, 合成玉已刷满
 }

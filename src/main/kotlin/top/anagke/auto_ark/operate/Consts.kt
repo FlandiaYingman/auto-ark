@@ -54,6 +54,14 @@ object OperateTemplates {
     // 关卡准备页面，且代理指挥关闭
     internal val 关卡信息界面_代理指挥关闭 by tmpl(diff = 0.01)
 
+    // 关卡准备页面，可以全权委托，并且全权委托为开启状态
+    internal val 关卡信息界面_全权委托开启 by tmpl(diff = 0.01)
+
+    // 关卡准备页面，可以全权委托，并且全权委托为关闭状态
+    internal val 关卡信息界面_全权委托关闭 by tmpl(diff = 0.01)
+
+    internal val 全权委托确定界面 by tmpl()
+
     // 等待“开始行动”
     internal val 编队界面 by tmpl(diff = 0.01)
 

@@ -6,13 +6,16 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.operate.OperateOperations.DH_9
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_龙门外环
 import top.anagke.auto_ark.operate.OperateOperations.当期剿灭作战
-import top.anagke.auto_ark.operate.OperateResult.EMPTY_SANITY
+import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
+import top.anagke.auto_ark.operate.OperateResult.理智已不足
 import top.anagke.auto_ark.operate.OperateStrategy.*
+import top.anagke.auto_ark.operate.OperateTemplates.全权委托确定界面
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥关闭
 import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_代理指挥开启
+import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_全权委托关闭
+import top.anagke.auto_ark.operate.OperateTemplates.关卡信息界面_全权委托开启
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_行动结束
 import top.anagke.auto_ark.operate.OperateTemplates.理智不足_可使用源石
 import top.anagke.auto_ark.operate.OperateTemplates.理智不足_可使用药剂
@@ -29,7 +32,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(DH_9, 4)
+            farm(剿灭作战_龙门外环, 2)
         }
 
         private fun farm(o: Operation, n: Int) {
@@ -103,9 +106,13 @@ class ArkOperate(
         }
 
         var actualTimes = 0
-        for (i in 0 until farmTimes) {
+        farmLoop@ for (i in 0 until farmTimes) {
             val result = operateOperation(operation)
-            if (result == EMPTY_SANITY) break
+            when (result) {
+                理智已不足 -> break@farmLoop
+                合成玉已刷满 -> continue@farmLoop
+                else -> {}
+            }
             actualTimes++
             Logger.info("刷副本：$operation 中，实际刷 $actualTimes/$farmTimes 次")
         }
@@ -136,40 +143,61 @@ class ArkOperate(
     private fun Device.operateOperation(operation: Operation): OperateResult {
         Logger.info("代理指挥关卡：$operation，理智策略：${conf.理智策略}")
         assert(
-            关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭,
+            关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭, 关卡信息界面_全权委托开启, 关卡信息界面_全权委托关闭
         )
-        if (matched(关卡信息界面_代理指挥关闭)) {
-            Logger.info("代理指挥关卡：$operation，代理指挥关闭，开启")
-            tap(1067, 592) // 开启“代理指挥”
+        when (operation.type) {
+            OperationType.常规 -> {
+                if (match(关卡信息界面_代理指挥关闭)) {
+                    Logger.info("代理指挥关卡：$operation，代理指挥关闭，开启")
+                    tap(1067, 592, desc = "开启“代理指挥”")
+                }
+            }
+
+            OperationType.剿灭 -> {
+                if (match(关卡信息界面_全权委托关闭)) {
+                    Logger.info("代理指挥关卡：$operation，全权委托关闭，开启")
+                    tap(909, 593, desc = "开启“全权委托”")
+                }
+            }
         }
 
-        tap(1078, 661)
-        await(编队界面, 理智不足_可使用药剂, 理智不足_可使用源石)
+        tap(1078, 661, desc = "开始行动")
+        await(编队界面, 全权委托确定界面, 理智不足_可使用药剂, 理智不足_可使用源石)
 
         var strategy = conf.理智策略
         if (strategy == IFF_EXPIRE_SOON) {
-            strategy = (if (match(理智不足_药剂即将到期)) POTION else WAIT)
+            strategy = if (match(理智不足_药剂即将到期)) POTION else WAIT
         }
 
-        which(理智不足_可使用药剂, 理智不足_可使用源石)
+        match(理智不足_可使用药剂, 理智不足_可使用源石)
         if (matched(理智不足_可使用药剂) && strategy.canUsePotion() || matched(理智不足_可使用源石) && strategy.canUseOriginite()) {
             Logger.info("代理指挥关卡：$operation，理智不足，恢复")
-            tap(1088, 577) // 恢复理智
-            await(关卡信息界面_代理指挥开启)
-            tap(1078, 661)
-            await(编队界面)
+            tap(1088, 577, desc = "恢复理智")
+            await(关卡信息界面_代理指挥开启, 关卡信息界面_全权委托开启)
+            tap(1078, 661, desc = "开始行动")
+            await(编队界面, 全权委托确定界面)
         }
 
-        which(理智不足_可使用药剂, 理智不足_可使用源石)
+        match(理智不足_可使用药剂, 理智不足_可使用源石)
         if (matched(理智不足_可使用药剂, 理智不足_可使用源石)) {
             Logger.info("代理指挥关卡：$operation，理智不足，退出")
             tap(783, 580)
-            await(关卡信息界面_代理指挥开启)
-            return EMPTY_SANITY
+            await(关卡信息界面_代理指挥开启, 关卡信息界面_全权委托开启)
+            return 理智已不足
         }
 
-        tap(1103, 522)
+        if (match(全权委托确定界面)) {
+            tap(1141, 659, desc = "确认使用").sleep()
+            if (match(全权委托确定界面)) {
+                Logger.info("代理指挥关卡：$operation，合成玉已刷满，退出")
+                back(description = "返回关卡信息界面")
+                return 合成玉已刷满
+            }
+        } else {
+            tap(1103, 522, desc = "开始行动").sleep()
+        }
         await(行动结束, 等级提升, 剿灭_行动结束, timeout = operation.timeout)
+
         if (matched(剿灭_行动结束)) {
             tap(640, 360).sleep()
             tap(640, 360).sleep()
@@ -178,7 +206,7 @@ class ArkOperate(
         tap(640, 360).nap()
         await(关卡信息界面_代理指挥开启)
         Logger.info("代理指挥关卡：$operation，完毕")
-        return OperateResult.SUCCESS
+        return OperateResult.成功
     }
 
 }
