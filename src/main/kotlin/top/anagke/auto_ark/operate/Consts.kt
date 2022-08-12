@@ -354,6 +354,33 @@ object OperateOperations {
     }
 
 
+    private fun Device.IC() = enterPrimaryEvent(1094, 472)
+
+    internal val IC_7 = Operation("IC-7", description = "理想城：夏日狂欢季、RMA70-12") {
+        IC()
+        swipeRight(400)
+        tap(112, 390, desc = "IC-7")
+    }
+    internal val IC_8 = Operation("IC-8", description = "理想城：夏日狂欢季、凝胶") {
+        IC()
+        swipeRight()
+        tap(91, 295, desc = "IC-8")
+    }
+    internal val IC_9 = Operation("IC-9", description = "理想城：夏日狂欢季、RMA70-12") {
+        IC()
+        swipeRight()
+        tap(249, 458, desc = "IC-9")
+    }
+
+
+    private fun Device.swipeLeft(offset: Int = 0) {
+        swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
+    }
+
+    private fun Device.swipeRight(offset: Int = 0) {
+        swipev(-1280 * 4 + offset, 0, speed = 10.0, desc = "最右").nap()
+    }
+
     private fun Device.enterPrimaryEvent(x: Int, y: Int) {
         tap(终端_活动).sleep().sleep()
         tap(x, y).sleep().sleep()
