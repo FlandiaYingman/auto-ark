@@ -424,8 +424,8 @@ fun dailyOps(level: 资源关种类) = when (today()) {
     DayOfWeek.FRIDAY -> MAIN_1_7
 
     DayOfWeek.SATURDAY -> when (level) {
-        资源关种类.LEVEL_5 -> CE_5
-        资源关种类.LEVEL_6 -> CE_6
+        资源关种类.LEVEL_5 -> LS_5
+        资源关种类.LEVEL_6 -> LS_6
     }
 
     DayOfWeek.SUNDAY -> when (level) {
