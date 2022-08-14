@@ -16,6 +16,7 @@ class ArkRIIC(
         private val 贸易站_存在订单 by tmpl()
         private val 贸易站_不存在订单 by tmpl()
         private val 会客室_存在可用线索 by tmpl()
+        private val 会客室_线索交流活动完毕 by tmpl()
 
         val 心情增序 by tmpl()
         val 未进驻筛选 by tmpl()
@@ -48,7 +49,7 @@ class ArkRIIC(
 
     private fun 收取基建() = device.apply {
         收取基建产出()
-//        收取会客室()
+        收取会客室()
         resetInterface()
         进入基建()
         when (conf.无人机房间类型) {
@@ -72,7 +73,11 @@ class ArkRIIC(
         // 进入会客室
         tap(1047, 234, desc = "进入会客室").sleepl()
         tap(414, 617, desc = "进入详情").sleep()
-        tap(682, 663, desc = "关闭线索交流完毕的提示（如果有）").sleep()
+
+        // 关闭线索交流完毕的提示
+        if (match(会客室_线索交流活动完毕)) {
+            back().nap()
+        }
 
         // 领取线索
         tap(1196, 180, desc = "进入收集线索").sleep()
