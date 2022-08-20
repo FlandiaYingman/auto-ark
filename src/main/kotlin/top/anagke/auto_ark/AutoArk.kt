@@ -35,9 +35,9 @@ class AutoArk(
     )
 
     override val workModules: List<AutoModule<AutoArk>> = listOf(
-        ArkRIIC(this),
-        ArkRecruit(this),
         ArkOperate(this),
+        ArkRecruit(this),
+        ArkRIIC(this),
         ArkStore(this),
         ArkMission(this),
     )
