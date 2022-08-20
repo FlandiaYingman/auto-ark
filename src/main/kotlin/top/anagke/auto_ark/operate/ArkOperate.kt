@@ -6,6 +6,7 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
+import top.anagke.auto_ark.operate.OperateOperations.IC_9
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_龙门外环
 import top.anagke.auto_ark.operate.OperateOperations.当期剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
@@ -32,7 +33,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(剿灭作战_龙门外环, 2)
+            farm(IC_9, 2)
         }
 
         private fun farm(o: Operation, n: Int) {
@@ -146,7 +147,7 @@ class ArkOperate(
             关卡信息界面_代理指挥开启, 关卡信息界面_代理指挥关闭, 关卡信息界面_全权委托开启, 关卡信息界面_全权委托关闭
         )
         when (operation.type) {
-            OperationType.常规 -> {
+            OperationType.常规, OperationType.活动 -> {
                 if (match(关卡信息界面_代理指挥关闭)) {
                     Logger.info("代理指挥关卡：$operation，代理指挥关闭，开启")
                     tap(1067, 592, desc = "开启“代理指挥”")

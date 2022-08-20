@@ -16,7 +16,6 @@ import top.anagke.auto_ark.operate.OperateOperations.LS_5
 import top.anagke.auto_ark.operate.OperateOperations.LS_6
 import top.anagke.auto_ark.operate.OperateOperations.MAIN_1_7
 import top.anagke.auto_ark.operate.OperatePoses.终端
-import top.anagke.auto_ark.operate.OperatePoses.终端_副活动
 import top.anagke.auto_ark.operate.OperatePoses.终端_常态事务
 import top.anagke.auto_ark.operate.OperatePoses.终端_活动
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已刷满
@@ -243,7 +242,7 @@ object OperateOperations {
         tap(1092, 222).nap() //进入“1-7”
     }
 
-    internal val IW_6 = Operation("IW-6", description = "将进酒、全新装置") {
+    internal val IW_6 = ActOperation("IW-6", "将进酒", "全新装置") {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
 
@@ -251,7 +250,7 @@ object OperateOperations {
         dragv(640, 360, 600, 0)
         tap(189, 531).nap() // IW-6
     }
-    internal val IW_7 = Operation("IW-7", description = "将进酒、固源岩组") {
+    internal val IW_7 = ActOperation("IW-7", "将进酒", "固源岩组") {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
 
@@ -259,7 +258,7 @@ object OperateOperations {
         dragv(640, 360, 600, 0)
         tap(393, 448).nap() // IW-7
     }
-    internal val IW_8 = Operation("IW-8", description = "将进酒、RMA70-12") {
+    internal val IW_8 = ActOperation("IW-8", "将进酒", "RMA70-12") {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()
 
@@ -268,7 +267,7 @@ object OperateOperations {
         tap(624, 369).nap() // IW-8
     }
 
-    internal val GA_6 = Operation("GA-6", description = "吾导先路、糖组") {
+    internal val GA_6 = ActOperation("GA-6", "吾导先路", "糖组") {
         tap(终端_活动).sleep().sleep()
         tap(1117, 471).sleep()
 
@@ -277,24 +276,24 @@ object OperateOperations {
         tap(1240, 340).nap() // IW-8
     }
 
-    internal val WD_6 = Operation("WD-6", description = "遗尘漫步、聚酸酯组") {
-        enterSecondaryEvent(1180, 550)
+    internal val WD_6 = ActOperation("WD-6", "遗尘漫步", "聚酸酯组") {
+        zone(1180, 550)
 
         swipev(640, 360, 1280 * 3, 0)
         dragv(640, 360, -1780, 0)
 
         tap(755, 350).nap()
     }
-    internal val WD_7 = Operation("WD-7", description = "遗尘漫步、酮凝集组") {
-        enterSecondaryEvent(1180, 550)
+    internal val WD_7 = ActOperation("WD-7", "遗尘漫步", "酮凝集组") {
+        zone(1180, 550)
 
         swipev(640, 360, 1280 * 3, 0)
         dragv(640, 360, -1780, 0)
 
         tap(880, 470).nap()
     }
-    internal val WD_8 = Operation("WD-8", description = "遗尘漫步、RMA70-12") {
-        enterSecondaryEvent(1180, 550)
+    internal val WD_8 = ActOperation("WD-8", "遗尘漫步", "RMA70-12") {
+        zone(1180, 550)
 
         swipev(640, 360, 1280 * 3, 0)
         dragv(640, 360, -1780, 0)
@@ -302,14 +301,14 @@ object OperateOperations {
         tap(1200, 470).nap()
     }
 
-    internal val SN_8 = Operation("SN-8", description = "愚人号、异铁块") {
+    internal val SN_8 = ActOperation("SN-8", "愚人号", "异铁块") {
         tap(终端_活动).sleepl()
         tap(267, 495).sleepl() // 失落旗舰
 
         // 屏幕总是自动移动到最右侧，所以无需手动移动
         tap(381, 207).sleep() // SN-8
     }
-    internal val SN_9 = Operation("SN-9", description = "愚人号、轻锰矿") {
+    internal val SN_9 = ActOperation("SN-9", "愚人号", "轻锰矿") {
         tap(终端_活动).sleepl()
         tap(353, 571).sleepl() // 无名之海
 
@@ -317,7 +316,7 @@ object OperateOperations {
         dragv(640, 360, 700, 0)
         tap(83, 442).sleep() // SN-9
     }
-    internal val SN_10 = Operation("SN-10", description = "愚人号、化合切削液") {
+    internal val SN_10 = ActOperation("SN-10", "愚人号", "化合切削液") {
         tap(终端_活动).sleepl()
         tap(353, 571).sleepl() // 无名之海
 
@@ -326,7 +325,7 @@ object OperateOperations {
         tap(148, 339).sleep() // SN-10
     }
 
-    internal val SV_9 = Operation("SV-9", description = "覆潮之下、全新装置") {
+    internal val SV_9 = ActOperation("SV-9", "覆潮之下", "全新装置") {
         tap(终端_活动).sleepl()
         tap(1207, 447, desc = "荒败盐风").sleepl()
 
@@ -334,19 +333,19 @@ object OperateOperations {
         tap(382, 267, desc = "SV-9").sleep()
     }
 
-    internal val DV_8 = Operation("DV-8", description = "绿野幻梦、炽合金") {
+    internal val DV_8 = ActOperation("DV-8", "绿野幻梦", "炽合金") {
         tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
         tap(1056, 276, desc = "Zone：试验基地").sleep()
         swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
         tap(410, 390, desc = "DV-8").nap()
     }
-    internal val DV_7 = Operation("DV-7", description = "绿野幻梦、扭转醇") {
+    internal val DV_7 = ActOperation("DV-7", "绿野幻梦", "扭转醇") {
         tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
         tap(1056, 276, desc = "Zone：试验基地").sleep()
         swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
         tap(178, 447, desc = "DV-7").nap()
     }
-    internal val DV_6 = Operation("DV-6", description = "绿野幻梦、聚酸酯组") {
+    internal val DV_6 = ActOperation("DV-6", "绿野幻梦", "聚酸酯组") {
         tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
         tap(1056, 276, desc = "Zone：试验基地").sleep()
         swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
@@ -354,27 +353,18 @@ object OperateOperations {
         tap(410, 390, desc = "DV-6").nap()
     }
 
-    internal val DH_9 = Operation("DH-9", description = "多索雷斯假日") {
-        enterPrimaryEvent(947, 327)
-        swipev(4096, 0, speed = 10.0, desc = "移动到最左").nap()
-        dragv(-1484, 0, desc = "显示DH-7").nap()
-        tap(1216, 199, desc = "DH-7").nap()
-    }
-
-
-    private fun Device.IC() = enterPrimaryEvent(1094, 472)
-
-    internal val IC_7 = Operation("IC-7", description = "理想城：夏日狂欢季、RMA70-12") {
+    private fun Device.IC() = zone(1094, 472)
+    internal val IC_7 = ActOperation("IC-7", "理想城：夏日狂欢季", "酮凝集") {
         IC()
         swipeRight(400)
         tap(112, 390, desc = "IC-7")
     }
-    internal val IC_8 = Operation("IC-8", description = "理想城：夏日狂欢季、凝胶") {
+    internal val IC_8 = ActOperation("IC-8", "理想城：夏日狂欢季", "凝胶") {
         IC()
         swipeRight()
         tap(91, 295, desc = "IC-8")
     }
-    internal val IC_9 = Operation("IC-9", description = "理想城：夏日狂欢季、RMA70-12") {
+    internal val IC_9 = ActOperation("IC-9", "理想城：夏日狂欢季", "RMA70-12") {
         IC()
         swipeRight()
         tap(249, 458, desc = "IC-9")
@@ -389,15 +379,10 @@ object OperateOperations {
         swipev(-1280 * 4 + offset, 0, speed = 10.0, desc = "最右").nap()
     }
 
-    private fun Device.enterPrimaryEvent(x: Int, y: Int) {
-        tap(终端_活动).sleep().sleep()
-        tap(x, y).sleep().sleep()
+    private fun Device.zone(x: Int, y: Int) {
+        tap(x, y).sleep()
     }
 
-    private fun Device.enterSecondaryEvent(x: Int, y: Int) {
-        tap(终端_副活动).sleep().sleep()
-        tap(x, y).sleep().sleep()
-    }
 }
 
 // 策略
