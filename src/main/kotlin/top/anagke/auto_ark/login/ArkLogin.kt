@@ -3,6 +3,7 @@ package top.anagke.auto_ark.login
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.minutes
+import top.anagke.auto_android.util.seconds
 import top.anagke.auto_ark.*
 
 class ArkLogin(
@@ -55,6 +56,7 @@ class ArkLogin(
         }
 
         Logger.info("登录明日方舟（官服），等待登录完成")
+        delay(10.seconds)
         whileNotMatch(主界面) {
             back().nap()
             tap(130, 489).nap() //防止卡在返回界面
