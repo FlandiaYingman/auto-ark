@@ -115,6 +115,10 @@ fun delay(time: Int) {
     Thread.sleep(time.toLong())
 }
 
+fun delay(time: Long) {
+    Thread.sleep(time)
+}
+
 @Suppress("unused")
 fun Unit.delay(time: Int) {
     Thread.sleep(time.toLong())
