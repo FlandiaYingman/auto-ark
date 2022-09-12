@@ -413,10 +413,7 @@ fun dailyOps(level: 资源关种类) = when (today()) {
         资源关种类.LEVEL_6 -> LS_6
     }
 
-    DayOfWeek.SUNDAY -> when (level) {
-        资源关种类.LEVEL_5 -> CE_5
-        资源关种类.LEVEL_6 -> CE_6
-    }
+    DayOfWeek.SUNDAY -> CA_5
 }
 
 private enum class 资源收集_材料 {
