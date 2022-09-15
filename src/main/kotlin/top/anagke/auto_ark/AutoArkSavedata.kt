@@ -12,7 +12,7 @@ import kotlin.io.path.writeText
 @Serializable
 data class AutoArkSavedata(
     var isFirstRun: Boolean = true,
-    var farmingPlan: MutableMap<String, Int> = mutableMapOf(),
+    var farmingPlans: List<MutableMap<String, Int>> = listOf(),
 ) {
 
     companion object {

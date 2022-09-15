@@ -74,17 +74,18 @@ class ArkOperate(
         Logger.info("刷计划副本：${conf.刷计划}")
         if (!conf.刷计划) return
 
-        for (entry in savedata.farmingPlan.entries.shuffled()) {
-            val operationName = entry.key
-            val farmTimes = entry.value
-            if (farmTimes == 0) continue
+        for (plan in savedata.farmingPlans) {
+            for (planEntry in plan.entries.shuffled()) {
+                val (operationName, farmTimes) = planEntry
+                if (farmTimes == 0) continue
 
-            val operation = Operation.operations.find { it.name == operationName }
-            if (operation != null) {
-                val actualFarmTimes = farm(operation, farmTimes)
-                entry.setValue(farmTimes - actualFarmTimes)
-            } else {
-                throw IllegalArgumentException("operation of name '$operationName' not found")
+                val operation = Operation.operations.find { it.name == operationName }
+                if (operation != null) {
+                    val actualFarmTimes = farm(operation, farmTimes)
+                    planEntry.setValue(farmTimes - actualFarmTimes)
+                } else {
+                    throw IllegalArgumentException("operation of name '$operationName' not found")
+                }
             }
         }
     }
