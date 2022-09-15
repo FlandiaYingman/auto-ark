@@ -370,6 +370,16 @@ object OperateOperations {
         tap(249, 458, desc = "IC-9")
     }
 
+    private fun Device.BW() = zone(1181, 599)
+    internal val BW_7 = ActOperation("BW-7", "好久不见", "聚酸酯组") {
+        BW()
+        tap(1064, 383, desc = "BW-7")
+    }
+    internal val BW_8 = ActOperation("BW-8", "好久不见", "酮凝集") {
+        BW()
+        tap(1071, 227, desc = "BW-8")
+    }
+
 
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
