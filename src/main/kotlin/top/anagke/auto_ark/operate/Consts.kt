@@ -381,6 +381,24 @@ object OperateOperations {
     }
 
 
+    private fun Device.NL() = zone(997, 440)
+    internal val NL_10 = ActOperation("NL-10", "长夜临光", "扭转醇") {
+        NL()
+        swipeRight()
+        tap(428, 498, desc = "NL-10")
+    }
+    internal val NL_9 = ActOperation("NL-9", "长夜临光", "扭转醇") {
+        NL()
+        swipeRight()
+        tap(341, 241, desc = "NL-9")
+    }
+    internal val NL_8 = ActOperation("NL-8", "长夜临光", "扭转醇") {
+        NL()
+        swipeRight()
+        tap(203, 344, desc = "NL-8")
+    }
+
+
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
     }
