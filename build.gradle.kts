@@ -20,18 +20,18 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation("org.tinylog:tinylog-impl:2.4.1")
-    implementation("org.tinylog:tinylog-api-kotlin:2.4.1")
-    implementation("org.tinylog:slf4j-tinylog:2.4.1")
+    implementation("org.tinylog:tinylog-impl:2.5.0")
+    implementation("org.tinylog:tinylog-api-kotlin:2.5.0")
+    implementation("org.tinylog:slf4j-tinylog:2.5.0")
 
-    implementation("org.openpnp:opencv:4.5.1-2")
+    implementation("org.openpnp:opencv:4.5.5-1")
     implementation("top.anagke:kio:1.1.0")
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    implementation("org.jsoup:jsoup:1.14.3")
+    implementation("org.jsoup:jsoup:1.15.3")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
-    implementation("com.charleskorn.kaml:kaml:0.46.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.4.0")
+    implementation("com.charleskorn.kaml:kaml:0.47.0")
     implementation("com.google.code.gson:gson:2.9.0")
 
 
@@ -40,7 +40,7 @@ dependencies {
 
     // Config Parsing
     implementation("com.sksamuel.hoplite:hoplite:1.0.3")
-    implementation("com.sksamuel.hoplite:hoplite-yaml:2.4.0")
+    implementation("com.sksamuel.hoplite:hoplite-yaml:2.6.3")
 
     // CLI Argument Parsing
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
