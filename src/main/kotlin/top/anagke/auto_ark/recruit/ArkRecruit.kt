@@ -7,7 +7,6 @@ import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_android.img.ocrWord
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_ark.*
-import top.anagke.auto_ark.recruit.ArkRecruitCalculator.RecruitOperator
 import top.anagke.auto_ark.recruit.RecruitTag.*
 import top.anagke.auto_ark.recruit.RecruitTemplates.公开招募界面
 import top.anagke.auto_ark.recruit.RecruitTemplates.公开招募面板
@@ -138,16 +137,16 @@ class ArkRecruit(
             val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
             Logger.info("标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators")
 
-            val minimumRarity = possibleOperators.minOf(RecruitOperator::rarity)
-            Logger.info("最低可能星级：$minimumRarity")
-            if (minimumRarity >= 4) {
-                Logger.info("最低可能星级大于等于五星，退出")
+            val mostPossibleRarity = possibleOperators.max().rarity
+            Logger.info("最可能星级：$mostPossibleRarity")
+            if (mostPossibleRarity == 5) {
+                Logger.info("最可能星级等于六星，退出")
                 skippingSlotList += slot
                 exitRecruit()
                 break
             }
-            if (minimumRarity <= 2 && match(可刷新标签)) {
-                Logger.info("最低可能星级小于等于三星且可刷新，刷新")
+            if ((mostPossibleRarity == 2 || mostPossibleRarity == 1) && match(可刷新标签)) {
+                Logger.info("最低可能星级等于三星且可刷新，刷新")
                 tap(972, 408) //刷新TAG
                 tap(877, 508) //确认刷新TAG
                 sleep()

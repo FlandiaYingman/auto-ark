@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY")
-
 package top.anagke.auto_ark.recruit
 
 import com.google.gson.Gson
@@ -49,16 +47,26 @@ object ArkRecruitCalculator {
         val name: String,
         val rarity: Int,
         val tags: List<String>,
-    ) {
+    ) : Comparable<RecruitOperator> {
 
         fun canRecruitBy(tags: List<String>): Boolean {
             if (this.rarity == 5 && "高级资深干员" !in tags) return false
+            if (this.rarity == 0 && "支援机械" !in tags) return false
+            if (this.rarity == 1) return false
             return this.tags.containsAll(tags)
         }
+
+        override fun compareTo(other: RecruitOperator): Int = when {
+            (this.rarity == 5 || other.rarity == 5) -> compareValues(this.rarity, other.rarity)
+            (this.rarity == 0 || other.rarity == 0) -> compareValues(other.rarity, this.rarity)
+            else -> compareValues(other.rarity, this.rarity)
+        }
+
 
         override fun toString(): String {
             return name
         }
+
 
     }
 
@@ -72,25 +80,24 @@ object ArkRecruitCalculator {
         .filter(Operator::isRecruitOperator)
         .map(Operator::toRecruitOperator)
 
-
-    fun calculate(tags: List<String>): Map<List<String>, List<RecruitOperator>> {
-        val result = tags.combinations(3)
-            .associateWith {
+    private fun calculate(tags: List<String>): Map<List<String>, List<RecruitOperator>> {
+        return tags.combinations(3)
+            .shuffled()
+            .associateWith { combTags ->
                 recruitOperators
-                    .filter { op -> op.canRecruitBy(it) }
-                    .filter { op -> op.rarity > 1 } //暂时不支持二星（支援机械）
-                    .sortedBy(RecruitOperator::rarity)
-//                TODO("支持二星（支援机械）")
+                    .filter { op -> op.canRecruitBy(combTags) }
+                    .shuffled()
+                    .sorted()
             }
             .filterValues { it.isNotEmpty() }
-        return result
+
     }
 
     fun calculateBest(tags: List<String>): Pair<List<String>, List<RecruitOperator>> {
         val calculate = calculate(tags)
         val resultKey = calculate
-            .mapValues { (tagCombination, possibleOperators) -> possibleOperators.minOf { it.rarity } }
-            .maxByOrNull { (tagCombination, minimumRarity) -> minimumRarity }!!
+            .mapValues { (_, v) -> v.first() }
+            .maxBy { (_, v) -> v.rarity }
             .key
         return resultKey to calculate[resultKey]!!
     }
