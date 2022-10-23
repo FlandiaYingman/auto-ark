@@ -1,5 +1,1211 @@
 [
   {
+    "cn": "白铁",
+    "position": "近战位",
+    "en": "Stainless",
+    "sex": "男",
+    "tag": [
+      "支援",
+      "输出"
+    ],
+    "race": [
+      "菲林"
+    ],
+    "rarity": "5",
+    "class": "辅助",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "维多利亚",
+    "team": "",
+    "des": "伦蒂尼姆市民自救军成员白铁，随时准备与你一起行动。",
+    "feature": "能够阻挡两个敌人，使用<支援装置>协助作战",
+    "str": "普通",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "他身上有淡淡的机油味，但他的笑容和双手很干净。",
+    "icon": "//prts.wiki/images/2/2e/%E5%A4%B4%E5%83%8F_%E7%99%BD%E9%93%81.png",
+    "half": "//prts.wiki/images/thumb/e/e5/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%99%BD%E9%93%81_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%99%BD%E9%93%81_1.png",
+    "oriHp": "1,043",
+    "oriAtk": "236",
+    "oriDef": "190",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "15→17→19",
+    "oriBlock": "2",
+    "oriCd": "1.5s",
+    "index": "VC17",
+    "sort_id": "255",
+    "jp": "",
+    "birthplace": "维多利亚",
+    "nation": "维多利亚",
+    "group": ""
+  },
+  {
+    "cn": "明椒",
+    "position": "远程位",
+    "en": "Paprika",
+    "sex": "女",
+    "tag": [
+      "治疗"
+    ],
+    "race": [
+      "萨卡兹"
+    ],
+    "rarity": "4",
+    "class": "医疗",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "稚嫩的萨卡兹雇佣兵，在许多人眼中还是个孩子。",
+    "feature": "恢复友方单位生命，且会在<span style=\"color:#00B0FF;\">3</span>个友方单位间跳跃，每次跳跃治疗量降低25%",
+    "str": "标准",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "普通",
+    "skill": "标准",
+    "adapt": "优良",
+    "moredes": "她也还在摸索方向，她会在摸索中成长。",
+    "icon": "//prts.wiki/images/3/3f/%E5%A4%B4%E5%83%8F_%E6%98%8E%E6%A4%92.png",
+    "half": "//prts.wiki/images/thumb/3/3f/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%98%8E%E6%A4%92_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%98%8E%E6%A4%92_1.png",
+    "oriHp": "913",
+    "oriAtk": "153",
+    "oriDef": "74",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "16→18",
+    "oriBlock": "1",
+    "oriCd": "2.85s",
+    "index": "R175",
+    "sort_id": "254",
+    "jp": "",
+    "birthplace": "哥伦比亚",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
+    "cn": "达格达",
+    "position": "近战位",
+    "en": "Dagda",
+    "sex": "女",
+    "tag": [
+      "输出",
+      "生存"
+    ],
+    "race": [
+      "菲林"
+    ],
+    "rarity": "4",
+    "class": "近卫",
+    "approach": [
+      "主线奖励"
+    ],
+    "camp": "格拉斯哥帮",
+    "team": "",
+    "des": "格拉斯哥帮成员达格达，与她手中钢爪一同静候差遣。",
+    "feature": "能够阻挡一个敌人",
+    "str": "标准",
+    "flex": "优良",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "优良",
+    "adapt": "标准",
+    "moredes": "她守护着维多利亚的黑夜，也守护着黑夜中的你。",
+    "icon": "//prts.wiki/images/d/dd/%E5%A4%B4%E5%83%8F_%E8%BE%BE%E6%A0%BC%E8%BE%BE.png",
+    "half": "//prts.wiki/images/thumb/5/5c/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%BE%BE%E6%A0%BC%E8%BE%BE_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%BE%BE%E6%A0%BC%E8%BE%BE_1.png",
+    "oriHp": "1,185",
+    "oriAtk": "236",
+    "oriDef": "134",
+    "oriRes": "0",
+    "oriDt": "80s",
+    "oriDc": "10→12",
+    "oriBlock": "1",
+    "oriCd": "0.78s",
+    "index": "GG04",
+    "sort_id": "253",
+    "jp": "",
+    "birthplace": "维多利亚",
+    "nation": "维多利亚",
+    "group": "格拉斯哥帮"
+  },
+  {
+    "cn": "铅踝",
+    "position": "远程位",
+    "en": "Totter",
+    "sex": "男",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "黎博利"
+    ],
+    "rarity": "3",
+    "class": "狙击",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "萨尔贡",
+    "team": "",
+    "des": "雇佣兵铅踝，迎着风雪蹒跚而来。",
+    "feature": "优先攻击重量最重的敌人",
+    "str": "普通",
+    "flex": "缺陷",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "那些留在雪地上的脚印，一深一浅。",
+    "icon": "//prts.wiki/images/8/87/%E5%A4%B4%E5%83%8F_%E9%93%85%E8%B8%9D.png",
+    "half": "//prts.wiki/images/thumb/3/3e/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%93%85%E8%B8%9D_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%93%85%E8%B8%9D_1.png",
+    "oriHp": "706",
+    "oriAtk": "439",
+    "oriDef": "51",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "20→22",
+    "oriBlock": "1",
+    "oriCd": "2.4s",
+    "index": "SG11",
+    "sort_id": "252",
+    "jp": "",
+    "birthplace": "萨尔贡",
+    "nation": "萨尔贡",
+    "group": ""
+  },
+  {
+    "cn": "海沫",
+    "position": "近战位",
+    "en": "Highmore",
+    "sex": "女",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "阿戈尔"
+    ],
+    "rarity": "4",
+    "class": "近卫",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "伊比利亚",
+    "team": "",
+    "des": "驻外干员海沫，她比看上去的要更好斗。",
+    "feature": "无法被友方角色治疗，攻击造成<span style=\"color:#00B0FF;\">群体伤害</span>，每攻击到一个敌人回复自身<span style=\"color:#00B0FF;\">50</span>生命，最大生效数等于阻挡数",
+    "str": "优良",
+    "flex": "标准",
+    "tolerance": "卓越",
+    "plan": "普通",
+    "skill": "标准",
+    "adapt": "缺陷",
+    "moredes": "海的女儿，选择了拒绝大海。",
+    "icon": "//prts.wiki/images/6/6c/%E5%A4%B4%E5%83%8F_%E6%B5%B7%E6%B2%AB.png",
+    "half": "//prts.wiki/images/thumb/f/f2/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B5%B7%E6%B2%AB_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B5%B7%E6%B2%AB_1.png",
+    "oriHp": "1,055",
+    "oriAtk": "306",
+    "oriDef": "216",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "19→20→22",
+    "oriBlock": "1→2→2",
+    "oriCd": "1.3s",
+    "index": "II10",
+    "sort_id": "251",
+    "jp": "",
+    "birthplace": "伊比利亚",
+    "nation": "伊比利亚",
+    "group": ""
+  },
+  {
+    "cn": "罗小黑",
+    "position": "近战位",
+    "en": "Luo Xiaohei",
+    "sex": "男",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "菲林"
+    ],
+    "rarity": "3",
+    "class": "近卫",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "炎",
+    "team": "",
+    "des": "见习执行者罗小黑，竭尽全力守卫在同伴身边。",
+    "feature": "可以进行<span style=\"color:#00B0FF;\">远程攻击</span>，但此时攻击力降低至80%",
+    "str": "优良",
+    "flex": "优良",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "优良",
+    "adapt": "■■",
+    "moredes": "你说的话，他有很多都不懂，但心里却一直记着。",
+    "icon": "//prts.wiki/images/5/50/%E5%A4%B4%E5%83%8F_%E7%BD%97%E5%B0%8F%E9%BB%91.png",
+    "half": "//prts.wiki/images/thumb/b/b6/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%BD%97%E5%B0%8F%E9%BB%91_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%BD%97%E5%B0%8F%E9%BB%91_1.png",
+    "oriHp": "856",
+    "oriAtk": "287",
+    "oriDef": "154",
+    "oriRes": "5",
+    "oriDt": "70s",
+    "oriDc": "15→17",
+    "oriBlock": "2",
+    "oriCd": "1.3s",
+    "index": "R161",
+    "sort_id": "250",
+    "jp": "",
+    "birthplace": "未知",
+    "nation": "炎",
+    "group": ""
+  },
+  {
+    "cn": "玛恩纳",
+    "position": "近战位",
+    "en": "Młynar",
+    "sex": "男",
+    "tag": [
+      "输出",
+      "爆发"
+    ],
+    "race": [
+      "库兰塔"
+    ],
+    "rarity": "5",
+    "class": "近卫",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "卡西米尔",
+    "team": "",
+    "des": "卡西米尔骑士家族的漫游者，玛恩纳，始终将剑带在身边。",
+    "feature": "通常不攻击且阻挡数为0，技能未开启时<span style=\"color:#00B0FF;\">40</span>秒内攻击力逐渐提升至最高<span style=\"color:#00B0FF;\">+200%</span>且技能结束时重置攻击力",
+    "str": "优良",
+    "flex": "卓越",
+    "tolerance": "优良",
+    "plan": "标准",
+    "skill": "卓越",
+    "adapt": "优良",
+    "moredes": "他劝诫所有人逃离卡西米尔，而自己从未离开。",
+    "icon": "//prts.wiki/images/0/08/%E5%A4%B4%E5%83%8F_%E7%8E%9B%E6%81%A9%E7%BA%B3.png",
+    "half": "//prts.wiki/images/thumb/b/b1/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%8E%9B%E6%81%A9%E7%BA%B3_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%8E%9B%E6%81%A9%E7%BA%B3_1.png",
+    "oriHp": "1,945",
+    "oriAtk": "161",
+    "oriDef": "239",
+    "oriRes": "15",
+    "oriDt": "70s",
+    "oriDc": "10→12",
+    "oriBlock": "2→2→3",
+    "oriCd": "1.2s",
+    "index": "KZ08",
+    "sort_id": "249",
+    "jp": "",
+    "birthplace": "卡西米尔",
+    "nation": "卡西米尔",
+    "group": ""
+  },
+  {
+    "cn": "但书",
+    "position": "远程位",
+    "en": "Proviso",
+    "sex": "女",
+    "tag": [
+      "削弱",
+      "减速"
+    ],
+    "race": [
+      "库兰塔"
+    ],
+    "rarity": "4",
+    "class": "辅助",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "卡西米尔",
+    "team": "",
+    "des": "法律顾问但书，可以向她咨询你的一切事务。",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "str": "普通",
+    "flex": "标准",
+    "tolerance": "普通",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "普通",
+    "moredes": "准备好巨额的律师费，或者带上一颗赤诚的心，她会答应帮助你的。",
+    "icon": "//prts.wiki/images/b/b0/%E5%A4%B4%E5%83%8F_%E4%BD%86%E4%B9%A6.png",
+    "half": "//prts.wiki/images/thumb/7/76/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E4%BD%86%E4%B9%A6_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E4%BD%86%E4%B9%A6_1.png",
+    "oriHp": "606",
+    "oriAtk": "216",
+    "oriDef": "46",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "13→15",
+    "oriBlock": "1",
+    "oriCd": "1.9s",
+    "index": "KZ10",
+    "sort_id": "248",
+    "jp": "",
+    "birthplace": "卡西米尔",
+    "nation": "卡西米尔",
+    "group": ""
+  },
+  {
+    "cn": "百炼嘉维尔",
+    "position": "近战位",
+    "en": "Gavial the Invincible",
+    "sex": "女",
+    "tag": [
+      "爆发",
+      "输出",
+      "生存"
+    ],
+    "race": [
+      "阿达克利斯"
+    ],
+    "rarity": "5",
+    "class": "近卫",
+    "approach": [
+      "限定寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "你熟悉的嘉维尔，拿起了战斧。",
+    "feature": "同时攻击阻挡的<span style=\"color:#00B0FF;\">所有敌人</span>",
+    "str": "优良",
+    "flex": "标准",
+    "tolerance": "优良",
+    "plan": "标准",
+    "skill": "优良",
+    "adapt": "标准",
+    "moredes": "擅长使用肢体语言来表达对他人的热情，使他们感到舒适和温馨。",
+    "icon": "//prts.wiki/images/1/1b/%E5%A4%B4%E5%83%8F_%E7%99%BE%E7%82%BC%E5%98%89%E7%BB%B4%E5%B0%94.png",
+    "half": "//prts.wiki/images/thumb/e/ed/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%99%BE%E7%82%BC%E5%98%89%E7%BB%B4%E5%B0%94_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%99%BE%E7%82%BC%E5%98%89%E7%BB%B4%E5%B0%94_1.png",
+    "oriHp": "1,325",
+    "oriAtk": "309",
+    "oriDef": "165",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "20→22→24",
+    "oriBlock": "2→2→3",
+    "oriCd": "1.2s",
+    "index": "RF22",
+    "sort_id": "247",
+    "jp": "",
+    "birthplace": "萨尔贡",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
+    "cn": "鸿雪",
+    "position": "远程位",
+    "en": "Позёмка",
+    "sex": "女",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "5",
+    "class": "狙击",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "狙击干员鸿雪，际崖城居民里最怀念际崖城的那个。",
+    "feature": "高精度的近距离射击",
+    "str": "标准",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "有什么事情都可以去找她倾诉，前提是你和杜林人一样高。",
+    "icon": "//prts.wiki/images/1/1b/%E5%A4%B4%E5%83%8F_%E9%B8%BF%E9%9B%AA.png",
+    "half": "//prts.wiki/images/thumb/4/4d/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%B8%BF%E9%9B%AA_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%B8%BF%E9%9B%AA_1.png",
+    "oriHp": "768",
+    "oriAtk": "373",
+    "oriDef": "73",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "16→18→20",
+    "oriBlock": "1",
+    "oriCd": "1.6s",
+    "index": "R145",
+    "sort_id": "246",
+    "jp": "",
+    "birthplace": "乌萨斯",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
+    "cn": "晓歌",
+    "position": "近战位",
+    "en": "Cantabile",
+    "sex": "女",
+    "tag": [
+      "费用回复",
+      "快速复活"
+    ],
+    "race": [
+      "黎博利"
+    ],
+    "rarity": "4",
+    "class": "先锋",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "一个在混乱之中长大的人，期望能在这里寻找到新的方向。",
+    "feature": "再部署时间<span style=\"color:#00B0FF;\">减少</span>，可使用远程攻击",
+    "str": "标准",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "如果过去已经无法改变，那么她将决定自己的未来。",
+    "icon": "//prts.wiki/images/1/15/%E5%A4%B4%E5%83%8F_%E6%99%93%E6%AD%8C.png",
+    "half": "//prts.wiki/images/thumb/d/d7/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%99%93%E6%AD%8C_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%99%93%E6%AD%8C_1.png",
+    "oriHp": "857",
+    "oriAtk": "236",
+    "oriDef": "94",
+    "oriRes": "0",
+    "oriDt": "35s",
+    "oriDc": "8→10",
+    "oriBlock": "1",
+    "oriCd": "1.0s",
+    "index": "R143",
+    "sort_id": "245",
+    "jp": "",
+    "birthplace": "玻利瓦尔",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
+    "cn": "至简",
+    "position": "远程位",
+    "en": "Minimalist",
+    "sex": "男",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "杜林"
+    ],
+    "rarity": "4",
+    "class": "术师",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "萨尔贡",
+    "team": "",
+    "des": "杜林的建筑设计师至简，被嘉维尔扛上了地面。",
+    "feature": "操作<span style=\"color:#00B0FF;\">浮游单元</span>造成<span style=\"color:#00B0FF;\">法术伤害</span><br/>单元攻击同一敌人伤害提升（最高造成干员110%攻击力的伤害）",
+    "str": "普通",
+    "flex": "普通",
+    "tolerance": "普通",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "优良",
+    "moredes": "他其实是自愿的！",
+    "icon": "//prts.wiki/images/9/98/%E5%A4%B4%E5%83%8F_%E8%87%B3%E7%AE%80.png",
+    "half": "//prts.wiki/images/thumb/9/95/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%87%B3%E7%AE%80_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%87%B3%E7%AE%80_1.png",
+    "oriHp": "573",
+    "oriAtk": "148",
+    "oriDef": "47",
+    "oriRes": "10",
+    "oriDt": "80s",
+    "oriDc": "21→23",
+    "oriBlock": "1",
+    "oriCd": "1.3s",
+    "index": "SG09",
+    "sort_id": "244",
+    "jp": "",
+    "birthplace": "杜林",
+    "nation": "萨尔贡",
+    "group": ""
+  },
+  {
+    "cn": "多萝西",
+    "position": "远程位",
+    "en": "Dorothy",
+    "sex": "女",
+    "tag": [
+      "召唤",
+      "控场"
+    ],
+    "race": [
+      "札拉克"
+    ],
+    "rarity": "5",
+    "class": "特种",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "莱茵生命",
+    "team": "",
+    "des": "莱茵生命合作干员多萝西，足够勇敢，永远向前。",
+    "feature": "可以使用陷阱来协助作战，但陷阱无法放置于<span style=\"color:#00B0FF;\">敌人已在</span>的格子中",
+    "str": "普通",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "优良",
+    "moredes": "她想让所有人更幸福，她坚信这是正确的。",
+    "icon": "//prts.wiki/images/4/4f/%E5%A4%B4%E5%83%8F_%E5%A4%9A%E8%90%9D%E8%A5%BF.png",
+    "half": "//prts.wiki/images/thumb/0/04/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%A4%9A%E8%90%9D%E8%A5%BF_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%A4%9A%E8%90%9D%E8%A5%BF_1.png",
+    "oriHp": "702",
+    "oriAtk": "263",
+    "oriDef": "70",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "10→12",
+    "oriBlock": "1",
+    "oriCd": "0.85s",
+    "index": "RL07",
+    "sort_id": "243",
+    "jp": "",
+    "birthplace": "哥伦比亚",
+    "nation": "哥伦比亚",
+    "group": "莱茵生命"
+  },
+  {
+    "cn": "承曦格雷伊",
+    "position": "远程位",
+    "en": "Greyy the Lightningbearer",
+    "sex": "男",
+    "tag": [
+      "输出",
+      "减速"
+    ],
+    "race": [
+      "佩洛"
+    ],
+    "rarity": "4",
+    "class": "狙击",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "罗德岛电气工程师格雷伊，立志成为承载下个世代工程技术的砥柱。",
+    "feature": "攻击对小范围的<span style=\"color:#00B0FF;\">地面</span>敌人造成<span style=\"color:#00B0FF;\">两次</span>物理伤害（第二次为余震，伤害降低至攻击力的一半）",
+    "str": "普通",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "普通",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "承载他人的希望一事，即意味着承担更重的责任。",
+    "icon": "//prts.wiki/images/e/e2/%E5%A4%B4%E5%83%8F_%E6%89%BF%E6%9B%A6%E6%A0%BC%E9%9B%B7%E4%BC%8A.png",
+    "half": "//prts.wiki/images/thumb/8/84/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%89%BF%E6%9B%A6%E6%A0%BC%E9%9B%B7%E4%BC%8A_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%89%BF%E6%9B%A6%E6%A0%BC%E9%9B%B7%E4%BC%8A_1.png",
+    "oriHp": "778",
+    "oriAtk": "311",
+    "oriDef": "120",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "22→24",
+    "oriBlock": "1",
+    "oriCd": "2.1s",
+    "index": "RF23",
+    "sort_id": "242",
+    "jp": "",
+    "birthplace": "玻利瓦尔",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
+    "cn": "星源",
+    "position": "远程位",
+    "en": "Astgenne",
+    "sex": "女",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "黎博利"
+    ],
+    "rarity": "4",
+    "class": "术师",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "莱茵生命",
+    "team": "",
+    "des": "莱茵生命研究员埃琳娜，在罗德岛上你可以称呼她为星源。",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "str": "普通",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "她是电花，也是你手旁的小喇叭。",
+    "icon": "//prts.wiki/images/4/48/%E5%A4%B4%E5%83%8F_%E6%98%9F%E6%BA%90.png",
+    "half": "//prts.wiki/images/thumb/7/7c/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%98%9F%E6%BA%90_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%98%9F%E6%BA%90_1.png",
+    "oriHp": "589",
+    "oriAtk": "293",
+    "oriDef": "48",
+    "oriRes": "10",
+    "oriDt": "80s",
+    "oriDc": "31→34",
+    "oriBlock": "1",
+    "oriCd": "2.3s",
+    "index": "RL08",
+    "sort_id": "241",
+    "jp": "",
+    "birthplace": "哥伦比亚",
+    "nation": "哥伦比亚",
+    "group": "莱茵生命"
+  },
+  {
+    "cn": "黑键",
+    "position": "远程位",
+    "en": "Ebenholz",
+    "sex": "男",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "卡普里尼"
+    ],
+    "rarity": "5",
+    "class": "术师",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "莱塔尼亚",
+    "team": "",
+    "des": "术师干员黑键，拒绝在自己的名字前附加任何多余的前缀。",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，在找不到攻击目标时可以将攻击能量<span style=\"color:#00B0FF;\">储存</span>起来之后一齐发射（最多3个）",
+    "str": "标准",
+    "flex": "普通",
+    "tolerance": "普通",
+    "plan": "标准",
+    "skill": "标准",
+    "adapt": "卓越",
+    "moredes": "他即将找到自己的路，尽管他在寻找的过程中失去了太多。",
+    "icon": "//prts.wiki/images/1/1e/%E5%A4%B4%E5%83%8F_%E9%BB%91%E9%94%AE.png",
+    "half": "//prts.wiki/images/thumb/e/e6/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%BB%91%E9%94%AE_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%BB%91%E9%94%AE_1.png",
+    "oriHp": "732",
+    "oriAtk": "611",
+    "oriDef": "51",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "23→25",
+    "oriBlock": "1",
+    "oriCd": "3.0s",
+    "index": "LN05",
+    "sort_id": "240",
+    "jp": "",
+    "birthplace": "莱塔尼亚",
+    "nation": "莱塔尼亚",
+    "group": ""
+  },
+  {
+    "cn": "濯尘芙蓉",
+    "position": "远程位",
+    "en": "Hibiscus the Purifier",
+    "sex": "女",
+    "tag": [
+      "治疗"
+    ],
+    "race": [
+      "萨卡兹"
+    ],
+    "rarity": "4",
+    "class": "医疗",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "罗德岛医疗干员濯尘芙蓉，救死扶伤的理想从未改变。",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，攻击敌人时为攻击范围内一名友方干员治疗相当于<span style=\"color:#00B0FF;\">50%</span>伤害的生命值",
+    "str": "普通",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "普通",
+    "adapt": "优良",
+    "moredes": "消除病痛，治愈心灵。",
+    "icon": "//prts.wiki/images/8/8d/%E5%A4%B4%E5%83%8F_%E6%BF%AF%E5%B0%98%E8%8A%99%E8%93%89.png",
+    "half": "//prts.wiki/images/thumb/8/8a/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%BF%AF%E5%B0%98%E8%8A%99%E8%93%89_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%BF%AF%E5%B0%98%E8%8A%99%E8%93%89_1.png",
+    "oriHp": "826",
+    "oriAtk": "178",
+    "oriDef": "47",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "15→17",
+    "oriBlock": "1",
+    "oriCd": "1.6s",
+    "index": "RF03",
+    "sort_id": "239",
+    "jp": "",
+    "birthplace": "维多利亚",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
+    "cn": "车尔尼",
+    "position": "近战位",
+    "en": "Czerny",
+    "sex": "男",
+    "tag": [
+      "防护",
+      "输出"
+    ],
+    "race": [
+      "埃拉菲亚"
+    ],
+    "rarity": "4",
+    "class": "重装",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "莱塔尼亚",
+    "team": "",
+    "des": "来自夕照区的音乐家车尔尼，遨游在旋律中。",
+    "feature": "技能开启时普通攻击会造成法术伤害",
+    "str": "标准",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "优良",
+    "moredes": "从他的指尖下流淌出的，是一条无尽的光明与希望之河。",
+    "icon": "//prts.wiki/images/1/1c/%E5%A4%B4%E5%83%8F_%E8%BD%A6%E5%B0%94%E5%B0%BC.png",
+    "half": "//prts.wiki/images/thumb/1/1f/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%BD%A6%E5%B0%94%E5%B0%BC_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%BD%A6%E5%B0%94%E5%B0%BC_1.png",
+    "oriHp": "1,246",
+    "oriAtk": "262",
+    "oriDef": "231",
+    "oriRes": "5",
+    "oriDt": "80s",
+    "oriDc": "23→25→27",
+    "oriBlock": "3",
+    "oriCd": "1.6s",
+    "index": "LN06",
+    "sort_id": "238",
+    "jp": "",
+    "birthplace": "莱塔尼亚",
+    "nation": "莱塔尼亚",
+    "group": ""
+  },
+  {
+    "cn": "埃拉托",
+    "position": "远程位",
+    "en": "Erato",
+    "sex": "女",
+    "tag": [
+      "输出",
+      "控场"
+    ],
+    "race": [
+      "黎博利"
+    ],
+    "rarity": "4",
+    "class": "狙击",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "米诺斯",
+    "team": "",
+    "des": "来自米诺斯的吟游诗人，准备与你一同探索未知的景色。",
+    "feature": "优先攻击重量最重的敌人",
+    "str": "标准",
+    "flex": "优良",
+    "tolerance": "标准",
+    "plan": "普通",
+    "skill": "标准",
+    "adapt": "优良",
+    "moredes": "用诗篇描绘出一片美好的大地，然后用弓箭来捍卫它。",
+    "icon": "//prts.wiki/images/3/34/%E5%A4%B4%E5%83%8F_%E5%9F%83%E6%8B%89%E6%89%98.png",
+    "half": "//prts.wiki/images/thumb/5/57/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%9F%83%E6%8B%89%E6%89%98_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%9F%83%E6%8B%89%E6%89%98_1.png",
+    "oriHp": "811",
+    "oriAtk": "428",
+    "oriDef": "60",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "21→23",
+    "oriBlock": "1",
+    "oriCd": "2.4s",
+    "index": "MN07",
+    "sort_id": "237",
+    "jp": "",
+    "birthplace": "米诺斯",
+    "nation": "米诺斯",
+    "group": ""
+  },
+  {
+    "cn": "归溟幽灵鲨",
+    "position": "近战位",
+    "en": "Specter the Unchained",
+    "sex": "女",
+    "tag": [
+      "输出",
+      "快速复活"
+    ],
+    "race": [
+      "阿戈尔"
+    ],
+    "rarity": "5",
+    "class": "特种",
+    "approach": [
+      "限定寻访"
+    ],
+    "camp": "深海猎人",
+    "team": "",
+    "des": "归溟幽灵鲨，自囚笼里挣脱，从疯狂中苏醒。",
+    "feature": "受到致命伤时不撤退，切换成<替身>作战（替身阻挡数为0），持续20秒后自身再次替换<替身>",
+    "str": "卓越",
+    "flex": "优良",
+    "tolerance": "卓越",
+    "plan": "标准",
+    "skill": "优良",
+    "adapt": "缺陷",
+    "moredes": "战斗时的她总是疯狂的。",
+    "icon": "//prts.wiki/images/b/be/%E5%A4%B4%E5%83%8F_%E5%BD%92%E6%BA%9F%E5%B9%BD%E7%81%B5%E9%B2%A8.png",
+    "half": "//prts.wiki/images/thumb/f/f7/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%BD%92%E6%BA%9F%E5%B9%BD%E7%81%B5%E9%B2%A8_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%BD%92%E6%BA%9F%E5%B9%BD%E7%81%B5%E9%B2%A8_1.png",
+    "oriHp": "1,311",
+    "oriAtk": "335",
+    "oriDef": "133",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "14→14→16",
+    "oriBlock": "2",
+    "oriCd": "1.2s",
+    "index": "CR02",
+    "sort_id": "236",
+    "jp": "",
+    "birthplace": "阿戈尔",
+    "nation": "阿戈尔",
+    "group": "深海猎人"
+  },
+  {
+    "cn": "艾丽妮",
+    "position": "近战位",
+    "en": "Irene",
+    "sex": "女",
+    "tag": [
+      "爆发",
+      "输出",
+      "控场"
+    ],
+    "race": [
+      "黎博利"
+    ],
+    "rarity": "5",
+    "class": "近卫",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "伊比利亚",
+    "team": "",
+    "des": "审判庭信使艾丽妮，为守护伊比利亚的海岸线而战。",
+    "feature": "普通攻击连续造成<span style=\"color:#00B0FF;\">两次</span>伤害",
+    "str": "普通",
+    "flex": "优良",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "优良",
+    "adapt": "标准",
+    "moredes": "利剑挑破黑夜，提灯照亮前路。",
+    "icon": "//prts.wiki/images/5/57/%E5%A4%B4%E5%83%8F_%E8%89%BE%E4%B8%BD%E5%A6%AE.png",
+    "half": "//prts.wiki/images/thumb/b/bd/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%89%BE%E4%B8%BD%E5%A6%AE_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%89%BE%E4%B8%BD%E5%A6%AE_1.png",
+    "oriHp": "1,236",
+    "oriAtk": "249",
+    "oriDef": "151",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "19→21→23",
+    "oriBlock": "2",
+    "oriCd": "1.3s",
+    "index": "II07",
+    "sort_id": "235",
+    "jp": "",
+    "birthplace": "伊比利亚",
+    "nation": "伊比利亚",
+    "group": ""
+  },
+  {
+    "cn": "流明",
+    "position": "远程位",
+    "en": "Lumen",
+    "sex": "男",
+    "tag": [
+      "治疗",
+      "支援"
+    ],
+    "race": [
+      "阿戈尔"
+    ],
+    "rarity": "5",
+    "class": "医疗",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "伊比利亚",
+    "team": "",
+    "des": "格兰法洛的礼拜堂护工流明，将会抚平你的伤痕。",
+    "feature": "拥有较大治疗范围，但在治疗较远目标时治疗量变为<span style=\"color:#00B0FF;\">80%</span>",
+    "str": "普通",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "普通",
+    "moredes": "相比于在审判庭的工作，他还是对照顾别人更有自信。",
+    "icon": "//prts.wiki/images/7/72/%E5%A4%B4%E5%83%8F_%E6%B5%81%E6%98%8E.png",
+    "half": "//prts.wiki/images/thumb/9/9f/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B5%81%E6%98%8E_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B5%81%E6%98%8E_1.png",
+    "oriHp": "1,000",
+    "oriAtk": "189",
+    "oriDef": "48",
+    "oriRes": "10",
+    "oriDt": "80s",
+    "oriDc": "21→23",
+    "oriBlock": "1",
+    "oriCd": "2.85s",
+    "index": "II09",
+    "sort_id": "234",
+    "jp": "",
+    "birthplace": "伊比利亚",
+    "nation": "伊比利亚",
+    "group": ""
+  },
+  {
+    "cn": "掠风",
+    "position": "近战位",
+    "en": "Windflit",
+    "sex": "男",
+    "tag": [
+      "输出",
+      "支援"
+    ],
+    "race": [
+      "佩洛"
+    ],
+    "rarity": "4",
+    "class": "辅助",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "哥伦比亚",
+    "team": "",
+    "des": "哥伦比亚刚毕业的大学生，终于找到了一家给他入职通知的公司。",
+    "feature": "能够阻挡两个敌人，使用<支援装置>协助作战",
+    "str": "标准",
+    "flex": "标准",
+    "tolerance": "优良",
+    "plan": "普通",
+    "skill": "普通",
+    "adapt": "标准",
+    "moredes": "不要怀疑他的能力，让年轻人屡屡碰壁的原因没他自己想的那么单纯。",
+    "icon": "//prts.wiki/images/5/5c/%E5%A4%B4%E5%83%8F_%E6%8E%A0%E9%A3%8E.png",
+    "half": "//prts.wiki/images/thumb/6/65/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%8E%A0%E9%A3%8E_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%8E%A0%E9%A3%8E_1.png",
+    "oriHp": "1,182",
+    "oriAtk": "238",
+    "oriDef": "193",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "14→16→18",
+    "oriBlock": "2",
+    "oriCd": "1.5s",
+    "index": "CB19",
+    "sort_id": "233",
+    "jp": "",
+    "birthplace": "哥伦比亚",
+    "nation": "哥伦比亚",
+    "group": ""
+  },
+  {
+    "cn": "号角",
+    "position": "近战位",
+    "en": "Horn",
+    "sex": "女",
+    "tag": [
+      "输出",
+      "防护"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "5",
+    "class": "重装",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "维多利亚",
+    "team": "",
+    "des": "维多利亚军人号角，与您共御危机。",
+    "feature": "不阻挡敌人时优先<span style=\"color:#00B0FF;\">远程群体</span>物理攻击",
+    "str": "优良",
+    "flex": "标准",
+    "tolerance": "优良",
+    "plan": "优良",
+    "skill": "优良",
+    "adapt": "标准",
+    "moredes": "炮弹迅疾如风暴，盾牌坚硬似铁壁。",
+    "icon": "//prts.wiki/images/3/3f/%E5%A4%B4%E5%83%8F_%E5%8F%B7%E8%A7%92.png",
+    "half": "//prts.wiki/images/thumb/8/85/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%8F%B7%E8%A7%92_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%8F%B7%E8%A7%92_1.png",
+    "oriHp": "1,237",
+    "oriAtk": "483",
+    "oriDef": "223",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "24→26→28",
+    "oriBlock": "2→3→3",
+    "oriCd": "2.8s",
+    "index": "VC16",
+    "sort_id": "232",
+    "jp": "ホルン",
+    "birthplace": "维多利亚",
+    "nation": "维多利亚",
+    "group": ""
+  },
+  {
+    "cn": "洛洛",
+    "position": "远程位",
+    "en": "Rockrock",
+    "sex": "女",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "菲林"
+    ],
+    "rarity": "4",
+    "class": "术师",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "维多利亚",
+    "team": "",
+    "des": "伦蒂尼姆市民自救军洛洛。",
+    "feature": "操作<span style=\"color:#00B0FF;\">浮游单元</span>造成<span style=\"color:#00B0FF;\">法术伤害</span><br/>单元攻击同一敌人伤害提升（最高造成干员110%攻击力的伤害）",
+    "str": "标准",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "她想夺回自己的家园，她会为之一直努力。",
+    "icon": "//prts.wiki/images/d/d4/%E5%A4%B4%E5%83%8F_%E6%B4%9B%E6%B4%9B.png",
+    "half": "//prts.wiki/images/thumb/f/fa/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B4%9B%E6%B4%9B_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B4%9B%E6%B4%9B_1.png",
+    "oriHp": "600",
+    "oriAtk": "148",
+    "oriDef": "49",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "19→21",
+    "oriBlock": "1",
+    "oriCd": "1.3s",
+    "index": "VC18",
+    "sort_id": "231",
+    "jp": "ロックロック",
+    "birthplace": "维多利亚",
+    "nation": "维多利亚",
+    "group": ""
+  },
+  {
+    "cn": "海蒂",
+    "position": "远程位",
+    "en": "Heidi",
+    "sex": "女",
+    "tag": [
+      "支援",
+      "治疗"
+    ],
+    "race": [
+      "菲林"
+    ],
+    "rarity": "4",
+    "class": "辅助",
+    "approach": [
+      "主线剧情"
+    ],
+    "camp": "维多利亚",
+    "team": "",
+    "des": "信使海蒂，你很熟悉她的落款。",
+    "feature": "不攻击，持续恢复范围内所有友军<span style=\"color:#00B0FF;\">生命</span>（每秒相当于自身攻击力<span style=\"color:#00B0FF;\">10%</span>的生命），自身不受<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">鼓舞</span>]]<span style=\"display:none\" data-size=\"350\">获得额外附加的基础属性加成（同类属性取<span style=\"background:burlywood;\">比例</span>最高）<br/>※给予他人鼓舞效果的角色会将自身的鼓舞BUFF重写后适用于受益者。（先最终乘算计算加成数值后，重写为最终加算，再将鼓舞赋予受益者）</span></span>影响",
+    "str": "普通",
+    "flex": "普通",
+    "tolerance": "普通",
+    "plan": "优良",
+    "skill": "普通",
+    "adapt": "普通",
+    "moredes": "笔下的故事都是虚构的，但告知你的事情都是真的。",
+    "icon": "//prts.wiki/images/d/d9/%E5%A4%B4%E5%83%8F_%E6%B5%B7%E8%92%82.png",
+    "half": "//prts.wiki/images/thumb/9/9d/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B5%B7%E8%92%82_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%B5%B7%E8%92%82_1.png",
+    "oriHp": "482",
+    "oriAtk": "126",
+    "oriDef": "107",
+    "oriRes": "0",
+    "oriDt": "80s",
+    "oriDc": "7→9",
+    "oriBlock": "1",
+    "oriCd": "1.0s",
+    "index": "VC19",
+    "sort_id": "230",
+    "jp": "ハイディ",
+    "birthplace": "维多利亚",
+    "nation": "维多利亚",
+    "group": ""
+  },
+  {
+    "cn": "褐果",
+    "position": "远程位",
+    "en": "Chestnut",
+    "sex": "男",
+    "tag": [
+      "治疗"
+    ],
+    "race": [
+      "杜林"
+    ],
+    "rarity": "3",
+    "class": "医疗",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "罗德岛",
+    "team": "",
+    "des": "个子小小的医生悉心擦拭着手里的水晶。",
+    "feature": "恢复友方单位生命，并回复相当于攻击力<span style=\"color:#00B0FF;\">50%</span>的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">元素损伤</span>]]<span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">灼燃损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">凋亡损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>（可以回复未受伤友方单位的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">元素损伤</span>]]<span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">灼燃损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">凋亡损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>）",
+    "str": "普通",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "标准",
+    "moredes": "“看它多漂亮啊。”他抬头对你说。",
+    "icon": "//prts.wiki/images/5/58/%E5%A4%B4%E5%83%8F_%E8%A4%90%E6%9E%9C.png",
+    "half": "//prts.wiki/images/thumb/5/57/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%A4%90%E6%9E%9C_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E8%A4%90%E6%9E%9C_1.png",
+    "oriHp": "623",
+    "oriAtk": "136",
+    "oriDef": "44",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "12→14",
+    "oriBlock": "1",
+    "oriCd": "2.85s",
+    "index": "R134",
+    "sort_id": "229",
+    "jp": "チェストナッツ",
+    "birthplace": "未公开",
+    "nation": "罗德岛",
+    "group": ""
+  },
+  {
     "cn": "菲亚梅塔",
     "position": "远程位",
     "en": "Fiammetta",
@@ -38,7 +1244,7 @@
     "oriCd": "2.8s",
     "index": "LT11",
     "sort_id": "228",
-    "jp": "",
+    "jp": "フィアメッタ",
     "birthplace": "拉特兰",
     "nation": "拉特兰",
     "group": ""
@@ -63,7 +1269,7 @@
     "camp": "东",
     "team": "",
     "des": "情报员风丸，你可以从她那里获得任何你想要的消息。",
-    "feature": "受到致命伤时不撤退，切换成<替身>作战（替身阻挡数为0），持续20s后自身再次替换<替身>",
+    "feature": "受到致命伤时不撤退，切换成<替身>作战（替身阻挡数为0），持续20秒后自身再次替换<替身>",
     "str": "标准",
     "flex": "标准",
     "tolerance": "标准",
@@ -83,7 +1289,7 @@
     "oriCd": "1.2s",
     "index": "HK09",
     "sort_id": "227",
-    "jp": "",
+    "jp": "カゼマル",
     "birthplace": "东国",
     "nation": "东",
     "group": ""
@@ -128,7 +1334,7 @@
     "oriCd": "1.2s",
     "index": "LT10",
     "sort_id": "226",
-    "jp": "",
+    "jp": "エンフォーサー",
     "birthplace": "拉特兰",
     "nation": "拉特兰",
     "group": ""
@@ -172,7 +1378,7 @@
     "oriCd": "1.3s",
     "index": "VC09",
     "sort_id": "225",
-    "jp": "",
+    "jp": "ゴールデングロー",
     "birthplace": "维多利亚",
     "nation": "维多利亚",
     "group": ""
@@ -217,7 +1423,7 @@
     "oriCd": "1.6s",
     "index": "R121",
     "sort_id": "224",
-    "jp": "",
+    "jp": "クエルクス",
     "birthplace": "维多利亚",
     "nation": "罗德岛",
     "group": ""
@@ -263,7 +1469,7 @@
     "oriCd": "1.6s",
     "index": "NM03",
     "sort_id": "223",
-    "jp": "",
+    "jp": "リィン",
     "birthplace": "炎",
     "nation": "炎",
     "group": "炎-岁"
@@ -309,7 +1515,7 @@
     "oriCd": "1.0s",
     "index": "LM18",
     "sort_id": "222",
-    "jp": "",
+    "jp": "リー",
     "birthplace": "炎",
     "nation": "炎-龙门",
     "group": ""
@@ -354,7 +1560,7 @@
     "oriCd": "1.0s",
     "index": "RB12",
     "sort_id": "221",
-    "jp": "",
+    "jp": "ブラックナイト",
     "birthplace": "雷姆必拓",
     "nation": "雷姆必拓",
     "group": ""
@@ -398,7 +1604,7 @@
     "oriCd": "1.0s",
     "index": "RF02",
     "sort_id": "220",
-    "jp": "",
+    "jp": "寒芒クルース",
     "birthplace": "雷姆必拓",
     "nation": "罗德岛",
     "group": ""
@@ -443,7 +1649,7 @@
     "oriCd": "1.6s",
     "index": "YD09",
     "sort_id": "219",
-    "jp": "",
+    "jp": "九色鹿",
     "birthplace": "炎",
     "nation": "炎",
     "group": ""
@@ -488,7 +1694,7 @@
     "oriCd": "1.6s",
     "index": "VC07",
     "sort_id": "218",
-    "jp": "",
+    "jp": "シャレム",
     "birthplace": "维多利亚",
     "nation": "维多利亚",
     "group": ""
@@ -532,7 +1738,7 @@
     "oriCd": "1.6s",
     "index": "JC02",
     "sort_id": "217",
-    "jp": "",
+    "jp": "ノーシス",
     "birthplace": "谢拉格",
     "nation": "谢拉格",
     "group": "喀兰贸易"
@@ -577,7 +1783,7 @@
     "oriCd": "1.6s",
     "index": "JC09",
     "sort_id": "216",
-    "jp": "",
+    "jp": "オーロラ",
     "birthplace": "谢拉格",
     "nation": "谢拉格",
     "group": "喀兰贸易"
@@ -622,7 +1828,7 @@
     "oriCd": "1.3s",
     "index": "JC00",
     "sort_id": "215",
-    "jp": "",
+    "jp": "イェラ",
     "birthplace": "谢拉格",
     "nation": "谢拉格",
     "group": "喀兰贸易"
@@ -666,7 +1872,7 @@
     "oriCd": "1.5s",
     "index": "KZ01",
     "sort_id": "214",
-    "jp": "",
+    "jp": "耀騎士ニアール",
     "birthplace": "卡西米尔",
     "nation": "卡西米尔",
     "group": ""
@@ -711,7 +1917,7 @@
     "oriCd": "1.05s",
     "index": "KZ11",
     "sort_id": "213",
-    "jp": "",
+    "jp": "フレイムテイル",
     "birthplace": "卡西米尔",
     "nation": "卡西米尔",
     "group": "红松骑士团"
@@ -756,7 +1962,7 @@
     "oriCd": "2.9s",
     "index": "CB12",
     "sort_id": "212",
-    "jp": "",
+    "jp": "コロセラム",
     "birthplace": "哥伦比亚",
     "nation": "哥伦比亚",
     "group": ""
@@ -801,7 +2007,7 @@
     "oriCd": "1.0s",
     "index": "KZ14",
     "sort_id": "211",
-    "jp": "",
+    "jp": "ワイルドメイン",
     "birthplace": "卡西米尔",
     "nation": "卡西米尔",
     "group": "红松骑士团"
@@ -825,7 +2031,7 @@
     "camp": "雷姆必拓",
     "team": "",
     "des": "实习医师蜜莓，用苦涩的草药守护身体，用甜蜜的零食治愈心灵。",
-    "feature": "恢复友方单位生命，并回复相当于攻击力<span style=\"color:#00B0FF;\">50%</span>的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">元素损伤</span><span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">灼燃损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>（可以回复未受伤友方单位的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">元素损伤</span><span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">灼燃损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>）",
+    "feature": "恢复友方单位生命，并回复相当于攻击力<span style=\"color:#00B0FF;\">50%</span>的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">元素损伤</span>]]<span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">灼燃损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">凋亡损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>（可以回复未受伤友方单位的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">元素损伤</span>]]<span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">灼燃损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">凋亡损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>）",
     "str": "普通",
     "flex": "标准",
     "tolerance": "普通",
@@ -845,7 +2051,7 @@
     "oriCd": "2.85s",
     "index": "RB06",
     "sort_id": "210",
-    "jp": "",
+    "jp": "ハニーベリー",
     "birthplace": "雷姆必拓",
     "nation": "雷姆必拓",
     "group": ""
@@ -869,7 +2075,7 @@
     "camp": "哥伦比亚",
     "team": "",
     "des": "电气工程师布丁，作为可露希尔的帮手在工程部兢兢业业地工作。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "缺陷",
     "flex": "标准",
     "tolerance": "标准",
@@ -889,7 +2095,7 @@
     "oriCd": "2.3s",
     "index": "CB03",
     "sort_id": "209",
-    "jp": "",
+    "jp": "プリン",
     "birthplace": "哥伦比亚",
     "nation": "哥伦比亚",
     "group": ""
@@ -934,7 +2140,7 @@
     "oriCd": "1.0s",
     "index": "KZ15",
     "sort_id": "208",
-    "jp": "",
+    "jp": "ジャスティスナイト",
     "birthplace": "",
     "nation": "卡西米尔",
     "group": "红松骑士团"
@@ -978,7 +2184,7 @@
     "oriCd": "2.7s",
     "index": "KZ13",
     "sort_id": "207",
-    "jp": "",
+    "jp": "ファートゥース",
     "birthplace": "卡西米尔",
     "nation": "卡西米尔",
     "group": "红松骑士团"
@@ -1023,7 +2229,7 @@
     "oriCd": "2.8s",
     "index": "KZ12",
     "sort_id": "206",
-    "jp": "",
+    "jp": "アッシュロック",
     "birthplace": "卡西米尔",
     "nation": "卡西米尔",
     "group": "红松骑士团"
@@ -1092,7 +2298,7 @@
     "camp": "炎",
     "team": "",
     "des": "救援队成员桑葚，兢兢业业地做好自己的工作。",
-    "feature": "恢复友方单位生命，并回复相当于攻击力<span style=\"color:#00B0FF;\">50%</span>的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">元素损伤</span><span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">灼燃损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>（可以回复未受伤友方单位的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">元素损伤</span><span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">灼燃损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>）",
+    "feature": "恢复友方单位生命，并回复相当于攻击力<span style=\"color:#00B0FF;\">50%</span>的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">元素损伤</span>]]<span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">灼燃损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">凋亡损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>（可以回复未受伤友方单位的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">元素损伤</span>]]<span style=\"display:none\" data-size=\"350\">包括<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">神经损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">侵蚀损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">灼燃损伤</span>、<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">凋亡损伤</span><br/>※最大元素值默认为1000，受到附加元素损伤的伤害时先结算伤害后结算元素损伤</span></span>）",
     "str": "普通",
     "flex": "标准",
     "tolerance": "普通",
@@ -1248,7 +2454,7 @@
     "index": "HK07",
     "sort_id": "201",
     "jp": "ミヅキ",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "东",
     "group": ""
   },
@@ -1405,7 +2611,7 @@
     "camp": "莱塔尼亚",
     "team": "",
     "des": "术师干员卡涅利安，成熟冷静但偶尔也会想要大闹。",
-    "feature": "通常时<span style=\"color:#00B0FF;\">不攻击</span>且防御力和法术抗性大幅度<span style=\"color:#00B0FF;\">提升</span>，技能开启时攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span><br/><span style=\"color:#F49800;\">(通常时防御力+200%，法术抗性+20)</span>",
+    "feature": "通常时<span style=\"color:#00B0FF;\">不攻击</span>且防御力和法术抗性大幅度<span style=\"color:#00B0FF;\">提升</span>，技能开启时攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span>",
     "str": "普通",
     "flex": "普通",
     "tolerance": "优良",
@@ -1586,7 +2792,7 @@
     "camp": "阿戈尔",
     "team": "",
     "des": "浊心斯卡蒂，一位让你熟悉又陌生的访客。",
-    "feature": "不攻击，持续恢复范围内所有友军<span style=\"color:#00B0FF;\">生命</span>（每秒相当于自身攻击力<span style=\"color:#00B0FF;\">10%</span>的生命），自身不受<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">鼓舞</span><span style=\"display:none\" data-size=\"350\">获得额外附加的基础属性加成（同类属性取最高）<br/>※发动鼓舞者本身的鼓舞BUFF会被重写后适用于受益者。（如[[空]]与[[浊心斯卡蒂]]均为最终乘算计算BUFF数值后重写为最终加算赋予受益者）</span></span>影响",
+    "feature": "不攻击，持续恢复范围内所有友军<span style=\"color:#00B0FF;\">生命</span>（每秒相当于自身攻击力<span style=\"color:#00B0FF;\">10%</span>的生命），自身不受<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">鼓舞</span>]]<span style=\"display:none\" data-size=\"350\">获得额外附加的基础属性加成（同类属性取<span style=\"background:burlywood;\">比例</span>最高）<br/>※给予他人鼓舞效果的角色会将自身的鼓舞BUFF重写后适用于受益者。（先最终乘算计算加成数值后，重写为最终加算，再将鼓舞赋予受益者）</span></span>影响",
     "str": "优良",
     "flex": "优良",
     "tolerance": "卓越",
@@ -1766,7 +2972,7 @@
     "camp": "萨尔贡",
     "team": "",
     "des": "工程干员异客，将以雷霆手段惩罚敌手。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>(0.5s)",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>(0.5s)",
     "str": "普通",
     "flex": "标准",
     "tolerance": "标准",
@@ -1959,7 +3165,7 @@
     "oriDef": "64",
     "oriRes": "0",
     "oriDt": "70s",
-    "oriDc": "11→13",
+    "oriDc": "9→11",
     "oriBlock": "1",
     "oriCd": "0.85s",
     "index": "RS03",
@@ -1989,7 +3195,7 @@
     "camp": "彩虹小队",
     "team": "彩虹小队",
     "des": "彩虹小队成员闪击，战术护盾充能完毕。",
-    "feature": "能够阻挡三个敌人",
+    "feature": "能够阻挡三个敌人，可以进行远程攻击",
     "str": "普通",
     "flex": "普通",
     "tolerance": "标准",
@@ -2661,7 +3867,7 @@
     "camp": "罗德岛-精英干员",
     "team": "",
     "des": "罗德岛精英干员迷迭香，用手推开了你的办公室门。",
-    "feature": "攻击对小范围的<span style=\"color:#00B0FF;\">地面</span>敌人造成<span style=\"color:#00B0FF;\">两次</span>物理伤害（第二次为余震，伤害降低至攻击力的一半）<br/><span style=\"color:#F49800;\">(攻击溅射范围半径为0.9)</span>",
+    "feature": "攻击对小范围的<span style=\"color:#00B0FF;\">地面</span>敌人造成<span style=\"color:#00B0FF;\">两次</span>物理伤害（第二次为余震，伤害降低至攻击力的一半）",
     "str": "普通/■■",
     "flex": "标准/优良",
     "tolerance": "普通/卓越",
@@ -2925,7 +4131,8 @@
     "rarity": "4",
     "class": "近卫",
     "approach": [
-      "活动获得"
+      "活动获得",
+      "记录修复奖励"
     ],
     "camp": "卡西米尔",
     "team": "",
@@ -3102,12 +4309,13 @@
     "rarity": "4",
     "class": "术师",
     "approach": [
-      "活动获得"
+      "活动获得",
+      "记录修复奖励"
     ],
     "camp": "维多利亚",
     "team": "",
     "des": "维多利亚术师薄绿，比起术师更希望被视作学者。",
-    "feature": "通常时<span style=\"color:#00B0FF;\">不攻击</span>且防御力和法术抗性大幅度<span style=\"color:#00B0FF;\">提升</span>，技能开启时攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span><br/><span style=\"color:#F49800;\">(通常时防御力+200%，法术抗性+20)</span>",
+    "feature": "通常时<span style=\"color:#00B0FF;\">不攻击</span>且防御力和法术抗性大幅度<span style=\"color:#00B0FF;\">提升</span>，技能开启时攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span>",
     "str": "普通",
     "flex": "普通",
     "tolerance": "普通",
@@ -3281,7 +4489,8 @@
     "rarity": "4",
     "class": "术师",
     "approach": [
-      "活动获得"
+      "活动获得",
+      "记录修复奖励"
     ],
     "camp": "萨尔贡",
     "team": "",
@@ -3555,7 +4764,7 @@
     "camp": "萨尔贡",
     "team": "",
     "des": "萨尔贡沙漠上的部族司祭蜜蜡，金色沙原中寄寓她的祝福。",
-    "feature": "通常时<span style=\"color:#00B0FF;\">不攻击</span>且防御力和法术抗性大幅度<span style=\"color:#00B0FF;\">提升</span>，技能开启时攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span><br/><span style=\"color:#F49800;\">(通常时防御力+200%，法术抗性+20)</span>",
+    "feature": "通常时<span style=\"color:#00B0FF;\">不攻击</span>且防御力和法术抗性大幅度<span style=\"color:#00B0FF;\">提升</span>，技能开启时攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span>",
     "str": "普通",
     "flex": "普通",
     "tolerance": "标准",
@@ -3646,7 +4855,7 @@
     "camp": "叙拉古",
     "team": "",
     "des": "罗德岛干员铃兰，九倍的温柔与坚强。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "标准",
     "tolerance": "普通",
@@ -3731,7 +4940,8 @@
     "rarity": "4",
     "class": "医疗",
     "approach": [
-      "活动获得"
+      "活动获得",
+      "记录修复奖励"
     ],
     "camp": "罗德岛",
     "team": "",
@@ -3910,7 +5120,8 @@
     "rarity": "4",
     "class": "术师",
     "approach": [
-      "活动获得"
+      "活动获得",
+      "记录修复奖励"
     ],
     "camp": "乌萨斯",
     "team": "",
@@ -3960,7 +5171,7 @@
     "camp": "罗德岛",
     "team": "",
     "des": "辅助干员波登可，为紧张的战场带来一点花香。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "标准",
     "tolerance": "普通",
@@ -4026,7 +5237,7 @@
     "index": "R129",
     "sort_id": "139",
     "jp": "ツキノギ",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "东",
     "group": ""
   },
@@ -4272,7 +5483,8 @@
     "rarity": "5",
     "class": "特种",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "维多利亚",
     "team": "",
@@ -4316,7 +5528,8 @@
     "rarity": "4",
     "class": "辅助",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "叙拉古",
     "team": "",
@@ -4361,7 +5574,8 @@
     "rarity": "4",
     "class": "近卫",
     "approach": [
-      "活动获得"
+      "活动获得",
+      "记录修复奖励"
     ],
     "camp": "米诺斯",
     "team": "",
@@ -4406,7 +5620,8 @@
     "rarity": "3",
     "class": "近卫",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "哥伦比亚",
     "team": "",
@@ -4498,6 +5713,7 @@
     "rarity": "5",
     "class": "先锋",
     "approach": [
+      "公开招募",
       "标准寻访"
     ],
     "camp": "维多利亚",
@@ -4543,6 +5759,7 @@
     "rarity": "4",
     "class": "狙击",
     "approach": [
+      "公开招募",
       "标准寻访"
     ],
     "camp": "萨尔贡",
@@ -4633,6 +5850,7 @@
     "rarity": "3",
     "class": "近卫",
     "approach": [
+      "公开招募",
       "标准寻访"
     ],
     "camp": "东",
@@ -4678,8 +5896,8 @@
     "rarity": "3",
     "class": "医疗",
     "approach": [
-      "限时礼包",
-      "公开招募"
+      "公开招募",
+      "限时礼包"
     ],
     "camp": "炎",
     "team": "",
@@ -4724,8 +5942,8 @@
     "rarity": "5",
     "class": "术师",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "罗德岛",
     "team": "",
@@ -4769,13 +5987,13 @@
     "rarity": "4",
     "class": "术师",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "炎",
     "team": "",
     "des": "来自大炎的大理寺监察司惊蛰，将与罗德岛在少数项目上进行合作。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>(0.5s)",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，且会在<span style=\"color:#00B0FF;\">4</span>个敌人间跳跃，每次跳跃伤害降低15%并造成短暂<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>(0.5s)",
     "str": "标准",
     "flex": "优良",
     "tolerance": "标准",
@@ -4860,8 +6078,8 @@
     "rarity": "5",
     "class": "特种",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "鲤氏侦探事务所",
     "team": "鲤氏侦探事务所",
@@ -4906,8 +6124,8 @@
     "rarity": "4",
     "class": "重装",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "鲤氏侦探事务所",
     "team": "鲤氏侦探事务所",
@@ -4998,8 +6216,8 @@
     "rarity": "5",
     "class": "近卫",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "罗德岛-精英干员",
     "team": "",
@@ -5043,8 +6261,8 @@
     "rarity": "4",
     "class": "狙击",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "罗德岛",
     "team": "",
@@ -5089,8 +6307,8 @@
     "rarity": "3",
     "class": "狙击",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "拉特兰",
     "team": "",
@@ -5135,8 +6353,8 @@
     "rarity": "4",
     "class": "近卫",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "贾维团伙",
     "team": "贾维团伙",
@@ -5181,8 +6399,8 @@
     "rarity": "4",
     "class": "先锋",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "维多利亚",
     "team": "",
@@ -5228,8 +6446,8 @@
     "rarity": "5",
     "class": "术师",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "拉特兰",
     "team": "",
@@ -5274,8 +6492,8 @@
     "rarity": "4",
     "class": "特种",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "鲤氏侦探事务所",
     "team": "鲤氏侦探事务所",
@@ -5365,8 +6583,8 @@
     "rarity": "3",
     "class": "狙击",
     "approach": [
-      "标准寻访",
-      "公开招募"
+      "公开招募",
+      "标准寻访"
     ],
     "camp": "维多利亚",
     "team": "",
@@ -5918,7 +7136,7 @@
     "camp": "伊比利亚",
     "team": "",
     "des": "雷神工业武器评测师格劳克斯，凭借全新的技术打击敌人的机械单位。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "普通",
     "tolerance": "优良",
@@ -6146,7 +7364,7 @@
     "camp": "玻利瓦尔",
     "team": "",
     "des": "罗德岛法术干员格雷伊，小心翼翼地使用源石技艺击退所有来犯之敌。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span><br/><span style=\"color:#F49800;\">(攻击溅射范围半径为1)</span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">群体法术伤害</span>",
     "str": "普通",
     "flex": "标准",
     "tolerance": "普通",
@@ -6552,8 +7770,8 @@
     "rarity": "4",
     "class": "近卫",
     "approach": [
-      "预约奖励",
-      "周年奖励"
+      "周年奖励",
+      "预约奖励"
     ],
     "camp": "雷姆必拓",
     "team": "",
@@ -6718,7 +7936,7 @@
     "index": "LM05",
     "sort_id": "80",
     "jp": "ホシグマ",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "炎-龙门",
     "group": "龙门近卫局"
   },
@@ -6835,7 +8053,7 @@
     "camp": "叙拉古",
     "team": "",
     "des": "罗德岛辅助干员、信使安洁莉娜，很想用自己奇妙的源石技艺为你提供协助。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "优良",
     "tolerance": "普通",
@@ -7154,7 +8372,7 @@
     "camp": "企鹅物流",
     "team": "",
     "des": "企鹅物流职员空，将以歌声为小队提供多种战术援助。",
-    "feature": "不攻击，持续恢复范围内所有友军<span style=\"color:#00B0FF;\">生命</span>（每秒相当于自身攻击力10%的生命），自身不受<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">鼓舞</span><span style=\"display:none\" data-size=\"350\">获得额外附加的基础属性加成（同类属性取最高）<br/>※发动鼓舞者本身的鼓舞BUFF会被重写后适用于受益者。（如[[空]]与[[浊心斯卡蒂]]均为最终乘算计算BUFF数值后重写为最终加算赋予受益者）</span></span>影响",
+    "feature": "不攻击，持续恢复范围内所有友军<span style=\"color:#00B0FF;\">生命</span>（每秒相当于自身攻击力10%的生命），自身不受<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">鼓舞</span>]]<span style=\"display:none\" data-size=\"350\">获得额外附加的基础属性加成（同类属性取<span style=\"background:burlywood;\">比例</span>最高）<br/>※给予他人鼓舞效果的角色会将自身的鼓舞BUFF重写后适用于受益者。（先最终乘算计算加成数值后，重写为最终加算，再将鼓舞赋予受益者）</span></span>影响",
     "str": "普通",
     "flex": "普通",
     "tolerance": "普通",
@@ -7200,7 +8418,7 @@
     "camp": "乌萨斯学生自治团",
     "team": "乌萨斯学生自治团",
     "des": "乌萨斯学生自治团成员真理，从书籍中挑选合适的源石技艺痛击敌人。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "普通",
     "tolerance": "普通",
@@ -7286,8 +8504,8 @@
     "class": "特种",
     "approach": [
       "公开招募",
-      "标准寻访",
-      "“开始熟悉罗德岛”连续登录任务奖励"
+      "“开始熟悉罗德岛”连续登录任务奖励",
+      "标准寻访"
     ],
     "camp": "喀兰贸易",
     "team": "",
@@ -7521,7 +8739,7 @@
     "camp": "黑钢国际",
     "team": "",
     "des": "黑钢防化人员雷蛇，虽是重装干员，却既持有坚强的盾，又握着锐利的矛。",
-    "feature": "能够阻挡三个敌人",
+    "feature": "能够阻挡三个敌人，可以进行远程攻击",
     "str": "标准",
     "flex": "普通",
     "tolerance": "优良",
@@ -8336,6 +9554,7 @@
     "class": "特种",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "炎-龙门",
@@ -8386,7 +9605,7 @@
     "camp": "莱塔尼亚",
     "team": "",
     "des": "罗德岛辅助干员地灵，在工作时间内为你提供可靠的战场支援。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "标准",
     "tolerance": "普通",
@@ -8994,7 +10213,7 @@
     "index": "HK01",
     "sort_id": "30",
     "jp": "マトイマル",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "东",
     "group": ""
   },
@@ -9223,7 +10442,7 @@
     "index": "LM10",
     "sort_id": "25",
     "jp": "シラユキ",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "东",
     "group": ""
   },
@@ -9289,6 +10508,7 @@
     "class": "狙击",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "黑钢国际",
@@ -9425,12 +10645,13 @@
     "class": "辅助",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A6",
     "team": "行动预备组A6",
     "des": "罗德岛辅助干员梓兰，将凭借源石技艺为各小队提供援助。",
-    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\"><span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;\">停顿</span><span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>，并对敌人造成短暂的<span class=\"mc-tooltips\">[[术语释义|<span class=\"term\" style=\"text-decoration:underline #222;white-space:nowrap;text-shadow: 0 0 1px;color:black\">停顿</span>]]<span style=\"display:none\" data-size=\"350\">移动速度降低80%</span></span>",
     "str": "普通",
     "flex": "普通",
     "tolerance": "普通",
@@ -9515,6 +10736,7 @@
     "class": "医疗",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A4",
@@ -9560,6 +10782,7 @@
     "class": "医疗",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A1",
@@ -9605,6 +10828,7 @@
     "class": "术师",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A1",
@@ -9649,7 +10873,8 @@
     "rarity": "2",
     "class": "狙击",
     "approach": [
-      "公开招募"
+      "公开招募",
+      "主线剧情"
     ],
     "camp": "行动预备组A4",
     "team": "行动预备组A4",
@@ -9694,6 +10919,7 @@
     "class": "狙击",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A1",
@@ -9739,6 +10965,7 @@
     "class": "重装",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A1",
@@ -9829,6 +11056,7 @@
     "class": "近卫",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A4",
@@ -9875,6 +11103,7 @@
     "class": "先锋",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "拉特兰",
@@ -9965,6 +11194,7 @@
     "class": "先锋",
     "approach": [
       "公开招募",
+      "主线剧情",
       "标准寻访"
     ],
     "camp": "行动预备组A1",
@@ -10009,7 +11239,8 @@
     "rarity": "1",
     "class": "术师",
     "approach": [
-      "公开招募"
+      "公开招募",
+      "主线剧情"
     ],
     "camp": "罗德岛",
     "team": "",
@@ -10053,7 +11284,8 @@
     "rarity": "1",
     "class": "术师",
     "approach": [
-      "公开招募"
+      "公开招募",
+      "主线剧情"
     ],
     "camp": "行动组A4",
     "team": "行动组A4",
@@ -10167,7 +11399,7 @@
     "index": "A43",
     "sort_id": "4",
     "jp": "ノイルホーン",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "罗德岛",
     "group": ""
   },
@@ -10211,7 +11443,7 @@
     "index": "A41",
     "sort_id": "3",
     "jp": "ヤトウ",
-    "birthplace": "东",
+    "birthplace": "东国",
     "nation": "罗德岛",
     "group": ""
   },
@@ -10275,7 +11507,8 @@
     "rarity": "0",
     "class": "医疗",
     "approach": [
-      "公开招募"
+      "公开招募",
+      "主线剧情"
     ],
     "camp": "罗德岛",
     "team": "",
