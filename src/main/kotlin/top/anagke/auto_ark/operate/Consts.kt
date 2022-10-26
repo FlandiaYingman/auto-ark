@@ -242,6 +242,32 @@ object OperateOperations {
         tap(1092, 222).nap() //进入“1-7”
     }
 
+    internal val MAIN_7_15 = Operation("7-15", description = "装置") {
+        tap(终端).sleep() //进入“终端”
+        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(66, 132).nap() //进入“幻灭”
+
+        swipeRight()
+        tap(625, 375).sleep() //进入“黑暗时代（下）”
+
+        swipeLeft()
+        dragv(-1280 * 3, 0, 0.5)
+        tap(473, 362).nap() //进入“7-15”
+    }
+    internal val MAIN_7_17 = Operation("7-17", description = "研磨石") {
+        tap(终端).sleep() //进入“终端”
+        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(66, 132).nap() //进入“幻灭”
+
+        swipeRight()
+        tap(625, 375).sleep() //进入“黑暗时代（下）”
+
+        swipeLeft()
+        dragv(-1280 * 3, 0)
+        tap(1251, 344).nap() //进入“7-17”
+    }
+
+
     internal val IW_6 = ActOperation("IW-6", "将进酒", "全新装置") {
         tap(终端_活动).sleep().sleep()
         tap(1078, 591).sleep()

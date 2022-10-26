@@ -6,7 +6,7 @@ import top.anagke.auto_android.device.*
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.operate.OperateOperations.NL_10
+import top.anagke.auto_ark.operate.OperateOperations.MAIN_7_15
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_龙门外环
 import top.anagke.auto_ark.operate.OperateOperations.当期剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
@@ -33,7 +33,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(NL_10, 2)
+            farm(MAIN_7_15, 2)
         }
 
         private fun farm(o: Operation, n: Int) {
