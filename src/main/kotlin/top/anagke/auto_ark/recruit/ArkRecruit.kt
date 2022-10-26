@@ -159,7 +159,12 @@ class ArkRecruit(
             if (tags[TAG4] in tagCombination) tap(452, 456)
             if (tags[TAG5] in tagCombination) tap(601, 451)
 
-            tap(450, 300) //增加时限到”9：00：00“
+            if (mostPossibleRarity == 1) {
+                repeat(3) { tap(449, 152) }
+                repeat(1) { tap(617, 297) }
+            } else {
+                tap(450, 300) //增加时限到“9：00：00”
+            }
             tap(977, 588) // 开始招募
             sleep()
 
