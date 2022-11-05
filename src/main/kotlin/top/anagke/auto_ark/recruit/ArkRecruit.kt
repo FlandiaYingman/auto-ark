@@ -137,7 +137,7 @@ class ArkRecruit(
             val (tagCombination, possibleOperators) = ArkRecruitCalculator.calculateBest(tags.values.toList())
             Logger.info("标签：$tags，最佳标签组合：$tagCombination，干员列表：$possibleOperators")
 
-            val mostPossibleRarity = possibleOperators.max().rarity
+            val mostPossibleRarity = possibleOperators.min().rarity
             Logger.info("最可能星级：$mostPossibleRarity")
             if (mostPossibleRarity == 5) {
                 Logger.info("最可能星级等于六星，退出")
@@ -147,9 +147,8 @@ class ArkRecruit(
             }
             if ((mostPossibleRarity == 2 || mostPossibleRarity == 1) && match(可刷新标签)) {
                 Logger.info("最低可能星级等于三星且可刷新，刷新")
-                tap(972, 408) //刷新TAG
-                tap(877, 508) //确认刷新TAG
-                sleep()
+                tap(972, 408).nap() //刷新TAG
+                tap(877, 508).sleep() //确认刷新TAG
                 continue
             }
 

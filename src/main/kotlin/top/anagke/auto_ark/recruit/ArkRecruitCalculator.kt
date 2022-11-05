@@ -57,9 +57,9 @@ object ArkRecruitCalculator {
         }
 
         override fun compareTo(other: RecruitOperator): Int = when {
-            (this.rarity == 5 || other.rarity == 5) -> compareValues(this.rarity, other.rarity)
-            (this.rarity == 0 || other.rarity == 0) -> compareValues(other.rarity, this.rarity)
-            else -> compareValues(other.rarity, this.rarity)
+            (this.rarity == 5 || other.rarity == 5) -> compareValues(other.rarity, this.rarity)
+            (this.rarity == 0 || other.rarity == 0) -> compareValues(this.rarity, other.rarity)
+            else -> compareValues(this.rarity, other.rarity)
         }
 
 
