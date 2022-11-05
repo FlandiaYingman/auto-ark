@@ -424,6 +424,17 @@ object OperateOperations {
         tap(203, 344, desc = "NL-8")
     }
 
+    private fun Device.IS() = zone(1054, 492)
+    internal val IS_8 = ActOperation("IS_8", "叙拉古人", "固源岩组") {
+        IS()
+        repeat(2) {
+            tap(1212, 659).nap()
+            tap(1212, 384).nap()
+        }
+        swipev(81, 621, 0, -720).nap()
+        tap(81, 397).nap()
+    }
+
 
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
