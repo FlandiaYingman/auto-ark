@@ -425,7 +425,7 @@ object OperateOperations {
     }
 
     private fun Device.IS() = zone(1054, 492)
-    internal val IS_8 = ActOperation("IS_8", "叙拉古人", "固源岩组") {
+    internal val IS_8 = ActOperation("IS-8", "叙拉古人", "固源岩组") {
         IS()
         repeat(2) {
             tap(1212, 659).nap()
