@@ -1,5 +1,274 @@
 [
   {
+    "cn": "缄默德克萨斯",
+    "position": "近战位",
+    "en": "Texas the Omertosa",
+    "sex": "女",
+    "tag": [
+      "快速复活",
+      "输出"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "5",
+    "class": "特种",
+    "approach": [
+      "限定寻访"
+    ],
+    "camp": "企鹅物流",
+    "team": "",
+    "des": "依然是企鹅物流职员的德克萨斯，本人自称只是换了一身衣服。",
+    "feature": "再部署时间大幅度<span style=\"color:#00B0FF;\">减少</span>",
+    "str": "优良",
+    "flex": "优良",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "优良",
+    "adapt": "优良",
+    "moredes": "但你能感觉到，她的身上有一股名为愤怒的情绪。",
+    "icon": "//prts.wiki/images/b/b8/%E5%A4%B4%E5%83%8F_%E7%BC%84%E9%BB%98%E5%BE%B7%E5%85%8B%E8%90%A8%E6%96%AF.png",
+    "half": "//prts.wiki/images/thumb/0/0d/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%BC%84%E9%BB%98%E5%BE%B7%E5%85%8B%E8%90%A8%E6%96%AF_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%BC%84%E9%BB%98%E5%BE%B7%E5%85%8B%E8%90%A8%E6%96%AF_1.png",
+    "oriHp": "747",
+    "oriAtk": "219",
+    "oriDef": "144",
+    "oriRes": "0",
+    "oriDt": "18s",
+    "oriDc": "8→10",
+    "oriBlock": "1",
+    "oriCd": "0.93s",
+    "index": "PL07",
+    "sort_id": "261",
+    "jp": "",
+    "birthplace": "哥伦比亚",
+    "nation": "炎-龙门",
+    "group": "企鹅物流"
+  },
+  {
+    "cn": "斥罪",
+    "position": "近战位",
+    "en": "Penance",
+    "sex": "女",
+    "tag": [
+      "生存",
+      "输出"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "5",
+    "class": "重装",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "叙拉古",
+    "team": "",
+    "des": "叙拉古的原城邦法官，希望自己能坚守法律正义。",
+    "feature": "<span style=\"color:#00B0FF;\">无法</span>被友方角色治疗",
+    "str": "标准",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "标准",
+    "moredes": "在荆棘之上前行，开辟以前未有之路。",
+    "icon": "//prts.wiki/images/1/1c/%E5%A4%B4%E5%83%8F_%E6%96%A5%E7%BD%AA.png",
+    "half": "//prts.wiki/images/thumb/e/e7/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%96%A5%E7%BD%AA_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E6%96%A5%E7%BD%AA_1.png",
+    "oriHp": "1,732",
+    "oriAtk": "368",
+    "oriDef": "234",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "32→34→36",
+    "oriBlock": "2→3→3",
+    "oriCd": "1.6s",
+    "index": "SR35",
+    "sort_id": "260",
+    "jp": "",
+    "birthplace": "叙拉古",
+    "nation": "叙拉古",
+    "group": ""
+  },
+  {
+    "cn": "伺夜",
+    "position": "远程位",
+    "en": "Vigil",
+    "sex": "男",
+    "tag": [
+      "费用回复",
+      "控场"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "5",
+    "class": "先锋",
+    "approach": [
+      "活动获得"
+    ],
+    "camp": "叙拉古",
+    "team": "",
+    "des": "前贝洛内家族少爷，莱昂图索，如今只是叙拉古的一介普通市民。",
+    "feature": "可以在攻击范围内选择一次<span style=\"color:#00B0FF;\">战术点</span>来召唤援军，自身攻击援军阻挡的敌人时攻击力提升至150%",
+    "str": "标准",
+    "flex": "标准",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "优良",
+    "adapt": "标准",
+    "moredes": "他对能否在自己掀起的浪潮中笑到最后持悲观态度，但他并不打算放弃。",
+    "icon": "//prts.wiki/images/d/df/%E5%A4%B4%E5%83%8F_%E4%BC%BA%E5%A4%9C.png",
+    "half": "//prts.wiki/images/thumb/f/fc/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E4%BC%BA%E5%A4%9C_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E4%BC%BA%E5%A4%9C_1.png",
+    "oriHp": "785",
+    "oriAtk": "195",
+    "oriDef": "54",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "15→17",
+    "oriBlock": "1",
+    "oriCd": "1.0s",
+    "index": "SR36",
+    "sort_id": "259",
+    "jp": "",
+    "birthplace": "叙拉古",
+    "nation": "叙拉古",
+    "group": ""
+  },
+  {
+    "cn": "子月",
+    "position": "远程位",
+    "en": "Lunacub",
+    "sex": "女",
+    "tag": [
+      "输出",
+      "生存"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "4",
+    "class": "狙击",
+    "approach": [
+      "标准寻访"
+    ],
+    "camp": "叙拉古",
+    "team": "",
+    "des": "徘徊于文明之外的猎手子月，会为你追击最狡猾的猎物。",
+    "feature": "优先攻击攻击范围内<span style=\"color:#00B0FF;\">防御力最低</span>的敌方单位",
+    "str": "标准",
+    "flex": "卓越",
+    "tolerance": "普通",
+    "plan": "优良",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "前提是，你不是她的猎物。",
+    "icon": "//prts.wiki/images/d/db/%E5%A4%B4%E5%83%8F_%E5%AD%90%E6%9C%88.png",
+    "half": "//prts.wiki/images/thumb/0/08/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%AD%90%E6%9C%88_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E5%AD%90%E6%9C%88_1.png",
+    "oriHp": "756",
+    "oriAtk": "462",
+    "oriDef": "75",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "19→21",
+    "oriBlock": "1",
+    "oriCd": "2.7s",
+    "index": "SR37",
+    "sort_id": "258",
+    "jp": "",
+    "birthplace": "叙拉古",
+    "nation": "叙拉古",
+    "group": ""
+  },
+  {
+    "cn": "雪绒",
+    "position": "远程位",
+    "en": "Qanipalaat",
+    "sex": "男",
+    "tag": [
+      "输出",
+      "控场"
+    ],
+    "race": [
+      "沃尔珀"
+    ],
+    "rarity": "4",
+    "class": "术师",
+    "approach": [
+      "凭证交易所"
+    ],
+    "camp": "萨米",
+    "team": "",
+    "des": "来自萨米部落的干员雪绒，第一次踏足外面的土地。",
+    "feature": "攻击造成<span style=\"color:#00B0FF;\">法术伤害</span>",
+    "str": "标准",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "标准",
+    "skill": "普通",
+    "adapt": "优良",
+    "moredes": "勇敢前进吧，处处都是新发现。",
+    "icon": "//prts.wiki/images/8/82/%E5%A4%B4%E5%83%8F_%E9%9B%AA%E7%BB%92.png",
+    "half": "//prts.wiki/images/thumb/8/84/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%9B%AA%E7%BB%92_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E9%9B%AA%E7%BB%92_1.png",
+    "oriHp": "654",
+    "oriAtk": "283",
+    "oriDef": "45",
+    "oriRes": "10",
+    "oriDt": "70s",
+    "oriDc": "18→20",
+    "oriBlock": "1",
+    "oriCd": "1.6s",
+    "index": "SI03",
+    "sort_id": "257",
+    "jp": "",
+    "birthplace": "萨米",
+    "nation": "萨米",
+    "group": ""
+  },
+  {
+    "cn": "石英",
+    "position": "近战位",
+    "en": "Quartz",
+    "sex": "女",
+    "tag": [
+      "输出"
+    ],
+    "race": [
+      "鲁珀"
+    ],
+    "rarity": "3",
+    "class": "近卫",
+    "approach": [
+      "凭证交易所"
+    ],
+    "camp": "哥伦比亚",
+    "team": "",
+    "des": "佣兵石英，按照规定，前来报到。",
+    "feature": "同时攻击阻挡的<span style=\"color:#00B0FF;\">所有敌人</span>",
+    "str": "标准",
+    "flex": "普通",
+    "tolerance": "标准",
+    "plan": "优良",
+    "skill": "标准",
+    "adapt": "标准",
+    "moredes": "如果和石英一起出任务的话，可以不用忍受罗德岛标配干粮的折磨哦。",
+    "icon": "//prts.wiki/images/b/bc/%E5%A4%B4%E5%83%8F_%E7%9F%B3%E8%8B%B1.png",
+    "half": "//prts.wiki/images/thumb/b/b2/%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%9F%B3%E8%8B%B1_1.png/110px-%E5%8D%8A%E8%BA%AB%E5%83%8F_%E7%9F%B3%E8%8B%B1_1.png",
+    "oriHp": "2,229",
+    "oriAtk": "620",
+    "oriDef": "0",
+    "oriRes": "0",
+    "oriDt": "70s",
+    "oriDc": "18→20→22",
+    "oriBlock": "2",
+    "oriCd": "2.5s",
+    "index": "CB18",
+    "sort_id": "256",
+    "jp": "",
+    "birthplace": "哥伦比亚",
+    "nation": "哥伦比亚",
+    "group": ""
+  },
+  {
     "cn": "白铁",
     "position": "近战位",
     "en": "Stainless",
@@ -886,7 +1155,7 @@
     "oriCd": "1.2s",
     "index": "CR02",
     "sort_id": "236",
-    "jp": "",
+    "jp": "帰溟スペクター",
     "birthplace": "阿戈尔",
     "nation": "阿戈尔",
     "group": "深海猎人"
@@ -932,7 +1201,7 @@
     "oriCd": "1.3s",
     "index": "II07",
     "sort_id": "235",
-    "jp": "",
+    "jp": "アイリーニ",
     "birthplace": "伊比利亚",
     "nation": "伊比利亚",
     "group": ""
@@ -977,7 +1246,7 @@
     "oriCd": "2.85s",
     "index": "II09",
     "sort_id": "234",
-    "jp": "",
+    "jp": "ルーメン",
     "birthplace": "伊比利亚",
     "nation": "伊比利亚",
     "group": ""
@@ -1022,7 +1291,7 @@
     "oriCd": "1.5s",
     "index": "CB19",
     "sort_id": "233",
-    "jp": "",
+    "jp": "ウインドフリット",
     "birthplace": "哥伦比亚",
     "nation": "哥伦比亚",
     "group": ""
@@ -1200,7 +1469,7 @@
     "oriCd": "2.85s",
     "index": "R134",
     "sort_id": "229",
-    "jp": "チェストナッツ",
+    "jp": "チェストナット",
     "birthplace": "未公开",
     "nation": "罗德岛",
     "group": ""
@@ -5211,7 +5480,8 @@
     "rarity": "4",
     "class": "辅助",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "东",
     "team": "",
@@ -5256,7 +5526,8 @@
     "rarity": "4",
     "class": "重装",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "雷姆必拓",
     "team": "",
@@ -5347,7 +5618,8 @@
     "rarity": "5",
     "class": "特种",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "罗德岛",
     "team": "",
@@ -5392,7 +5664,8 @@
     "rarity": "4",
     "class": "先锋",
     "approach": [
-      "标准寻访"
+      "标准寻访",
+      "公开招募"
     ],
     "camp": "罗德岛",
     "team": "",
