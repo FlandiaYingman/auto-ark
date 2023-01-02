@@ -6,6 +6,7 @@ import top.anagke.auto_android.AutoModule
 import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.which
 import top.anagke.auto_ark.login.ArkLogin
+import top.anagke.auto_ark.mail.ArkMail
 import top.anagke.auto_ark.mission.ArkMission
 import top.anagke.auto_ark.operate.ArkOperate
 import top.anagke.auto_ark.recruit.ArkRecruit
@@ -35,6 +36,7 @@ class AutoArk(
     )
 
     override val workModules: List<AutoModule<AutoArk>> = listOf(
+        ArkMail(this),
         ArkOperate(this),
         ArkRecruit(this),
         ArkRIIC(this),
