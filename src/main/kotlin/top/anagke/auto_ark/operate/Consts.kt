@@ -89,7 +89,7 @@ object OperateOperations {
     @JvmStatic
     fun main(args: Array<String>) {
         App.defaultAutoArk().run {
-            device.enter(MAIN_1_7)
+            device.enter(MAIN_10_16)
         }
     }
 
@@ -267,6 +267,21 @@ object OperateOperations {
         tap(1251, 344).nap() //进入“7-17”
     }
 
+    internal val MAIN_10_16 = Operation("10-16", description = "轻锰矿") {
+        tap(终端).sleep() //进入“终端”
+        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(65, 130, "觉醒").nap()
+        tap(65, 130, "觉醒").nap()
+        tap(65, 555, "幻灭").nap()
+        tap(65, 555, "残阳").nap()
+
+        swipeLeft()
+        tap(1265, 375, "破碎日冕").sleep()
+
+        swipeRight()
+        dragv(855, 0)
+        tap(333, 478, "10-16").nap()
+    }
 
     internal val IW_6 = ActOperation("IW-6", "将进酒", "全新装置") {
         tap(终端_活动).sleep().sleep()
