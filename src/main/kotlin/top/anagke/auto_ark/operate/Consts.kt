@@ -450,6 +450,23 @@ object OperateOperations {
         tap(81, 397).nap()
     }
 
+    private fun Device.WB() = zone(1098, 655)
+    internal val WB_7 = ActOperation("WB-7", "登临意", "酮凝集组") {
+        WB()
+        swipeRight()
+        tap(159, 468).nap()
+    }
+    internal val WB_8 = ActOperation("WB-8", "登临意", "轻锰矿") {
+        WB()
+        swipeRight()
+        tap(369, 358).nap()
+    }
+    internal val WB_9 = ActOperation("WB-9", "登临意", "晶体元件") {
+        WB()
+        swipeRight()
+        tap(555, 234).nap()
+    }
+
 
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
