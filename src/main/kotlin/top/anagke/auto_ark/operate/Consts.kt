@@ -23,6 +23,8 @@ import top.anagke.auto_ark.operate.OperationType.剿灭
 import top.anagke.auto_ark.tmpl
 import top.anagke.auto_ark.today
 import java.time.DayOfWeek
+import java.time.DayOfWeek.*
+import java.util.function.Function
 
 object OperatePoses {
     internal val 终端 = Pos(970, 200)
@@ -30,7 +32,7 @@ object OperatePoses {
     internal val 终端_资源收集 = Pos(719, 670)
     internal val 终端_常态事务 = Pos(875, 670)
 
-    internal val PR_X_1 = Pos(328, 443)
+    internal val PR_X_1 = Pos(380, 415)
     internal val PR_X_2 = Pos(783, 247)
 
     // CA-5 等。
@@ -143,72 +145,81 @@ object OperateOperations {
         tap(OperatePoses.XX_5_OLD).nap() //CA-5
     }
 
-    private enum class 资源收集芯片 {
-        固若金汤, 摧枯拉朽, 势不可挡, 身先士卒;
+    private enum class 资源收集芯片(
+        val levelChar: String,
+        vararg val openDays: DayOfWeek
+    ) {
+        固若金汤("A", MONDAY, THURSDAY, FRIDAY, SUNDAY),
+        摧枯拉朽("B", MONDAY, TUESDAY, FRIDAY, SATURDAY),
+        势不可挡("C", WEDNESDAY, THURSDAY, SATURDAY, SUNDAY),
+        身先士卒("D", TUESDAY, WEDNESDAY, SATURDAY, SUNDAY);
 
-        fun where(dev: Device): Pos? {
-            val cap = dev.cap()
-            val chipTextRegion = listOf(
-                Rect(Pos(423 + 207 * 0, 453), Size(137, 49)),
-                Rect(Pos(423 + 207 * 1, 453), Size(137, 49)),
-                Rect(Pos(423 + 207 * 2, 453), Size(137, 49)),
-                Rect(Pos(423 + 207 * 3, 453), Size(137, 49))
-            )
-            return chipTextRegion.find {
-                val image = cap.crop(it)
-                val words = values().map(资源收集芯片::name)
-                ocrWord(image, words = words) == name
-            }?.center()
+        companion object {
+            val comparator: Comparator<资源收集芯片> = Comparator
+                .comparing<资源收集芯片?, Boolean?> { it.isOpen() }
+                .reversed()
+                .thenComparing(Function { it.levelChar })
         }
+
+        fun isOpen(): Boolean =
+            today() in openDays
+
+        fun index(): Int =
+            资源收集芯片.values()
+                .sortedWith(comparator)
+                .indexOf(this)
+
+        fun position() = Pos(495 + 205 * index(), 360)
+
     }
 
     internal val PR_A_1 = Operation("PR-A-1", "重装/医疗芯片") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.固若金汤.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.固若金汤.position()).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
     internal val PR_B_1 = Operation("PR-B-1", "狙击/术士芯片") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.摧枯拉朽.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.摧枯拉朽.position()).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
     internal val PR_C_1 = Operation("PR-C-1", "先锋/辅助芯片") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.势不可挡.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.势不可挡.position()).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
     internal val PR_D_1 = Operation("PR-D-1", "近卫/特种芯片") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.身先士卒.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.身先士卒.position()).sleep()
         tap(OperatePoses.PR_X_1).nap()
     }
 
     internal val PR_A_2 = Operation("PR-A-2", "重装/医疗芯片组") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.固若金汤.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.固若金汤.position()).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
     internal val PR_B_2 = Operation("PR-B-2", "狙击/术士芯片组") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.摧枯拉朽.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.摧枯拉朽.position()).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
     internal val PR_C_2 = Operation("PR-C-2", "先锋/辅助芯片组") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.势不可挡.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.势不可挡.position()).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
     internal val PR_D_2 = Operation("PR-D-2", "近卫/特种芯片组") {
         进入_终端_资源收集_芯片()
 
-        tap(资源收集芯片.身先士卒.where(this) ?: return@Operation).sleep()
+        tap(资源收集芯片.身先士卒.position()).sleep()
         tap(OperatePoses.PR_X_2).nap()
     }
 
@@ -486,31 +497,31 @@ object OperateOperations {
 // 1. 永远优先龙门币。
 // 2. 然后刷 1-7 和 经验。
 fun dailyOps(level: 资源关种类) = when (today()) {
-    DayOfWeek.MONDAY -> when (level) {
+    MONDAY -> when (level) {
         资源关种类.LEVEL_5 -> LS_5
         资源关种类.LEVEL_6 -> LS_6
     }
 
-    DayOfWeek.TUESDAY -> when (level) {
+    TUESDAY -> when (level) {
         资源关种类.LEVEL_5 -> CE_5
         资源关种类.LEVEL_6 -> CE_6
     }
 
-    DayOfWeek.WEDNESDAY -> CA_5
+    WEDNESDAY -> CA_5
 
-    DayOfWeek.THURSDAY -> when (level) {
+    THURSDAY -> when (level) {
         资源关种类.LEVEL_5 -> CE_5
         资源关种类.LEVEL_6 -> CE_6
     }
 
-    DayOfWeek.FRIDAY -> MAIN_1_7
+    FRIDAY -> MAIN_1_7
 
-    DayOfWeek.SATURDAY -> when (level) {
+    SATURDAY -> when (level) {
         资源关种类.LEVEL_5 -> LS_5
         资源关种类.LEVEL_6 -> LS_6
     }
 
-    DayOfWeek.SUNDAY -> CA_5
+    SUNDAY -> CA_5
 }
 
 private enum class 资源收集_材料 {
