@@ -478,6 +478,12 @@ object OperateOperations {
         tap(555, 234).nap()
     }
 
+    private fun Device.CF() = zone(1138, 568)
+    internal val CF_8 = ActOperation("CF-8", "落叶逐火", "无") {
+        CF()
+        swipeRight()
+        tap(246, 311).nap()
+    }
 
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
