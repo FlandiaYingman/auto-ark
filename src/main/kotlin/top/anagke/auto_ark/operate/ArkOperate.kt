@@ -32,7 +32,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(OperateOperations.PR_B_2, 2)
+            farm(OperateOperations.CW_10, 2)
         }
 
         private fun farm(o: Operation, n: Int) {
