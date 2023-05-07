@@ -32,13 +32,15 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            farm(OperateOperations.CW_10, 2)
+            testOperations(OperateOperations.CW_8, OperateOperations.CW_9, OperateOperations.CW_10)
         }
 
-        private fun farm(o: Operation, n: Int) {
+        private fun testOperations(vararg operations: Operation) {
             val ark = App.defaultAutoArk()
             val operate = ArkOperate(ark)
-            operate.farm(o, n)
+            operations.forEach {
+                operate.farm(it, 0)
+            }
         }
     }
 

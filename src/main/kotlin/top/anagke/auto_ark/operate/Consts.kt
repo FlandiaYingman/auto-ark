@@ -488,26 +488,28 @@ object OperateOperations {
     private fun Device.CW() = zone(1108, 204)
     internal val CW_8 = ActOperation("CW-8", "孤星", "酮凝集组") {
         CW()
-        swipeRight()
-        tap(127, 323).nap()
+        swipeLeft(-1380)
+        tap(969, 323).nap()
     }
     internal val CW_9 = ActOperation("CW-9", "孤星", "半自然溶剂") {
         CW()
-        swipeRight()
-        tap(180, 441).nap()
+        swipeLeft(-1380)
+        tap(969, 432).nap()
     }
     internal val CW_10 = ActOperation("CW-10", "孤星", "炽合金") {
         CW()
-        swipeRight()
-        tap(455, 437).nap()
+        swipeLeft(-1380)
+        tap(1249, 438).nap()
     }
 
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
+        dragv(offset, 0)
     }
 
     private fun Device.swipeRight(offset: Int = 0) {
         swipev(-1280 * 4 + offset, 0, speed = 10.0, desc = "最右").nap()
+        dragv(offset, 0)
     }
 
     private fun Device.zone(x: Int, y: Int) {
