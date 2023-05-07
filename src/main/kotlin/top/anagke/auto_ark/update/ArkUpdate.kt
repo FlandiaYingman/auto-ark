@@ -9,6 +9,8 @@ import top.anagke.auto_ark.ArkServer
 import top.anagke.auto_ark.AutoArk
 import java.nio.file.Files
 import java.nio.file.Path
+import java.time.Duration
+import java.time.Instant
 import kotlin.io.path.notExists
 
 /** An Arknights module which checks whether the game has newer updates. */
@@ -20,10 +22,26 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
 
     private fun currentVersion(): String {
         val regex = Regex("versionName=(.*)")
-        val dumpsys = device.dumpsys(config.服务器.activity).stdout
-        if (dumpsys.isBlank()) throw IllegalStateException("dumpsys 输出为空")
+        val dumpsys = dumpsys()
         val versionNumber = regex.find(dumpsys)?.groupValues?.get(1)
         return versionNumber ?: ""
+    }
+
+    private fun dumpsys(): String {
+        val timeLimit = Instant.now() + Duration.ofSeconds(30)
+        while (Instant.now() < timeLimit) {
+            val dumpsys = device.dumpsys(config.服务器.activity)
+            if (dumpsys.stderr.isNotBlank()) {
+                Logger.info("获取明日方舟包信息错误")
+                continue
+            }
+            if (dumpsys.stdout.isBlank()) {
+                Logger.info("获取明日方舟包信息输出为空")
+                continue
+            }
+            return dumpsys.stdout
+        }
+        throw IllegalStateException("获取明日方舟包信息失败，已达到超时时间")
     }
 
     private fun latestVersion(): String {
