@@ -6,12 +6,12 @@ import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.img.Img
 import top.anagke.auto_android.img.Pos
 import top.anagke.auto_android.native.ProcessOutput
+import top.anagke.auto_android.native.assertSuccessful
 import top.anagke.auto_android.native.waitRaw
 import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.BinResources
 import top.anagke.auto_android.util.distance
 import top.anagke.auto_android.util.minutes
-import top.anagke.auto_android.util.seconds
 import kotlin.math.roundToInt
 
 class Device(
@@ -55,7 +55,8 @@ class Device(
      */
     fun cap(): Img {
         val raw = cmd("exec-out", "screencap")
-            .waitRaw(timeout = 1.seconds)
+            .waitRaw()
+            .assertSuccessful()
             .stdout
         return Img.decodeRaw(1280, 720, raw)
     }
@@ -64,17 +65,23 @@ class Device(
 
     fun tap(x: Int, y: Int, desc: String = "") {
         Logger.debug(formatMsg("Tap ($x, $y)", desc))
-        sh("input", "tap", "$x", "$y").waitText()
+        sh("input", "tap", "$x", "$y")
+            .waitText()
+            .assertSuccessful()
     }
 
     fun tapd(x: Int, y: Int, desc: String = "") {
         Logger.debug(formatMsg("Double Tap ($x, $y)", desc))
-        sh("input", "tap", "$x", "$y", ";", "input", "tap", "$x", "$y").waitText()
+        sh("input", "tap", "$x", "$y", ";", "input", "tap", "$x", "$y")
+            .waitText()
+            .assertSuccessful()
     }
 
     fun tapl(x: Int, y: Int, duration: Int = 1000, desc: String = "") {
         Logger.debug(formatMsg("Long Tap ($x, $y)", desc))
-        sh("input", "swipe", "$x", "$y", "$x", "$y", "$duration").waitText()
+        sh("input", "swipe", "$x", "$y", "$x", "$y", "$duration")
+            .waitText()
+            .assertSuccessful()
     }
 
     fun tapm(vararg pos: Pos, desc: String = "") {
@@ -83,14 +90,18 @@ class Device(
             .map { listOf("input", "tap", "${it.x}", "${it.y}", ";") }
             .flatten()
             .toTypedArray()
-        sh(*cmds).waitText()
+        sh(*cmds)
+            .waitText()
+            .assertSuccessful()
     }
 
     fun swipe(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, desc: String = "") {
         Logger.debug(formatMsg("Swipe ($sx, $sy, $ex, $ey, $speed)", desc))
         val k = 1.0
         val duration = (distance(Pos(sx, sy), Pos(ex, ey)) / speed * k).roundToInt()
-        sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
+        sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration")
+            .waitText()
+            .assertSuccessful()
     }
 
     fun drag(sx: Int, sy: Int, ex: Int, ey: Int, speed: Double = 0.5, desc: String = "") {
@@ -99,7 +110,9 @@ class Device(
             "/data/local/tmp/swipee.jar",
             "top.anagke.Swipee",
             "exact", "$sx", "$sy", "$ex", "$ey", "$speed"
-        ).waitText()
+        )
+            .waitText()
+            .assertSuccessful()
     }
 
     fun swipev(sx: Int, sy: Int, vx: Int, vy: Int, speed: Double = 0.5, desc: String = "") {
@@ -108,7 +121,9 @@ class Device(
         val ey = sy + vy
         val k = 1.0
         val duration = (distance(Pos(sx, sy), Pos(ex, ey)) / speed * k).roundToInt()
-        sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration").waitText()
+        sh("input", "swipe", "$sx", "$sy", "$ex", "$ey", "$duration")
+            .waitText()
+            .assertSuccessful()
     }
 
     fun swipev(vx: Int, vy: Int, speed: Double = 0.5, desc: String = "") =
@@ -122,7 +137,9 @@ class Device(
             "/data/local/tmp/swipee.jar",
             "top.anagke.Swipee",
             "exact", "$sx", "$sy", "$ex", "$ey", "$speed"
-        ).waitText()
+        )
+            .waitText()
+            .assertSuccessful()
     }
 
     fun dragv(vx: Int, vy: Int, speed: Double = 0.5, desc: String = "") =
@@ -130,51 +147,69 @@ class Device(
 
     fun back(description: String = "") {
         Logger.debug(formatMsg("Back", description))
-        sh("input", "keyevent", "4").waitText()
+        sh("input", "keyevent", "4")
+            .waitText()
+            .assertSuccessful()
     }
 
 
     fun input(str: String, desc: String = "") {
         Logger.debug(formatMsg("Input '$str'", desc))
-        sh("input", "text", str).waitText()
+        sh("input", "text", str)
+            .waitText()
+            .assertSuccessful()
     }
 
     fun inputSecret(str: String, desc: String = "") {
         Logger.debug(formatMsg("Input '${str.replace(Regex("."), "*")}'", desc))
-        sh("input", "text", str).waitText()
+        sh("input", "text", str)
+            .waitText()
+            .assertSuccessful()
     }
 
 
     fun launch(activity: AndroidActivity, desc: String = "") {
         Logger.debug(formatMsg("Launch $activity", desc))
-        sh("monkey", "-p", activity.packageName, "1").waitText()
+        sh("monkey", "-p", activity.packageName, "1")
+            .waitText()
+            .assertSuccessful()
     }
 
     fun stop(activity: AndroidActivity, desc: String = "") {
         Logger.debug(formatMsg("Stop activity $activity", desc))
-        sh("am", "force-stop", activity.packageName).waitText()
+        sh("am", "force-stop", activity.packageName)
+            .waitText()
+            .assertSuccessful()
     }
 
 
     fun dumpsys(activity: AndroidActivity, desc: String = ""): ProcessOutput<String, String> {
         Logger.debug(formatMsg("Dumpsys", desc))
-        return sh("dumpsys", "package", activity.packageName).waitText()
+        return sh("dumpsys", "package", activity.packageName)
+            .waitText()
+            .assertSuccessful()
     }
 
     fun install(apk: String, description: String = "") {
         Logger.debug(formatMsg("Install APK $apk", description))
-        cmd("install", "-r", apk).waitText(15.minutes)
+        cmd("install", "-r", apk)
+            .waitText(15.minutes)
+            .assertSuccessful()
     }
 
 
     fun push(local: String, remote: String, desc: String = "") {
         Logger.debug(formatMsg("Push $remote to $local", desc))
-        cmd("push", local, remote).waitText()
+        cmd("push", local, remote)
+            .waitText()
+            .assertSuccessful()
     }
 
     fun pull(remote: String, local: String, desc: String = "") {
         Logger.debug(formatMsg("Pull $remote to $local", desc))
-        cmd("pull", remote, local).waitText()
+        cmd("pull", remote, local)
+            .waitText()
+            .assertSuccessful()
     }
 
     private fun formatMsg(message: String, desc: String) = "$desc; $this: $message"

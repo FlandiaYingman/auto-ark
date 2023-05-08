@@ -71,7 +71,7 @@ fun Process.waitRaw(timeout: Long = 15.seconds, charset: Charset? = null): Proce
     val exitValue = waitProcess(timeout)
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
-    return ProcessOutput(stdout, stderr, exitValue)
+    return ProcessOutput(stdout, stderr, exitValue, pid())
 }
 
 fun Process.waitText(timeout: Long = 15.seconds, charset: Charset? = null): ProcessOutput<String, String> {
@@ -81,7 +81,7 @@ fun Process.waitText(timeout: Long = 15.seconds, charset: Charset? = null): Proc
     val exitValue = waitProcess(timeout)
     val stdout = stdoutFuture.get()
     val stderr = stderrFuture.get()
-    return ProcessOutput(stdout, stderr, exitValue)
+    return ProcessOutput(stdout, stderr, exitValue, pid())
 }
 
 private fun Process.waitProcess(timeout: Long): Int {
@@ -102,7 +102,19 @@ data class ProcessOutput<O, E>(
     val stdout: O,
     val stderr: E,
     val exitValue: Int,
+    val pid: Long,
 )
+
+fun <T> ProcessOutput<T, String>.assertSuccessful(): ProcessOutput<T, String> {
+    ifErrorExists { throw IllegalStateException("exit value: ${exitValue}, pid: ${pid}") }
+    return this
+}
+
+fun <O> ProcessOutput<O, String>.ifErrorExists(block: ProcessOutput<O, String>.() -> Unit) {
+    if (this.exitValue != 0 || this.stderr.isNotBlank()) {
+        this.block()
+    }
+}
 
 fun openProc(vararg command: String): Process {
     val procBuilder = ProcessBuilder(*command)
