@@ -111,7 +111,7 @@ fun <T> ProcessOutput<T, String>.assertSuccessful(): ProcessOutput<T, String> {
 }
 
 fun <O> ProcessOutput<O, String>.ifErrorExists(block: ProcessOutput<O, String>.() -> Unit) {
-    if (this.exitValue != 0 || this.stderr.isNotBlank()) {
+    if (this.exitValue != 0) {
         this.block()
     }
 }
