@@ -10,6 +10,15 @@ class ArkLogin(
     auto: AutoArk
 ) : ArkModule(auto) {
 
+    companion object {
+        private val 登录界面 by tmpl()
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ArkLogin(App.defaultAutoArk()).run()
+        }
+    }
+
     private val conf = config.登录配置
 
     override val name: String = "登录模块"
@@ -30,29 +39,29 @@ class ArkLogin(
 
     private fun Device.loginOfficial() {
         Logger.info("登录明日方舟（官服）")
-        whileNotMatch(开始界面, timeout = 10.minutes) {
-            tap(640, 360).nap()
+        whileNotMatch(登录界面, timeout = 10.minutes) {
+            tap(640, 280).nap()
         }
 
         if (conf.切换账户) {
             Logger.info("登录明日方舟（官服），切换账号为：${conf.用户名}")
 
-            tap(923, 681, desc = "账号管理").nap()
-            tap(525, 508, desc = "账号登录").sleep()
+            tap(640, 500, desc = "登录其它账号").nap()
+            tap(784, 560, desc = "密码登录").nap()
 
-            tap(508, 430, desc = "用户名栏").nap()
+            tap(500, 270, desc = "用户名栏").nap()
             input(conf.用户名, desc = "输入用户名").nap()
-            tap(1198, 668, desc = "完成输入").nap()
 
-            tap(508, 484, desc = "密码栏").nap()
+            tap(500, 350, desc = "密码栏").nap()
             inputSecret(conf.密码, desc = "输入密码").nap()
-            tap(1198, 668, desc = "完成输入").nap()
+
+            tap(472, 410, desc = "已同意……协议和政策").nap()
 
             Logger.info("登录明日方舟（官服），完成切换账号，登录")
-            tap(638, 578, desc = "登录").sleepl()
+            tap(640, 500, desc = "登录其它账号").sleepl()
         } else {
             Logger.info("登录明日方舟（官服），检测到登录界面，登录")
-            tap(639, 507, desc = "开始唤醒").sleepl()
+            tap(640, 440, desc = "登录").sleepl()
         }
 
         Logger.info("登录明日方舟（官服），等待登录完成")
