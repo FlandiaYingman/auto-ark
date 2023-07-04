@@ -46,7 +46,7 @@ private constructor(val mat: Mat) {
         fun decodeRaw(width: Int, height: Int, raw: ByteArray): Img {
             if (raw.isEmpty()) return Img(Mat(height, width, CvType.CV_8UC3, Scalar(0.0)))
             val native = ByteBuffer.allocateDirect(width * height * 4).apply {
-                put(raw, 12, raw.size - 12)
+                put(raw, 16, raw.size - 16)
             }
             val m = Mat(height, width, CvType.CV_8UC4, native).apply {
                 cvtColor(this, this, COLOR_RGBA2BGR)
