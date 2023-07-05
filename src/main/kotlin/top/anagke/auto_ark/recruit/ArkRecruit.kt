@@ -4,7 +4,7 @@ package top.anagke.auto_ark.recruit
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Tmpl
-import top.anagke.auto_android.img.ocrWord
+import top.anagke.auto_android.img.ocr
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_ark.*
 import top.anagke.auto_ark.recruit.RecruitTag.*
@@ -119,7 +119,7 @@ class ArkRecruit(
         val cap = cap()
         return RecruitTag.values().toList()
             .parallelStream()
-            .map { it to ocrWord(cap.crop(it.screenRect).invert()) }
+            .map { it to ocr(cap.crop(it.screenRect).invert()) }
             .collect(Collectors.toList())
             .toMap()
     }

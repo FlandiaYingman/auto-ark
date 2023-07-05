@@ -4,7 +4,7 @@ package top.anagke.auto_ark.operate
 
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Pos
-import top.anagke.auto_android.img.ocrWord
+import top.anagke.auto_android.img.ocr
 import top.anagke.auto_android.util.Rect
 import top.anagke.auto_android.util.Size
 import top.anagke.auto_android.util.minutes
@@ -564,8 +564,7 @@ private enum class 资源收集_材料 {
         val cap = dev.cap()
         return chipTextRegion.find {
             val image = cap.crop(it)
-            val words = values().map(资源收集_材料::name)
-            val word = ocrWord(image, words = words)
+            val word = ocr(image)
             word == name
         }?.center()
     }
