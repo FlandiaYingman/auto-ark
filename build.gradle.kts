@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.9.0-RC"
     kotlin("plugin.serialization") version "1.9.0-RC"
 
+    id("org.bytedeco.gradle-javacpp-platform") version "1.5.9"
     id("com.github.ben-manes.versions") version "0.47.0"
     application
 }
@@ -16,10 +17,9 @@ repositories {
 }
 
 dependencies {
-    implementation("top.anagke:auto-android")
+    implementation(project(":auto-android"))
 
     implementation(kotlin("stdlib"))
-    implementation(kotlin("stdlib-jdk8"))
 
     implementation("org.tinylog:tinylog-impl:2.6.2")
     implementation("org.tinylog:tinylog-api-kotlin:2.6.2")
@@ -36,15 +36,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
 
-    implementation("com.github.albfernandez:juniversalchardet:2.4.0")
     implementation("info.debatty:java-string-similarity:2.0.0")
 
     // Config Parsing
     implementation("com.sksamuel.hoplite:hoplite:1.0.3")
     implementation("com.sksamuel.hoplite:hoplite-yaml:2.8.0.RC1")
-
-    // CLI Argument Parsing
-    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.5")
 }
 
 tasks.withType<KotlinCompile> {
@@ -56,5 +52,5 @@ tasks.withType<KotlinCompile> {
 application {
     mainClass.set("top.anagke.auto_ark.AppKt")
     executableDir = ""
-    applicationDefaultJvmArgs = listOf("-Dfile.encoding=UTF-8")
+    applicationDefaultJvmArgs += "-Dfile.encoding=UTF-8"
 }

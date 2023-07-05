@@ -1,7 +1,6 @@
 Set-Location $PSScriptRoot
 
-git submodule update --init --recursive
-git pull --recurse-submodules
+git pull
 
 ./gradlew run
 if ($LASTEXITCODE -ne 0)
