@@ -5,8 +5,8 @@ import com.google.gson.JsonObject
 import kotlinx.serialization.Transient
 import org.opencv.core.*
 import org.opencv.core.Core.*
+import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
-import org.opencv.imgcodecs.Imgcodecs.imdecode
 import org.opencv.imgproc.Imgproc.*
 import top.anagke.auto_android.device.Device
 import top.anagke.auto_android.device.nap
@@ -24,18 +24,13 @@ private object RIIC {
     init {
         OpenCV.init()
     }
-
-    fun init() {}
 }
 
-private val CHARACTER_TABLE_JSON_OBJ = RIIC.javaClass.getResourceAsStream("character_table.json").reader().use {
+private val CHARACTER_TABLE_JSON_OBJ = RIIC.javaClass.getResourceAsStream("character_table.json")!!.reader().use {
     Gson().fromJson(it, JsonObject::class.java)
 }
-private val BUILDING_DATA_JSON_OBJ = RIIC.javaClass.getResourceAsStream("building_data.json").reader().use {
+private val BUILDING_DATA_JSON_OBJ = RIIC.javaClass.getResourceAsStream("building_data.json")!!.reader().use {
     Gson().fromJson(it, JsonObject::class.java)
-}
-private val OPERATOR_ID_NAME_MAP = CHARACTER_TABLE_JSON_OBJ.keySet().associateWith {
-    CHARACTER_TABLE_JSON_OBJ.getAsJsonObject(it).getAsJsonPrimitive("name").asString
 }
 private val OPERATOR_NAME_ID_MAP = CHARACTER_TABLE_JSON_OBJ.keySet().associateBy {
     CHARACTER_TABLE_JSON_OBJ.getAsJsonObject(it).getAsJsonPrimitive("name").asString
@@ -75,12 +70,13 @@ data class Buff(
 ) {
 
     companion object {
-        private val ICON_BACKGROUND = RIIC.javaClass.getResourceAsStream("skill_icons/_bkg.png").readBytes()
-            .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }
+        private val ICON_BACKGROUND = RIIC.javaClass.getResourceAsStream("skill_icons/_bkg.png")!!.readBytes()
+            .let { Imgcodecs.imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }
     }
 
-    val icon = RIIC.javaClass.getResourceAsStream("skill_icons/$iconName.png").readBytes()
-        .let { imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }.also { GaussianBlur(it, it, Size(3.0, 3.0), (3.0 - 1) / 6) }
+    val icon = RIIC.javaClass.getResourceAsStream("skill_icons/$iconName.png")!!.readBytes()
+        .let { Imgcodecs.imdecode(MatOfByte(*it), IMREAD_UNCHANGED) }
+        .also { GaussianBlur(it, it, Size(3.0, 3.0), (3.0 - 1) / 6) }
         .let { overlay(ICON_BACKGROUND, it) }
 
     val iconTemplate = splitMask(icon)
@@ -148,9 +144,9 @@ private fun recognize(screenshot: Mat, wantedBuffs: Set<Buff>): List<Pos> {
         listOf(findMaxes(res1).map { Pos((it.maxLoc.x / SKILLS_ROW_1.width * 6).toInt(), 0) },
             findMaxes(res2).map { Pos((it.maxLoc.x / SKILLS_ROW_2.width * 6).toInt(), 1) }).flatten()
             .sortedBy { pt -> pt.x * 2 + pt.y }.map { pt -> pt to buff }
-    }.groupBy { (pos, buff) -> pos }.map { (pos, buff) -> pos to buff.map { it.second }.toSet() }
+    }.groupBy { (pos, _) -> pos }.map { (pos, buff) -> pos to buff.map { it.second }.toSet() }
 
-    return result.filter { (pos, buffs) -> buffs == wantedBuffs }.map { (pos, buffs) -> pos }
+    return result.filter { (_, buffs) -> buffs == wantedBuffs }.map { (pos, _) -> pos }
 }
 
 private fun overlay(bg: Mat, fg: Mat): Mat {

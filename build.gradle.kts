@@ -25,7 +25,8 @@ dependencies {
     implementation("org.tinylog:tinylog-api-kotlin:2.6.2")
     implementation("org.tinylog:slf4j-tinylog:2.6.2")
 
-    implementation("org.openpnp:opencv:4.7.0-0")
+    // OpenCV
+    implementation("org.bytedeco:opencv-platform:4.7.0-1.5.9")
     implementation("top.anagke:kio:1.1.0")
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
