@@ -1,6 +1,7 @@
 package top.anagke.auto_ark
 
 import com.sksamuel.hoplite.ConfigLoader
+import com.sksamuel.hoplite.ExperimentalHoplite
 import com.sksamuel.hoplite.addPathSource
 import top.anagke.auto_android.device.BlueStacksConf
 import top.anagke.auto_ark.login.ArkLoginConf
@@ -23,6 +24,7 @@ data class AutoArkConfig(
 
         private val baseConfigFile = Path("./config_base.yaml")
 
+        @OptIn(ExperimentalHoplite::class)
         fun loadConfig(configFile: Path): AutoArkConfig {
             if (configFile.notExists()) {
                 baseConfigFile.copyTo(configFile)
@@ -30,6 +32,7 @@ data class AutoArkConfig(
             return ConfigLoader.builder()
                 .addPathSource(configFile)
                 .addPathSource(baseConfigFile)
+                .withExplicitSealedTypes()
                 .build()
                 .loadConfigOrThrow()
         }
