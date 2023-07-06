@@ -134,6 +134,10 @@ private constructor(val mat: Mat) {
         HighGui.waitKey()
     }
 
+    fun ocr(): String {
+        return ocr(this)
+    }
+
 }
 
 private fun Point.toPos(): Pos {
