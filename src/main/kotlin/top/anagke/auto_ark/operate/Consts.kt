@@ -502,6 +502,18 @@ object OperateOperations {
         tap(1249, 438).nap()
     }
 
+    private fun Device.FD() = zone(1200, 500)
+    internal val FD_7 = ActOperation("FD-7", "眠于树影之中", "异铁组") {
+        FD()
+        swipeRight()
+        tap(640, 600).nap()
+    }
+    internal val FD_8 = ActOperation("FD-8", "眠于树影之中", "全新装置") {
+        FD()
+        swipeRight()
+        tap(640, 280).nap()
+    }
+
     private fun Device.swipeLeft(offset: Int = 0) {
         swipev(1280 * 4 + offset, 0, speed = 10.0, desc = "最左").nap()
         dragv(offset, 0)
