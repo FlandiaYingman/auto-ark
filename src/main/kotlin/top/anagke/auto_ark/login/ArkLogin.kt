@@ -39,12 +39,14 @@ class ArkLogin(
 
     private fun Device.loginOfficial() {
         Logger.info("登录明日方舟（官服）")
-        whileNotMatch(登录界面, timeout = 10.minutes) {
-            tap(640, 280).nap()
+        whileNotMatch(开始界面, timeout = 10.minutes) {
+            tap(640, 360).nap()
         }
 
         if (conf.切换账户) {
             Logger.info("登录明日方舟（官服），切换账号为：${conf.用户名}")
+
+            tap(925, 684, desc = "账号管理").nap()
 
             tap(640, 500, desc = "登录其它账号").nap()
             tap(784, 560, desc = "密码登录").nap()
@@ -61,7 +63,7 @@ class ArkLogin(
             tap(640, 500, desc = "登录其它账号").sleepl()
         } else {
             Logger.info("登录明日方舟（官服），检测到登录界面，登录")
-            tap(640, 440, desc = "登录").sleepl()
+            tap(640, 515, desc = "开始唤醒").sleepl()
         }
 
         Logger.info("登录明日方舟（官服），等待登录完成")
