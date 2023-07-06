@@ -3,6 +3,7 @@ package top.anagke.auto_android.img
 import top.anagke.auto_android.native.openProc
 import top.anagke.auto_android.native.waitText
 import top.anagke.auto_android.util.TempFiles
+import top.anagke.auto_android.util.minutes
 import top.anagke.auto_android.util.useSystemTempFile
 import kotlin.Double
 import kotlin.IllegalArgumentException
@@ -17,7 +18,7 @@ fun ocr(img: Img): String {
         temp.writeBytes(Img.encode(img))
 
         val stdout = openProc(paddleOCRExe, "--det=false", "--show_log=false", "--image_dir", temp.toString())
-            .waitText(charset = charset("GBK"))
+            .waitText(charset = charset("GBK"), timeout = 3.minutes)
             .stdout
         Result.parse(stdout)
     }.text
