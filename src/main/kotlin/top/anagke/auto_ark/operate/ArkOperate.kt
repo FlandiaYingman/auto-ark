@@ -3,9 +3,12 @@ package top.anagke.auto_ark.operate
 
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
+import top.anagke.auto_android.util.Rect
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
+import top.anagke.auto_ark.operate.OperateOperations.FD_7
+import top.anagke.auto_ark.operate.OperateOperations.FD_8
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_龙门外环
 import top.anagke.auto_ark.operate.OperateOperations.当期剿灭作战
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
@@ -32,15 +35,13 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            testOperations(OperateOperations.CW_8, OperateOperations.CW_9, OperateOperations.CW_10)
+            testOperations(FD_7, FD_8)
         }
 
         private fun testOperations(vararg operations: Operation) {
             val ark = App.defaultAutoArk()
             val operate = ArkOperate(ark)
-            operations.forEach {
-                operate.farm(it, 0)
-            }
+            operate.farmAdaptive(operations.toList())
         }
     }
 
@@ -80,15 +81,16 @@ class ArkOperate(
                 val (operationName, farmTimes) = planEntry
                 if (farmTimes == 0) continue
 
-                val operation = Operation.operations.find { it.name == operationName }
+                val operation = findOperation(operationName)
                 if (operation != null) {
                     val actualFarmTimes = farm(operation, farmTimes)
                     planEntry.setValue(farmTimes - actualFarmTimes)
-                } else {
-                    throw IllegalArgumentException("operation of name '$operationName' not found")
                 }
             }
         }
+
+        val operationsAdaptive = savedata.farmingAdaptivePlans.mapNotNull { findOperation(it) }
+        farmAdaptive(operationsAdaptive)
     }
 
     private fun farmDaily() {
@@ -123,6 +125,37 @@ class ArkOperate(
 
         Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes/$farmTimes 次")
         actualTimes
+    }
+
+    private fun farmAdaptive(operations: List<Operation>) = device.run {
+        Logger.info("自适应刷副本：$operations；识别中……")
+        val (operation, dropCount) = operations
+            .associateWith { recognizeMainDropCount(it) }
+            .filterValues { it != null }
+            .mapValues { it.value!! }
+            .minBy { it.value }
+        Logger.info("自适应刷副本：$operations；识别完毕，结果：$operation，$dropCount")
+        farm(operation)
+    }
+
+    private fun recognizeMainDropCount(operation: Operation): Int? = device.run {
+        Logger.info("识别副本掉落数（已有）：$operation")
+        if (enterOperation(operation)) {
+            tap(943, 524, desc = "报酬").nap()
+            tap(297, 270, desc = "常规掉落中第一个掉落").nap()
+            val result = cap()
+                .crop(Rect(830, 231, 46, 41))
+                .ocr()
+                .toIntOrNull()
+            Logger.info("识别副本掉落数（已有）：$operation；结果：$result")
+            tap(40, 40, desc = "关闭掉落窗口")
+            resetInterface()
+            result
+        } else {
+            Logger.info("识别副本掉落数（已有）：$operation；无法进入副本")
+            resetInterface()
+            null
+        }
     }
 
     private fun Device.enterOperation(operation: Operation): Boolean {
@@ -210,6 +243,16 @@ class ArkOperate(
         await(关卡信息界面_代理指挥开启)
         Logger.info("代理指挥关卡：$operation，完毕")
         return OperateResult.成功
+    }
+
+    private fun findOperation(operationName: String): Operation? {
+        val operation = Operation.operations.find { it.name == operationName }
+        return if (operation != null) {
+            operation
+        } else {
+            Logger.warn("未找到名称为 $operation 的关卡")
+            null
+        }
     }
 
 }
