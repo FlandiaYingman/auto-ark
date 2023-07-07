@@ -90,7 +90,9 @@ class ArkOperate(
         }
 
         val operationsAdaptive = savedata.farmingAdaptivePlans.mapNotNull { findOperation(it) }
-        farmAdaptive(operationsAdaptive)
+        if (operationsAdaptive.isNotEmpty()) {
+            farmAdaptive(operationsAdaptive)
+        }
     }
 
     private fun farmDaily() {
