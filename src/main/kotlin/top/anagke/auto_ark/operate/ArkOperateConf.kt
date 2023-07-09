@@ -5,7 +5,6 @@ data class ArkOperateConf(
     val 刷剿灭: Boolean,
     val 刷计划: Boolean,
     val 刷日常: Boolean,
-    val 刷当期剿灭: Boolean,
     val 资源关种类: 资源关种类
 )
 

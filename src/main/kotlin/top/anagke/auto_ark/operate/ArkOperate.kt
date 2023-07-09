@@ -7,10 +7,7 @@ import top.anagke.auto_android.util.Rect
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
-import top.anagke.auto_ark.operate.OperateOperations.FD_7
-import top.anagke.auto_ark.operate.OperateOperations.FD_8
-import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_龙门外环
-import top.anagke.auto_ark.operate.OperateOperations.当期剿灭作战
+import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_任意
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
 import top.anagke.auto_ark.operate.OperateResult.理智已不足
 import top.anagke.auto_ark.operate.OperateStrategy.*
@@ -35,13 +32,13 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            testOperations(FD_7, FD_8)
+            testOperations(剿灭作战_任意)
         }
 
         private fun testOperations(vararg operations: Operation) {
             val ark = App.defaultAutoArk()
             val operate = ArkOperate(ark)
-            operate.farmAdaptive(operations.toList())
+            operations.forEach { operate.farm(it) }
         }
     }
 
@@ -63,12 +60,8 @@ class ArkOperate(
 
     private fun farmAnnihilation() {
         Logger.info("刷剿灭委托：${conf.刷剿灭}")
-        if (!conf.刷剿灭) return
-
-        if (conf.刷当期剿灭) {
-            farm(当期剿灭作战, 1)
-        } else {
-            farm(剿灭作战_龙门外环, 1)
+        if (conf.刷剿灭) {
+            farm(剿灭作战_任意)
         }
     }
 
@@ -131,11 +124,8 @@ class ArkOperate(
 
     private fun farmAdaptive(operations: List<Operation>) = device.run {
         Logger.info("自适应刷副本：$operations；识别中……")
-        val (operation, dropCount) = operations
-            .associateWith { recognizeMainDropCount(it) }
-            .filterValues { it != null }
-            .mapValues { it.value!! }
-            .minBy { it.value }
+        val (operation, dropCount) = operations.associateWith { recognizeMainDropCount(it) }.filterValues { it != null }
+            .mapValues { it.value!! }.minBy { it.value }
         Logger.info("自适应刷副本：$operations；识别完毕，结果：$operation，$dropCount")
         farm(operation)
     }
@@ -145,10 +135,7 @@ class ArkOperate(
         if (enterOperation(operation)) {
             tap(943, 524, desc = "报酬").nap()
             tap(297, 270, desc = "常规掉落中第一个掉落").nap()
-            val result = cap()
-                .crop(Rect(830, 231, 46, 41))
-                .ocr()
-                .toIntOrNull()
+            val result = cap().crop(Rect(830, 231, 46, 41)).ocr().toIntOrNull()
             Logger.info("识别副本掉落数（已有）：$operation；结果：$result")
             tap(40, 40, desc = "关闭掉落窗口")
             resetInterface()

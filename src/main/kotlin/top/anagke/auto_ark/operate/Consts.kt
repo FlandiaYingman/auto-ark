@@ -18,8 +18,10 @@ import top.anagke.auto_ark.operate.OperateOperations.MAIN_1_7
 import top.anagke.auto_ark.operate.OperatePoses.终端
 import top.anagke.auto_ark.operate.OperatePoses.终端_常态事务
 import top.anagke.auto_ark.operate.OperatePoses.终端_活动
+import top.anagke.auto_ark.operate.OperateTemplates.剿灭_作战进度奖励_已满
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已刷满
 import top.anagke.auto_ark.operate.OperationType.剿灭
+import top.anagke.auto_ark.resetInterface
 import top.anagke.auto_ark.tmpl
 import top.anagke.auto_ark.today
 import java.time.DayOfWeek
@@ -84,6 +86,7 @@ object OperateTemplates {
     internal val 剿灭_行动结束 by tmpl(diff = 0.05)
     internal val 剿灭_已通过 by tmpl(diff = 0.01)
     internal val 剿灭_已刷满 by tmpl(diff = 0.001)
+    internal val 剿灭_作战进度奖励_已满 by tmpl()
 }
 
 object OperateOperations {
@@ -95,7 +98,7 @@ object OperateOperations {
         }
     }
 
-    internal val 当期剿灭作战 = Operation("当期剿灭作战", "合成玉", timeout = 30.minutes, type = 剿灭) {
+    internal val 剿灭作战_当期 = Operation("当期剿灭作战", "合成玉", timeout = 30.minutes, type = 剿灭) {
         tap(终端).sleep()
         tap(终端_常态事务).nap()
         if (notMatch(剿灭_已刷满)) {
@@ -111,6 +114,14 @@ object OperateOperations {
             back(description = "退出作战准备界面").nap()
             tap(1240, 649, desc = "切换剿灭").sleep()
             tap(1013, 265, desc = "龙门外环").sleep()
+        }
+    }
+
+    internal val 剿灭作战_任意 = Operation("任意剿灭作战", description = "合成玉", timeout = 30.minutes, type = 剿灭) {
+        enter(剿灭作战_当期)
+        if (notMatch(剿灭_作战进度奖励_已满)) {
+            resetInterface()
+            enter(剿灭作战_龙门外环)
         }
     }
 
