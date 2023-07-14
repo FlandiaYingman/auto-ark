@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package top.anagke.auto_ark.operate
 
@@ -15,9 +15,16 @@ import top.anagke.auto_ark.operate.OperateOperations.CE_6
 import top.anagke.auto_ark.operate.OperateOperations.LS_5
 import top.anagke.auto_ark.operate.OperateOperations.LS_6
 import top.anagke.auto_ark.operate.OperateOperations.MAIN_1_7
+import top.anagke.auto_ark.operate.OperatePoses.PR_X_1
+import top.anagke.auto_ark.operate.OperatePoses.PR_X_2
+import top.anagke.auto_ark.operate.OperatePoses.XX_5
+import top.anagke.auto_ark.operate.OperatePoses.XX_5_OLD
+import top.anagke.auto_ark.operate.OperatePoses.XX_6
 import top.anagke.auto_ark.operate.OperatePoses.终端
+import top.anagke.auto_ark.operate.OperatePoses.终端_主题曲
 import top.anagke.auto_ark.operate.OperatePoses.终端_常态事务
 import top.anagke.auto_ark.operate.OperatePoses.终端_活动
+import top.anagke.auto_ark.operate.OperatePoses.终端_资源收集
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_作战进度奖励_已满
 import top.anagke.auto_ark.operate.OperateTemplates.剿灭_已刷满
 import top.anagke.auto_ark.operate.OperationType.剿灭
@@ -129,31 +136,31 @@ object OperateOperations {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.战术演习.where(this) ?: return@Operation
         tap(pos, desc = "战术演习").nap()
-        tap(OperatePoses.XX_6).nap() //LS-6
+        tap(XX_6).nap() //LS-6
     }
     internal val CE_6 = Operation("CE-6", "龙门币") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.货物运送.where(this) ?: return@Operation
         tap(pos, desc = "货物运送").nap()
-        tap(OperatePoses.XX_6).nap() //CE-6
+        tap(XX_6).nap() //CE-6
     }
     internal val LS_5 = Operation("LS-5", "作战记录") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.战术演习.where(this) ?: return@Operation
         tap(pos, desc = "战术演习").nap()
-        tap(OperatePoses.XX_5).nap() //LS-5
+        tap(XX_5).nap() //LS-5
     }
     internal val CE_5 = Operation("CE-5", "龙门币") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.货物运送.where(this) ?: return@Operation
         tap(pos, desc = "货物运送").nap()
-        tap(OperatePoses.XX_5).nap() //CE-5
+        tap(XX_5).nap() //CE-5
     }
     internal val CA_5 = Operation("CA-5", "技巧概要") {
         进入_终端_资源收集_材料()
         val pos = 资源收集_材料.空中威胁.where(this) ?: return@Operation
         tap(pos, desc = "空中威胁").nap()
-        tap(OperatePoses.XX_5_OLD).nap() //CA-5
+        tap(XX_5_OLD).nap() //CA-5
     }
 
     private enum class 资源收集芯片(
@@ -175,10 +182,9 @@ object OperateOperations {
         fun isOpen(): Boolean =
             today() in openDays
 
-        fun index(): Int =
-            资源收集芯片.values()
-                .sortedWith(comparator)
-                .indexOf(this)
+        fun index(): Int = entries
+            .sortedWith(comparator)
+            .indexOf(this)
 
         fun position() = Pos(495 + 205 * index(), 360)
 
@@ -188,69 +194,69 @@ object OperateOperations {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.固若金汤.position()).sleep()
-        tap(OperatePoses.PR_X_1).nap()
+        tap(PR_X_1).nap()
     }
     internal val PR_B_1 = Operation("PR-B-1", "狙击/术士芯片", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.摧枯拉朽.position()).sleep()
-        tap(OperatePoses.PR_X_1).nap()
+        tap(PR_X_1).nap()
     }
     internal val PR_C_1 = Operation("PR-C-1", "先锋/辅助芯片", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.势不可挡.position()).sleep()
-        tap(OperatePoses.PR_X_1).nap()
+        tap(PR_X_1).nap()
     }
     internal val PR_D_1 = Operation("PR-D-1", "近卫/特种芯片", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.身先士卒.position()).sleep()
-        tap(OperatePoses.PR_X_1).nap()
+        tap(PR_X_1).nap()
     }
 
     internal val PR_A_2 = Operation("PR-A-2", "重装/医疗芯片组", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.固若金汤.position()).sleep()
-        tap(OperatePoses.PR_X_2).nap()
+        tap(PR_X_2).nap()
     }
     internal val PR_B_2 = Operation("PR-B-2", "狙击/术士芯片组", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.摧枯拉朽.position()).sleep()
-        tap(OperatePoses.PR_X_2).nap()
+        tap(PR_X_2).nap()
     }
     internal val PR_C_2 = Operation("PR-C-2", "先锋/辅助芯片组", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.势不可挡.position()).sleep()
-        tap(OperatePoses.PR_X_2).nap()
+        tap(PR_X_2).nap()
     }
     internal val PR_D_2 = Operation("PR-D-2", "近卫/特种芯片组", dropsPositions = listOf(0, 1)) {
         进入_终端_资源收集_芯片()
 
         tap(资源收集芯片.身先士卒.position()).sleep()
-        tap(OperatePoses.PR_X_2).nap()
+        tap(PR_X_2).nap()
     }
 
     private fun Device.进入_终端_资源收集_芯片() {
         tap(终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
+        tap(终端_资源收集).nap()
         dragv(640, 360, -600, 0)
         tap(1230, 50).nap()
     }
 
     private fun Device.进入_终端_资源收集_材料() {
         tap(终端).sleep()
-        tap(OperatePoses.终端_资源收集).nap()
+        tap(终端_资源收集).nap()
         swipev(640, 360, 600, 0, speed = 1.0).nap()
     }
 
 
     internal val MAIN_1_7 = Operation("1-7", description = "固源岩") {
         tap(终端).nap() //进入“终端”
-        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(终端_主题曲).nap() //进入“主题曲”
         tap(66, 132).nap() //进入“幻灭”
         tap(66, 132).nap() //进入“觉醒”
 
@@ -264,7 +270,7 @@ object OperateOperations {
 
     internal val MAIN_7_15 = Operation("7-15", description = "装置") {
         tap(终端).sleep() //进入“终端”
-        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(终端_主题曲).nap() //进入“主题曲”
         tap(66, 132).nap() //进入“幻灭”
 
         swipeRight()
@@ -276,7 +282,7 @@ object OperateOperations {
     }
     internal val MAIN_7_17 = Operation("7-17", description = "研磨石") {
         tap(终端).sleep() //进入“终端”
-        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(终端_主题曲).nap() //进入“主题曲”
         tap(66, 132).nap() //进入“幻灭”
 
         swipeRight()
@@ -289,7 +295,7 @@ object OperateOperations {
 
     internal val MAIN_10_16 = Operation("10-16", description = "轻锰矿") {
         tap(终端).sleep() //进入“终端”
-        tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
+        tap(终端_主题曲).nap() //进入“主题曲”
         tap(65, 130, "觉醒").nap()
         tap(65, 130, "觉醒").nap()
         tap(65, 555, "幻灭").nap()
