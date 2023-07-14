@@ -249,19 +249,17 @@ object OperateOperations {
 
 
     internal val MAIN_1_7 = Operation("1-7", description = "固源岩") {
-        tap(终端).sleep() //进入“终端”
+        tap(终端).nap() //进入“终端”
         tap(OperatePoses.终端_主题曲).nap() //进入“主题曲”
         tap(66, 132).nap() //进入“幻灭”
         tap(66, 132).nap() //进入“觉醒”
 
-        dragv(950, 360, -950, 0) //确保处于“二次呼吸”
-        tap(1200, 360).nap() //取消拖动
+        swipeRight() //确保处于“二次呼吸”
 
-        tap(330, 375).sleep() //进入“黑暗时代（下）”
+        tap(410, 375).sleep() //进入“黑暗时代（下）”
 
-        swipev(160, 360, 4480, 0, 10.0) //确保处于最左边
-        dragv(950, 360, -1750, 0) //确保处于“1-7”
-        tap(1092, 222).nap() //进入“1-7”
+        swipeLeft(-1750)
+        tap(1092, 222) //进入“1-7”
     }
 
     internal val MAIN_7_15 = Operation("7-15", description = "装置") {
