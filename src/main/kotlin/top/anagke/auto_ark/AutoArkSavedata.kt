@@ -13,7 +13,7 @@ import kotlin.io.path.writeText
 data class AutoArkSavedata(
     var isFirstRun: Boolean = true,
     var farmingPlans: List<MutableMap<String, Int>> = listOf(),
-    var farmingAdaptivePlans: List<String> = listOf(),
+    var farmingAdaptivePlans: List<Pair<List<String>, Int>> = listOf(listOf<String>() to 0),
 ) {
 
     companion object {

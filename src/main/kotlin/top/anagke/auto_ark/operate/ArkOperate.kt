@@ -4,7 +4,6 @@ package top.anagke.auto_ark.operate
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.Rect
-import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_任意
@@ -32,13 +31,6 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            testOperations(剿灭作战_任意)
-        }
-
-        private fun testOperations(vararg operations: Operation) {
-            val ark = App.defaultAutoArk()
-            val operate = ArkOperate(ark)
-            operations.forEach { operate.farm(it) }
         }
     }
 
@@ -82,9 +74,11 @@ class ArkOperate(
             }
         }
 
-        val operationsAdaptive = savedata.farmingAdaptivePlans.mapNotNull { findOperation(it) }
-        if (operationsAdaptive.isNotEmpty()) {
-            farmAdaptive(operationsAdaptive)
+        savedata.farmingAdaptivePlans.forEach { (operationNameGroup, maxDropCount) ->
+            val operations = operationNameGroup.mapNotNull { operationName -> findOperation(operationName) }
+            if (operations.isNotEmpty()) {
+                farmAdaptive(operations, maxDropCount)
+            }
         }
     }
 
@@ -122,28 +116,45 @@ class ArkOperate(
         actualTimes
     }
 
-    private fun farmAdaptive(operations: List<Operation>) = device.run {
+    private fun farmAdaptive(operations: List<Operation>, maxDropCount: Int) = device.run {
         Logger.info("自适应刷副本：$operations；识别中……")
-        val (operation, dropCount) = operations.associateWith { recognizeMainDropCount(it) }.filterValues { it != null }
-            .mapValues { it.value!! }.minBy { it.value }
+        val (operation, dropCount) = operations
+            .associateWith { recognizeDropsCount(it) }
+            .mapValues { (_, dropsCount) ->
+                dropsCount.values
+                    .filterNotNull()
+                    .minOrNull() ?: Int.MAX_VALUE
+            }
+            .minBy { it.value }
         Logger.info("自适应刷副本：$operations；识别完毕，结果：$operation，$dropCount")
+        if (dropCount > maxDropCount) {
+            Logger.info("自适应刷副本：$operations；实际最低掉落数量 $dropCount 大于预计最大掉落数量 $maxDropCount；跳过")
+            return@run
+        }
         farm(operation)
     }
 
-    private fun recognizeMainDropCount(operation: Operation): Int? = device.run {
+    private fun recognizeDropsCount(operation: Operation): Map<Int, Int?> = device.run {
         Logger.info("识别副本掉落数（已有）：$operation")
         if (enterOperation(operation)) {
             tap(943, 524, desc = "报酬").nap()
-            tap(297, 270, desc = "常规掉落中第一个掉落").nap()
-            val result = cap().crop(Rect(830, 231, 46, 41)).ocr().toIntOrNull()
-            Logger.info("识别副本掉落数（已有）：$operation；结果：$result")
-            tap(40, 40, desc = "关闭掉落窗口")
+            val dropsCount = operation.dropsPositions.map { pos ->
+                tap(297 + 129 * pos, 270, desc = "常规掉落中第 $pos 个掉落").nap()
+                val result = cap()
+                    .crop(Rect(780 + 129 * pos, 230, 95, 41))
+                    .ocr()
+                    .trim { !it.isDigit() }
+                    .toIntOrNull() ?: 0
+                Logger.info("识别副本掉落数（已有），第 $pos 个：$operation；结果：$result")
+                tap(40, 40, desc = "关闭掉落窗口").nap()
+                pos to result
+            }.toMap()
             resetInterface()
-            result
+            dropsCount
         } else {
             Logger.info("识别副本掉落数（已有）：$operation；无法进入副本")
             resetInterface()
-            null
+            emptyMap()
         }
     }
 

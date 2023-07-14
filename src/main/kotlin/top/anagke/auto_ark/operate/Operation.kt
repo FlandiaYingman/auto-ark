@@ -19,6 +19,7 @@ class Operation(
     val description: String,
     val timeout: Long = 5.minutes,
     val type: OperationType = OperationType.常规,
+    val dropsPositions: List<Int> = listOf(0),
     val enter: Device.() -> Unit = {},
 ) {
 
@@ -42,8 +43,14 @@ enum class OperationType {
     常规, 剿灭, 活动
 }
 
-fun ActOperation(name: String, act: String, drop: String, timeout: Long = 5.minutes, block: Device.() -> Unit = {}) =
-    Operation(name, "$act ($drop)", timeout, OperationType.活动, block)
+fun ActOperation(
+    name: String,
+    act: String,
+    drop: String,
+    timeout: Long = 5.minutes,
+    dropsPositions: List<Int> = listOf(0),
+    block: Device.() -> Unit = {}
+) = Operation(name, "$act ($drop)", timeout, OperationType.活动, dropsPositions, block)
 
 fun Device.enter(operation: Operation): OperationState {
     // 如果行动的类型是活动，则首先尝试主活动；如果无法进入，则再尝试副活动；如果均失败，则抛出异常。
