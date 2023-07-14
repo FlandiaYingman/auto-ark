@@ -4,6 +4,7 @@ package top.anagke.auto_ark.operate
 import org.tinylog.kotlin.Logger
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.util.Rect
+import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_任意
@@ -31,6 +32,12 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
+        }
+
+        private fun testOperations(vararg operations: Operation) {
+            val ark = App.defaultAutoArk()
+            val operate = ArkOperate(ark)
+            operations.forEach { operate.farm(it) }
         }
     }
 
