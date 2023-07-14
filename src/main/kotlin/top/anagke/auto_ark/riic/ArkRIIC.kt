@@ -14,7 +14,6 @@ class ArkRIIC(
         private val 干员选择界面 by tmpl(diff = 0.01)
         private val 进驻总览界面 by tmpl(diff = 0.01)
         private val 贸易站_存在订单 by tmpl()
-        private val 贸易站_不存在订单 by tmpl()
         private val 会客室_存在可用线索 by tmpl()
         private val 会客室_线索交流活动完毕 by tmpl()
 
@@ -29,16 +28,18 @@ class ArkRIIC(
 
     override val name: String = "基建模块"
 
+    private val conf = config.基建配置
+
     override fun run(): Unit = device.run {
         assert(主界面)
 
         进入基建()
-        换班()
-        resetInterface()
+        收取基建()
+        退出基建()
 
         进入基建()
-        收取基建()
-        resetInterface()
+        换班()
+        退出基建()
     }
 
     private fun 进入基建() = device.apply {
@@ -47,14 +48,18 @@ class ArkRIIC(
         sleep()
     }
 
+    private fun 退出基建() = device.apply {
+        resetInterface()
+    }
+
     private fun 收取基建() = device.apply {
         收取基建产出()
         收取会客室()
         resetInterface()
         进入基建()
         when (conf.无人机房间类型) {
-            "MANUFACTURE" -> 无人机加速制造站(制造站 = conf.无人机房间)
-            "TRADING" -> 无人机加速贸易站(贸易站 = conf.无人机房间)
+            "贸易站" -> 无人机加速贸易站(贸易站 = conf.无人机房间)
+            "制造站" -> 无人机加速制造站(制造站 = conf.无人机房间)
         }
         收取基建产出()
     }
@@ -157,19 +162,17 @@ class ArkRIIC(
         }
     }
 
-    private val conf = config.基建配置
-
     private fun 换班() = device.apply {
         tap(74, 118) //进驻总览
         await(进驻总览界面)
 
         dragv(1200, 415, 0, -192, speed = 0.15).nap() //一个房间距离
-        shift(Pos(670, 200), "1F02") //第一个房间
+        换班房间(Pos(670, 200), "1F02") //第一个房间
 
         repeat(3) { level ->
             dragv(1200, 415, 0, -245, speed = 0.15) //一层距离
             repeat(3) { room ->
-                shift(Pos(670, 200), "B${level + 1}0${room + 1}") //贸易站、制造站或发电站
+                换班房间(Pos(670, 200), "B${level + 1}0${room + 1}") //贸易站、制造站或发电站
                 dragv(1200, 415, 0, -192, speed = 0.15).nap() //一个房间距离
             }
             // 只有第一、二、三层有辅助设施
@@ -178,7 +181,7 @@ class ArkRIIC(
             }
             // 只有第二层的办公室需要换班
             if (level + 1 == 2) {
-                shift(Pos(670, 200), "B${level + 1}05") //辅助设施
+                换班房间(Pos(670, 200), "B${level + 1}05") //辅助设施
             }
         }
 
@@ -187,35 +190,43 @@ class ArkRIIC(
 
         //前两个宿舍
         dragv(1200, 415, 0, -880, speed = 0.15).nap() //一个宿舍距离
-        shift(Pos(670, 200), "B104", init = true) //宿舍
+        换班房间(Pos(670, 200), "B104", init = true) //宿舍
         dragv(1200, 415, 0, -880, speed = 0.15).nap() //一个宿舍距离
-        shift(Pos(670, 200), "B204") //宿舍
+        换班房间(Pos(670, 200), "B204") //宿舍
         //后两个宿舍
         dragv(1200, 415, 0, -880, speed = 0.15).nap() //一个宿舍距离
-        shift(Pos(670, 240), "B304") //第三个宿舍
-        shift(Pos(670, 600), "B404") //第四个宿舍
+        换班房间(Pos(670, 240), "B304") //第三个宿舍
+        换班房间(Pos(670, 600), "B404") //第四个宿舍
     }
 
-
-    private fun shift(pos: Pos, room: String, init: Boolean = false) = device.apply {
+    private fun 换班房间(pos: Pos, room: String, init: Boolean = false) = device.apply {
         tap(pos)
         await(干员选择界面)
 
-        if (conf.高级模式) when (room) {
-            in conf.计划.flatMap { it.rooms } -> {
-                val runnable = conf.计划.filter { it.shiftable(room) }
-                if (runnable.size > 1) throw Exception("runnable plan $runnable > 1")
-                runnable.forEach { it.shift(room, this) }
+        if (init) {
+            tap(1180, 40, desc = "").nap()
+            whileNotMatch(心情增序) {
+                tap(605, 170).nap()
             }
-
-            in setOf("B104", "B204", "B304", "B404") -> {
-                doShiftDorm(conf.宿舍保留[room[1].toString().toInt() - 1], init = init)
+            whileNotMatch(未进驻筛选) {
+                tap(430, 360).nap()
             }
-
-            else -> doShift(room)
-        } else {
-            doShift(room)
+            tap(950, 550).nap()
         }
+
+        val shiftingOperatorsCount = when {
+            room == "1F01" -> 5
+            room == "1F02" -> 2
+            room.endsWith("1") || room.endsWith("2") -> 3
+            room.endsWith("3") -> 1
+            room.endsWith("4") -> 5
+            room.endsWith("5") -> 1
+            else -> 5
+        }
+        for (num in 0 until shiftingOperatorsCount * 2) {
+            tap(Pos(480 + (num / 2) * 144, 210 + (num % 2) * 300))
+        }
+
         tap(1180, 675).nap() //确认
         whileNotMatch(进驻总览界面) {
             tap(1180, 675).nap() //确认
