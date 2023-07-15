@@ -8,7 +8,7 @@ import java.time.DayOfWeek
 import java.time.LocalDateTime
 import kotlin.reflect.KProperty
 
-fun tmpl(diff: Double = 0.05) = TmplDelegate(diff)
+fun tmpl(diff: Double = 0.01) = TmplDelegate(diff)
 
 class TmplDelegate(private val diff: Double) {
 
@@ -60,13 +60,13 @@ fun today(): DayOfWeek {
 val 开始界面 by tmpl()
 
 // 登录认证已失效
-val 登录认证失效 by tmpl(0.01)
+val 登录认证失效 by tmpl()
 
 // 主界面
 val 主界面 by tmpl()
 
 // 可跳回主界面
-val 可跳出 by tmpl(0.01)
+val 可跳出 by tmpl()
 
 
 fun Device.resetInterface() {

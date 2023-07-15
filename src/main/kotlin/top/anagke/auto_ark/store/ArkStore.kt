@@ -2,7 +2,6 @@ package top.anagke.auto_ark.store
 
 import top.anagke.auto_android.device.*
 import top.anagke.auto_android.img.Pos
-import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_ark.*
 
 class ArkStore(
@@ -10,8 +9,8 @@ class ArkStore(
 ) : ArkModule(auto) {
 
     companion object {
-        private val 已领取信用点: Tmpl by tmpl()
-        private val 购买物品提示框: Tmpl by tmpl()
+        private val 已领取信用点 by tmpl()
+        private val 购买物品提示框 by tmpl()
     }
 
     override val name: String = "商店模块"

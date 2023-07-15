@@ -11,8 +11,8 @@ class ArkRIIC(
     companion object {
         private val 基建界面 by tmpl()
         private val 自有库无线索 by tmpl()
-        private val 干员选择界面 by tmpl(diff = 0.01)
-        private val 进驻总览界面 by tmpl(diff = 0.01)
+        private val 干员选择界面 by tmpl()
+        private val 进驻总览界面 by tmpl()
         private val 贸易站_存在订单 by tmpl()
         private val 会客室_存在可用线索 by tmpl()
         private val 会客室_线索交流活动完毕 by tmpl()

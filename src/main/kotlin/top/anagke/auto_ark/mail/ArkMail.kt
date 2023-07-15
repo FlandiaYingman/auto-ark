@@ -3,7 +3,6 @@ package top.anagke.auto_ark.mail
 import top.anagke.auto_android.device.assert
 import top.anagke.auto_android.device.match
 import top.anagke.auto_android.device.sleepl
-import top.anagke.auto_android.img.Tmpl
 import top.anagke.auto_ark.*
 
 /** 收取未收取的邮件。 */
@@ -12,7 +11,7 @@ class ArkMail(
 ) : ArkModule(auto) {
 
     companion object {
-        private val 存在未领取邮件: Tmpl by tmpl()
+        private val 存在未领取邮件 by tmpl()
 
         @JvmStatic
         fun main(args: Array<String>) {

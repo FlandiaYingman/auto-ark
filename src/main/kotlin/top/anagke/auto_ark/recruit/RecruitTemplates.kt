@@ -7,7 +7,7 @@ object RecruitTemplates {
     internal val 公开招募界面 by tmpl()
 
     // 能够刷新TAG
-    internal val 可刷新标签 by tmpl(diff = 0.01)
+    internal val 可刷新标签 by tmpl()
     internal val 公开招募面板 by tmpl()
 
     // 公开招募1号栏位可用
