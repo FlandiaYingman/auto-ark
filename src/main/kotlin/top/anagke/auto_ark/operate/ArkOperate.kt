@@ -7,6 +7,15 @@ import top.anagke.auto_android.util.Rect
 import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
+import top.anagke.auto_ark.operate.ArkOperate.刷副本结果.结果类型.*
+import top.anagke.auto_ark.operate.OperateOperations.PR_A_1
+import top.anagke.auto_ark.operate.OperateOperations.PR_A_2
+import top.anagke.auto_ark.operate.OperateOperations.PR_B_1
+import top.anagke.auto_ark.operate.OperateOperations.PR_B_2
+import top.anagke.auto_ark.operate.OperateOperations.PR_C_1
+import top.anagke.auto_ark.operate.OperateOperations.PR_C_2
+import top.anagke.auto_ark.operate.OperateOperations.PR_D_1
+import top.anagke.auto_ark.operate.OperateOperations.PR_D_2
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_任意
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
 import top.anagke.auto_ark.operate.OperateResult.理智已不足
@@ -32,12 +41,22 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
+            testOperations(
+                PR_A_1,
+                PR_B_1,
+                PR_C_1,
+                PR_D_1,
+                PR_A_2,
+                PR_B_2,
+                PR_C_2,
+                PR_D_2,
+            )
         }
 
         private fun testOperations(vararg operations: Operation) {
             val ark = App.defaultAutoArk()
             val operate = ArkOperate(ark)
-            operations.forEach { operate.farm(it) }
+            operations.forEach { operate.farm(it, 0) }
         }
     }
 
@@ -57,16 +76,19 @@ class ArkOperate(
 
     override val name = "行动模块"
 
+    private var lastFarmResult: 刷副本结果? = null
+
     private fun farmAnnihilation() {
         Logger.info("刷剿灭委托：${conf.刷剿灭}")
-        if (conf.刷剿灭) {
-            farm(剿灭作战_任意)
-        }
+        if (!conf.刷剿灭) return
+        if (lastFarmResult?.类型 == 理智不足) return
+        lastFarmResult = farm(剿灭作战_任意, 1)
     }
 
     private fun farmPlan() {
         Logger.info("刷计划副本：${conf.刷计划}")
         if (!conf.刷计划) return
+        if (lastFarmResult?.类型 == 理智不足) return
 
         for (plan in savedata.farmingPlans) {
             for (planEntry in plan.entries.shuffled()) {
@@ -75,8 +97,9 @@ class ArkOperate(
 
                 val operation = findOperation(operationName)
                 if (operation != null) {
-                    val actualFarmTimes = farm(operation, farmTimes)
-                    planEntry.setValue(farmTimes - actualFarmTimes)
+                    lastFarmResult = farm(operation, farmTimes)
+                    planEntry.setValue(farmTimes - lastFarmResult!!.数量)
+                    if (lastFarmResult?.类型 == 理智不足) return
                 }
             }
         }
@@ -84,7 +107,8 @@ class ArkOperate(
         savedata.farmingAdaptivePlans.forEach { (operationNameGroup, maxDropCount) ->
             val operations = operationNameGroup.mapNotNull { operationName -> findOperation(operationName) }
             if (operations.isNotEmpty()) {
-                farmAdaptive(operations, maxDropCount)
+                lastFarmResult = farmAdaptive(operations, maxDropCount)
+                if (lastFarmResult?.类型 == 理智不足) return
             }
         }
     }
@@ -92,54 +116,63 @@ class ArkOperate(
     private fun farmDaily() {
         Logger.info("刷日常副本：${conf.刷日常}")
         if (!conf.刷日常) return
+        if (lastFarmResult?.类型 == 理智不足) return
 
         farm(dailyOps(conf.资源关种类))
     }
 
 
-    private fun farm(operation: Operation, farmTimes: Int = Int.MAX_VALUE): Int = device.run {
+    data class 刷副本结果(
+        val 类型: 结果类型,
+        val 数量: Int = 0,
+    ) {
+        enum class 结果类型 {
+            成功, 理智不足, 无法进入副本,
+        }
+    }
+
+    private fun farm(operation: Operation, farmTimes: Int = Int.MAX_VALUE): 刷副本结果 = device.run {
         Logger.info("刷副本：$operation，预计刷 $farmTimes 次")
 
         val successful = enterOperation(operation)
         if (!successful) {
-            Logger.info("刷副本：$operation，完毕，实际刷 ${0} 次")
-            return@run 0
+            Logger.info("刷副本：$operation，完毕，无法进入副本")
+            resetInterface()
+            return@farm 刷副本结果(无法进入副本)
         }
 
         var actualTimes = 0
-        farmLoop@ for (i in 0 until farmTimes) {
+        for (i in 0 until farmTimes) {
             val result = operateOperation(operation)
             when (result) {
-                理智已不足 -> break@farmLoop
-                合成玉已刷满 -> continue@farmLoop
+                理智已不足, 合成玉已刷满 -> {
+                    Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes/$farmTimes 次")
+                    resetInterface()
+                    return@farm 刷副本结果(理智不足, actualTimes)
+                }
+
                 else -> {}
             }
             actualTimes++
             Logger.info("刷副本：$operation 中，实际刷 $actualTimes/$farmTimes 次")
         }
         resetInterface()
-
-        Logger.info("刷副本：$operation，完毕，实际刷 $actualTimes/$farmTimes 次")
-        actualTimes
+        return@farm 刷副本结果(成功, actualTimes)
     }
 
-    private fun farmAdaptive(operations: List<Operation>, maxDropCount: Int) = device.run {
+    private fun farmAdaptive(operations: List<Operation>, maxDropCount: Int): 刷副本结果 = device.run {
         Logger.info("自适应刷副本：$operations；识别中……")
-        val (operation, dropCount) = operations
-            .associateWith { recognizeDropsCount(it) }
-            .mapValues { (_, dropsCount) ->
-                dropsCount.values
-                    .filterNotNull()
-                    .minOrNull() ?: Int.MAX_VALUE
-            }
-            .minBy { it.value }
+        val (operation, dropCount) = operations.associateWith { recognizeDropsCount(it) }.mapValues { (_, dropsCount) ->
+            dropsCount.values.filterNotNull().minOrNull() ?: Int.MAX_VALUE
+        }.minBy { it.value }
         Logger.info("自适应刷副本：$operations；识别完毕，结果：$operation，$dropCount")
         if (dropCount > maxDropCount) {
             Logger.info("自适应刷副本：$operations；实际最低掉落数量 $dropCount 大于预计最大掉落数量 $maxDropCount；跳过")
-            return@run
+            return 刷副本结果(成功, 0)
         }
-        farm(operation)
+        return farm(operation)
     }
+
 
     private fun recognizeDropsCount(operation: Operation): Map<Int, Int?> = device.run {
         Logger.info("识别副本掉落数（已有）：$operation")
@@ -147,11 +180,8 @@ class ArkOperate(
             tap(943, 524, desc = "报酬").nap()
             val dropsCount = operation.dropsPositions.map { pos ->
                 tap(297 + 129 * pos, 270, desc = "常规掉落中第 $pos 个掉落").nap()
-                val result = cap()
-                    .crop(Rect(780 + 129 * pos, 230, 95, 41))
-                    .ocr()
-                    .trim { !it.isDigit() }
-                    .toIntOrNull() ?: 0
+                val result =
+                    cap().crop(Rect(780 + 129 * pos, 230, 95, 41)).ocr().trim { !it.isDigit() }.toIntOrNull() ?: 0
                 Logger.info("识别副本掉落数（已有），第 $pos 个：$operation；结果：$result")
                 tap(40, 40, desc = "关闭掉落窗口").nap()
                 pos to result
