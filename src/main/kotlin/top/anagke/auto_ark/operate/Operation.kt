@@ -48,7 +48,7 @@ fun ActOperation(
     act: String,
     drop: String,
     timeout: Long = 5.minutes,
-    dropsPositions: List<Int> = listOf(0),
+    dropsPositions: List<Int> = listOf(1),
     block: Device.() -> Unit = {}
 ) = Operation(name, "$act ($drop)", timeout, OperationType.活动, dropsPositions, block)
 
