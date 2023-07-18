@@ -400,24 +400,18 @@ object OperateOperations {
         tap(382, 267, desc = "SV-9").sleep()
     }
 
+    private fun Device.DV() = zone(1056, 272)
     internal val DV_8 = ActOperation("DV-8", "绿野幻梦", "炽合金") {
-        tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
-        tap(1056, 276, desc = "Zone：试验基地").sleep()
-        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
+        swipeRight()
         tap(410, 390, desc = "DV-8").nap()
     }
     internal val DV_7 = ActOperation("DV-7", "绿野幻梦", "扭转醇") {
-        tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
-        tap(1056, 276, desc = "Zone：试验基地").sleep()
-        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
-        tap(178, 447, desc = "DV-7").nap()
+        swipeRight()
+        tap(180, 450, desc = "DV-6").nap()
     }
     internal val DV_6 = ActOperation("DV-6", "绿野幻梦", "聚酸酯组") {
-        tap(终端_活动, desc = "活动：绿野幻梦").sleepl()
-        tap(1056, 276, desc = "Zone：试验基地").sleep()
-        swipev(1280 / 2, 960 / 2, -1280 * 2, 0, speed = 10.0, desc = "拉到最右").nap()
-        dragv(1280 / 2, 960 / 2, 323, 0, desc = "显示DV-6").nap()
-        tap(410, 390, desc = "DV-6").nap()
+        swipeRight(offset = 315)
+        tap(47, 436, desc = "DV-6").nap()
     }
 
     private fun Device.IC() = zone(1094, 472)
