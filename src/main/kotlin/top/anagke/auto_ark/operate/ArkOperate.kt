@@ -8,14 +8,7 @@ import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.operate.ArkOperate.刷副本结果.结果类型.*
-import top.anagke.auto_ark.operate.OperateOperations.PR_A_1
-import top.anagke.auto_ark.operate.OperateOperations.PR_A_2
-import top.anagke.auto_ark.operate.OperateOperations.PR_B_1
-import top.anagke.auto_ark.operate.OperateOperations.PR_B_2
-import top.anagke.auto_ark.operate.OperateOperations.PR_C_1
-import top.anagke.auto_ark.operate.OperateOperations.PR_C_2
-import top.anagke.auto_ark.operate.OperateOperations.PR_D_1
-import top.anagke.auto_ark.operate.OperateOperations.PR_D_2
+import top.anagke.auto_ark.operate.OperateOperations.DV_6
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_任意
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
 import top.anagke.auto_ark.operate.OperateResult.理智已不足
@@ -42,20 +35,14 @@ class ArkOperate(
         @JvmStatic
         fun main(args: Array<String>) {
             testOperations(
-                PR_A_1,
-                PR_B_1,
-                PR_C_1,
-                PR_D_1,
-                PR_A_2,
-                PR_B_2,
-                PR_C_2,
-                PR_D_2,
+                DV_6
             )
         }
 
         private fun testOperations(vararg operations: Operation) {
             val ark = App.defaultAutoArk()
             val operate = ArkOperate(ark)
+            ark.device.resetInterface()
             operations.forEach { operate.farm(it, 0) }
         }
     }

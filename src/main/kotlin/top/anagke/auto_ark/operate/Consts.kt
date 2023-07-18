@@ -402,14 +402,17 @@ object OperateOperations {
 
     private fun Device.DV() = zone(1056, 272)
     internal val DV_8 = ActOperation("DV-8", "绿野幻梦", "炽合金") {
+        DV()
         swipeRight()
         tap(410, 390, desc = "DV-8").nap()
     }
     internal val DV_7 = ActOperation("DV-7", "绿野幻梦", "扭转醇") {
+        DV()
         swipeRight()
         tap(180, 450, desc = "DV-6").nap()
     }
     internal val DV_6 = ActOperation("DV-6", "绿野幻梦", "聚酸酯组") {
+        DV()
         swipeRight(offset = 315)
         tap(47, 436, desc = "DV-6").nap()
     }
