@@ -13,7 +13,7 @@ import kotlin.io.path.writeText
 data class AutoArkSavedata(
     var isFirstRun: Boolean = true,
     var farmingPlans: List<MutableMap<String, Int>> = listOf(),
-    var farmingAdaptivePlans: List<Pair<List<String>, Int>> = listOf(listOf<String>() to 0),
+    var farmingAdaptivePlans: List<FarmingAdaptivePlan> = emptyList(),
 ) {
 
     companion object {
@@ -30,3 +30,9 @@ data class AutoArkSavedata(
     }
 
 }
+
+@Serializable
+data class FarmingAdaptivePlan(
+    val operations: List<String>,
+    val maximum: Int,
+)
