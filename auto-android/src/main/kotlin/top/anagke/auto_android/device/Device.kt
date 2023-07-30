@@ -54,11 +54,15 @@ class Device(
      * [NullPointerException].
      */
     fun cap(): Img {
-        val raw = cmd("exec-out", "screencap")
-            .waitRaw()
-            .assertSuccessful()
-            .stdout
-        return Img.decodeRaw(1280, 720, raw)
+        return try {
+            val raw = cmd("exec-out", "screencap")
+                .waitRaw()
+                .assertSuccessful()
+                .stdout
+            Img.decodeRaw(1280, 720, raw)
+        } catch (e: Exception) {
+            Img.empty(1280, 720)
+        }
     }
 
     fun tap(pos: Pos, desc: String = "") = tap(pos.x, pos.y, desc = desc)

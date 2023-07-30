@@ -38,13 +38,17 @@ private constructor(val mat: Mat) {
             OpenCV.init()
         }
 
+        fun empty(width: Int, height: Int): Img {
+            return Img(Mat(height, width, CvType.CV_8UC3, Scalar(0.0)))
+        }
+
         fun decode(originalData: ByteArray): Img? {
             if (originalData.isEmpty()) return null
             return Img(Imgcodecs.imdecode(MatOfByte(*originalData), IMREAD_UNCHANGED))
         }
 
         fun decodeRaw(width: Int, height: Int, raw: ByteArray): Img {
-            if (raw.isEmpty()) return Img(Mat(height, width, CvType.CV_8UC3, Scalar(0.0)))
+            if (raw.isEmpty()) return empty(width, height)
             val native = ByteBuffer.allocateDirect(width * height * 4).apply {
                 put(raw, 16, raw.size - 16)
             }
