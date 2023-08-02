@@ -270,13 +270,12 @@ class ArkOperate(
     }
 
     private fun findOperation(operationName: String): Operation? {
+        val stage = Stage.stagesAsOperation[operationName]
+        if (stage != null) return stage
         val operation = Operation.operations.find { it.name == operationName }
-        return if (operation != null) {
-            operation
-        } else {
-            Logger.warn("未找到名称为 $operation 的关卡")
-            null
-        }
+        if (operation != null) return operation
+        Logger.warn("未找到名称为 $operationName 的关卡")
+        return null
     }
 
 }
