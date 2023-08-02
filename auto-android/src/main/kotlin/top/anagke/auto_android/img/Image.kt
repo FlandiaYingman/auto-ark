@@ -142,6 +142,13 @@ private constructor(val mat: Mat) {
         return ocr(this)
     }
 
+    fun similarity(other: Img): Double {
+        val result = Mat().also {
+            matchTemplate(this.mat, other.mat, it, TM_CCORR_NORMED)
+        }
+        return result[0, 0][0]
+    }
+
 }
 
 private fun Point.toPos(): Pos {
