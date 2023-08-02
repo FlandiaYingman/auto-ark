@@ -8,7 +8,6 @@ import top.anagke.auto_ark.App
 import top.anagke.auto_ark.ArkModule
 import top.anagke.auto_ark.AutoArk
 import top.anagke.auto_ark.operate.ArkOperate.刷副本结果.结果类型.*
-import top.anagke.auto_ark.operate.OperateOperations.DV_6
 import top.anagke.auto_ark.operate.OperateOperations.剿灭作战_任意
 import top.anagke.auto_ark.operate.OperateResult.合成玉已刷满
 import top.anagke.auto_ark.operate.OperateResult.理智已不足
@@ -35,15 +34,17 @@ class ArkOperate(
         @JvmStatic
         fun main(args: Array<String>) {
             testOperations(
-                DV_6
+                "SL-6",
+                "SL-7",
+                "SL-8"
             )
         }
 
-        private fun testOperations(vararg operations: Operation) {
+        private fun testOperations(vararg operations: String) {
             val ark = App.defaultAutoArk()
             val operate = ArkOperate(ark)
             ark.device.resetInterface()
-            operations.forEach { operate.farm(it, 0) }
+            operations.forEach { operate.farm(operate.findOperation(it)!!, 0) }
         }
     }
 

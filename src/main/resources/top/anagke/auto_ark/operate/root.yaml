@@ -1,0 +1,87 @@
+"火山旅梦":
+  "温泉假日":
+    "SL-1":
+      position:
+        x: 1128
+        y: 369
+      page: 0
+    "SL-ST-1":
+      position:
+        x: 638
+        y: 420
+      page: 0
+    "SL-TR-1":
+      position:
+        x: 874
+        y: 420
+      page: 0
+    "SL-5":
+      position:
+        x: 649
+        y: 201
+      page: 1
+    "SL-ST-2":
+      position:
+        x: 908
+        y: 199
+      page: 1
+    "SL-6":
+      position:
+        x: 268
+        y: 198
+      page: 2
+    "SL-2":
+      position:
+        x: 304
+        y: 289
+      page: 1
+    "SL-I":
+      position:
+        x: 109
+        y: 370
+      page: 1
+    "SL-3":
+      position:
+        x: 425
+        y: 385
+      page: 1
+    "SL-4":
+      position:
+        x: 649
+        y: 384
+      page: 1
+    "SL-TR-2":
+      position:
+        x: 908
+        y: 428
+      page: 1
+    "SL-P-1":
+      position:
+        x: 324
+        y: 433
+      page: 2
+    "SL-ST-3":
+      position:
+        x: 798
+        y: 229
+      page: 2
+    "SL-7":
+      position:
+        x: 422
+        y: 331
+      page: 2
+    "SL-8":
+      position:
+        x: 640
+        y: 330
+      page: 2
+    "SL-P-2":
+      position:
+        x: 608
+        y: 433
+      page: 2
+    "SL-P-3":
+      position:
+        x: 894
+        y: 433
+      page: 2
