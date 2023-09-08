@@ -85,3 +85,65 @@
         x: 894
         y: 433
       page: 2
+"不义之财":
+  "苍白平台":
+    "CV-TR-1":
+      position:
+        x: 1026
+        y: 245
+      page: 0
+    "CV-ST-1":
+      position:
+        x: 639
+        y: 362
+      page: 0
+    "CV-1":
+      position:
+        x: 34
+        y: 362
+      page: 1
+    "CV-2":
+      position:
+        x: 435
+        y: 246
+      page: 1
+    "CV-3":
+      position:
+        x: 823
+        y: 246
+      page: 1
+    "CV-4":
+      position:
+        x: 186
+        y: 245
+      page: 2
+    "CV-ST-2":
+      position:
+        x: 187
+        y: 362
+      page: 2
+    "CV-7":
+      position:
+        x: 364
+        y: 304
+      page: 3
+    "CV-5":
+      position:
+        x: 578
+        y: 321
+      page: 2
+    "CV-6":
+      position:
+        x: 62
+        y: 399
+      page: 3
+    "CV-8":
+      position:
+        x: 637
+        y: 364
+      page: 3
+    "CV-ST-3":
+      position:
+        x: 642
+        y: 490
+      page: 3
