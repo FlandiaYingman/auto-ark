@@ -11,6 +11,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Duration
 import java.time.Instant
+import kotlin.io.path.deleteExisting
+import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.notExists
 
 /** An Arknights module which checks whether the game has newer updates. */
@@ -51,10 +53,14 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
         return version
     }
 
+
+    private fun cleanup(dir: Path) {
+        dir.listDirectoryEntries("*.apk").forEach { it.deleteExisting() }
+    }
+
     private fun downloadLatest(location: Path) {
         val url = when (config.服务器) {
             ArkServer.OFFICIAL -> ArkUrls.officialApkUrl
-//            ArkServer.BILIBILI -> ArkUrls.bilibiliApkUrl
         }
         url.openStream().use {
             Files.copy(it, location)
@@ -68,6 +74,7 @@ class ArkUpdate(auto: AutoArk) : ArkModule(auto) {
         Logger.info("检查更新，当前版本号：$currentVersion，最新版本号：$latestVersion")
         if (currentVersion != latestVersion) {
             Logger.info("检查更新，版本号不同，更新至最新版本")
+            cleanup(Path.of("./"))
             val apkFile = Path.of("./$latestVersion.apk")
 
             Logger.info("检查更新，下载最新版本中：$apkFile")
