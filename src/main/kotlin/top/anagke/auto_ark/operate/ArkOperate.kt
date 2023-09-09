@@ -34,9 +34,9 @@ class ArkOperate(
         @JvmStatic
         fun main(args: Array<String>) {
             testOperations(
-                "SL-6",
-                "SL-7",
-                "SL-8"
+                "CV-6",
+                "CV-7",
+                "CV-8"
             )
         }
 

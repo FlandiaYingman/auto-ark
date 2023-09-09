@@ -4,7 +4,6 @@ import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.decodeFromStream
 import kotlinx.serialization.Serializable
 import top.anagke.auto_android.device.nap
-import top.anagke.auto_android.device.sleep
 import top.anagke.auto_android.img.Pos
 import top.anagke.auto_android.img.det
 
@@ -25,9 +24,7 @@ data class Stage(
             event.flatMap { (zoneName, zone) ->
                 zone.mapValues { (stageName, stage) ->
                     ActOperation(stageName, "${eventName}，${zoneName}", "") {
-                        val possibleEvent = det(cap()).first { eventName in it.text }
-                        tap(possibleEvent.box.center(), desc = eventName).sleep()
-                        val possibleZone = det(cap()).first { zoneName in it.text }
+                        val possibleZone = det(cap()).firstOrNull { zoneName in it.text } ?: return@ActOperation
                         tap(possibleZone.box.center(), desc = zoneName).nap()
                         repeat(stage.page) { dragv(-1280 + 146, 0, desc = "移动 Page") }
                         tap(stage.position, desc = stageName)
