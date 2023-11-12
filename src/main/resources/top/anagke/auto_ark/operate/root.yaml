@@ -147,3 +147,80 @@
         x: 642
         y: 490
       page: 3
+"崔林特尔梅之金":
+  "朝见双塔":
+    "ZT-1":
+      position:
+        x: 504
+        y: 233
+      page: 0
+    "ZT-3":
+      position:
+        x: 895
+        y: 233
+      page: 0
+    "ZT-2":
+      position:
+        x: 717
+        y: 330
+      page: 0
+    "ZT-4":
+      position:
+        x: 59
+        y: 328
+      page: 1
+    "ZT-ST-1":
+      position:
+        x: 294
+        y: 344
+      page: 0
+    "ZT-TR-1":
+      position:
+        x: 504
+        y: 442
+      page: 0
+    "ZT-5":
+      position:
+        x: 226
+        y: 440
+      page: 1
+    "ZT-ST-2":
+      position:
+        x: 477
+        y: 339
+      page: 1
+    "ZT-TR-2":
+      position:
+        x: 987
+        y: 339
+      page: 1
+    "ZT-6":
+      position:
+        x: 477
+        y: 546
+      page: 1
+    "ZT-7":
+      position:
+        x: 772
+        y: 546
+      page: 1
+    "ZT-8":
+      position:
+        x: 257
+        y: 546
+      page: 2
+    "ZT-10":
+      position:
+        x: 448
+        y: 165
+      page: 2
+    "ZT-ST-3":
+      position:
+        x: 790
+        y: 165
+      page: 2
+    "ZT-9":
+      position:
+        x: 451
+        y: 400
+      page: 2
