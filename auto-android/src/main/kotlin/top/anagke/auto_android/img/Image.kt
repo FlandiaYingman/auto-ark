@@ -170,7 +170,7 @@ private fun discardAlpha(mat: Mat): Mat {
     val channels = mutableListOf<Mat>().also { Core.split(mat, it) }
     val alphaChannel = Mat(mat.size(), CV_8UC1, Scalar(255.0))
     when (channels.size) {
-        4 -> channels[3] = alphaChannel
+        4 -> channels.set(3, alphaChannel)
         3 -> channels += alphaChannel
         1 -> return mat
         else -> TODO("${channels.size}")
