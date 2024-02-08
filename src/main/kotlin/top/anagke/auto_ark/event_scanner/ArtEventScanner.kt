@@ -18,7 +18,6 @@ import top.anagke.auto_ark.operate.Root
 import top.anagke.auto_ark.operate.Stage
 import top.anagke.auto_ark.resetInterface
 
-/** 收取未收取的邮件。 */
 class ArtEventScanner(
     auto: AutoArk,
 ) : ArkModule(auto) {
@@ -32,9 +31,9 @@ class ArtEventScanner(
 
     override val name: String = "活动扫描模块"
     override fun run(): Unit = device.run {
-        val targetEventName = "崔林特尔梅之金"
-        val targetZoneName = "朝见双塔"
-        val targetStagePrefix = "ZT-"
+        val targetEventName = "怀黍离"
+        val targetZoneName = "种植地块"
+        val targetStagePrefix = "HS-"
 
         resetInterface()
 

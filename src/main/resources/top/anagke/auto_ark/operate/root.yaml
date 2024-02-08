@@ -224,3 +224,75 @@
         x: 451
         y: 400
       page: 2
+"怀黍离":
+  "种植地块":
+    "HS-ST-1":
+      position:
+        x: 562
+        y: 157
+      page: 0
+    "HS-1":
+      position:
+        x: 636
+        y: 316
+      page: 0
+    "HS-TR-1":
+      position:
+        x: 42
+        y: 405
+      page: 1
+    "HS-2":
+      position:
+        x: 37
+        y: 525
+      page: 1
+    "HS-TR-2":
+      position:
+        x: 498
+        y: 206
+      page: 1
+    "HS-5":
+      position:
+        x: 798
+        y: 207
+      page: 1
+    "HS-ST-2":
+      position:
+        x: 796
+        y: 387
+      page: 1
+    "HS-7":
+      position:
+        x: 163
+        y: 391
+      page: 2
+    "HS-4":
+      position:
+        x: 499
+        y: 463
+      page: 1
+    "HS-3":
+      position:
+        x: 248
+        y: 525
+      page: 1
+    "HS-6":
+      position:
+        x: 1014
+        y: 517
+      page: 1
+    "HS-ST-3":
+      position:
+        x: 562
+        y: 233
+      page: 3
+    "HS-8":
+      position:
+        x: 233
+        y: 518
+      page: 3
+    "HS-9":
+      position:
+        x: 563
+        y: 518
+      page: 3
