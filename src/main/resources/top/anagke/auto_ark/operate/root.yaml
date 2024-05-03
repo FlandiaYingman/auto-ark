@@ -296,3 +296,125 @@
         x: 563
         y: 518
       page: 3
+"慈悲灯塔":
+  "前往主题曲关卡":
+    "14-":
+      position:
+        x: 1257
+        y: 304
+      page: 0
+    "14-1":
+      position:
+        x: 639
+        y: 319
+      page: 0
+    "14-2":
+      position:
+        x: 910
+        y: 321
+      page: 0
+    "14-7":
+      position:
+        x: 1128
+        y: 244
+      page: 1
+    "14-3":
+      position:
+        x: 248
+        y: 302
+      page: 1
+    "14-5":
+      position:
+        x: 606
+        y: 344
+      page: 1
+    "14-6":
+      position:
+        x: 920
+        y: 335
+      page: 1
+    "14-4":
+      position:
+        x: 409
+        y: 397
+      page: 1
+    "14-8":
+      position:
+        x: 234
+        y: 450
+      page: 2
+    "14-11":
+      position:
+        x: 876
+        y: 333
+      page: 2
+    "14-9":
+      position:
+        x: 504
+        y: 450
+      page: 2
+    "14-12":
+      position:
+        x: 1013
+        y: 447
+      page: 2
+    "14-10":
+      position:
+        x: 696
+        y: 511
+      page: 2
+    "14-13":
+      position:
+        x: 209
+        y: 578
+      page: 3
+    "14-17":
+      position:
+        x: 962
+        y: 312
+      page: 3
+    "14-16":
+      position:
+        x: 839
+        y: 402
+      page: 3
+    "14-14":
+      position:
+        x: 387
+        y: 472
+      page: 3
+    "14-18":
+      position:
+        x: 111
+        y: 498
+      page: 4
+    "14-15":
+      position:
+        x: 642
+        y: 515
+      page: 3
+    "14-21":
+      position:
+        x: 647
+        y: 239
+      page: 4
+    "14-22":
+      position:
+        x: 922
+        y: 324
+      page: 4
+    "14-20":
+      position:
+        x: 648
+        y: 397
+      page: 4
+    "14-19":
+      position:
+        x: 536
+        y: 502
+      page: 4
+    "14-23":
+      position:
+        x: 639
+        y: 320
+      page: 6
