@@ -13,23 +13,25 @@ import kotlin.io.path.writeBytes
 import kotlin.let
 import kotlin.math.roundToInt
 
+// PaddlePaddle and PaddleOCR are required.
+// https://paddlepaddle.github.io/PaddleOCR/latest/quick_start.html
 
-fun ocr(img: dev.flandia.android.img.Img): String {
+fun ocr(img: Img): String {
     val paddleOCRExe = "paddleocr"
     return TempFiles.useSystemTempFile("png") { temp ->
-        temp.writeBytes(dev.flandia.android.img.Img.encode(img))
+        temp.writeBytes(Img.encode(img))
 
         val stdout = openProc(paddleOCRExe, "--det=false", "--show_log=false", "--image_dir", temp.toString())
-            .waitText(charset = charset("GBK"), timeout = 3.minutes)
+            .waitText(timeout = 3.minutes)
             .stdout
         Result.parse(stdout)
     }.text
 }
 
-fun det(img: dev.flandia.android.img.Img): List<DetResult> {
+fun det(img: Img): List<DetResult> {
     val paddleOCRExe = "paddleocr"
     return TempFiles.useSystemTempFile("png") { temp ->
-        temp.writeBytes(dev.flandia.android.img.Img.encode(img))
+        temp.writeBytes(Img.encode(img))
 
         val stdout = openProc(paddleOCRExe, "--det=true", "--show_log=false", "--image_dir", temp.toString())
             .waitText(timeout = 3.minutes)
@@ -47,7 +49,9 @@ private data class Result(
             val regex = """\('(.*?)', ([\d.]*?)\)""".toRegex()
             return regex.find(string)
                 ?.destructured
-                ?.let { (textString, confidenceString) -> Result(textString, confidenceString.toDouble()) }
+                ?.let { (textString, confidenceString) -> Result(textString.trim {
+                    Regex("[^\\p{IsHan}\\w-]").matches(it.toString())
+                }, confidenceString.toDouble()) }
                 ?: throw IllegalArgumentException("cannot parse $string to Result")
         }
     }

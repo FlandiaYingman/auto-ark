@@ -1,7 +1,6 @@
 package dev.flandia.ark.recruit
 
 
-import org.tinylog.kotlin.Logger
 import dev.flandia.android.device.*
 import dev.flandia.android.img.Tmpl
 import dev.flandia.android.img.ocr
@@ -23,6 +22,7 @@ import dev.flandia.ark.recruit.RecruitTemplates.招募槽3空闲
 import dev.flandia.ark.recruit.RecruitTemplates.招募槽4完成
 import dev.flandia.ark.recruit.RecruitTemplates.招募槽4招募中
 import dev.flandia.ark.recruit.RecruitTemplates.招募槽4空闲
+import org.tinylog.kotlin.Logger
 import java.util.stream.Collectors
 
 private enum class RecruitSlot(
@@ -62,11 +62,16 @@ private enum class RecruitTag(
     TAG5(Rect(542, 432, 144, 46)),
 }
 
-
 class ArkRecruit(
     auto: AutoArk,
 ) : ArkModule(auto) {
 
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ArkRecruit(App.defaultAutoArk()).run()
+        }
+    }
 
     private var hasRecruitmentPermit = true
 
@@ -83,7 +88,7 @@ class ArkRecruit(
         tap(1000, 510) //公开招募
         await(公开招募界面)
 
-        RecruitSlot.values().forEach { slot ->
+        RecruitSlot.entries.forEach { slot ->
             autoSlot(slot)
         }
 
@@ -117,7 +122,7 @@ class ArkRecruit(
 
     private fun Device.parseTags(): Map<RecruitTag, String> {
         val cap = cap()
-        return RecruitTag.values().toList()
+        return entries
             .parallelStream()
             .map { it to ocr(cap.crop(it.screenRect).invert()) }
             .collect(Collectors.toList())
@@ -139,13 +144,13 @@ class ArkRecruit(
 
             val mostPossibleRarity = possibleOperators.min().rarity
             Logger.info("最可能星级：$mostPossibleRarity")
-            if (mostPossibleRarity == 5) {
+            if (mostPossibleRarity == 6) {
                 Logger.info("最可能星级等于六星，退出")
                 skippingSlotList += slot
                 exitRecruit()
                 break
             }
-            if ((mostPossibleRarity == 2 || mostPossibleRarity == 1) && match(可刷新标签)) {
+            if ((mostPossibleRarity == 3 || mostPossibleRarity == 2) && match(可刷新标签)) {
                 Logger.info("最低可能星级等于三星且可刷新，刷新")
                 tap(972, 408).nap() //刷新TAG
                 tap(877, 508).sleep() //确认刷新TAG
@@ -204,8 +209,4 @@ class ArkRecruit(
         Logger.info("完成招募：${slot.name}，完毕")
     }
 
-}
-
-fun main() {
-    ArkRecruit(App.defaultAutoArk()).run()
 }
