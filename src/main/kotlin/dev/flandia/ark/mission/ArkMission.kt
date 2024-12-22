@@ -13,6 +13,11 @@ class ArkMission(
     companion object {
         // 仍有任务奖励尚未领取
         private val 可收集 by tmpl()
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ArkMission(App.defaultAutoArk()).run()
+        }
     }
 
     override val name = "任务模块"
