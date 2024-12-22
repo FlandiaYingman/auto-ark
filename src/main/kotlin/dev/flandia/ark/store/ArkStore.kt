@@ -11,40 +11,40 @@ class ArkStore(
     companion object {
         private val 已领取信用点 by tmpl()
         private val 购买物品提示框 by tmpl()
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ArkStore(App.defaultAutoArk()).run()
+        }
     }
 
     override val name: String = "商店模块"
 
-
     override fun run(): Unit = device.run {
         assert(主界面)
 
-        enterStore()
-        autoCreditStore()
+        进入商店()
+        进入信用商店()
+        领取信用点()
+        消耗信用点()
         resetInterface()
     }
 
-    private fun enterStore() = device.apply {
-        tap(832, 479).sleep()
+    private fun 进入商店() = device.apply {
+        tap(832, 479).sleepl()
     }
 
-    fun autoCreditStore() = device.apply {
-        enterCreditStore()
-        gainCredit()
-        consumeCredit()
+    private fun 进入信用商店() = device.apply {
+        tap(1198, 106).sleepl()
     }
 
-    private fun enterCreditStore() = device.apply {
-        tap(1198, 106).sleep()
-    }
-
-    private fun gainCredit() = device.apply {
+    private fun 领取信用点() = device.apply {
         whileNotMatch(已领取信用点) {
             tap(1026, 39).sleep()
         }
     }
 
-    private fun consumeCredit() = device.apply {
+    private fun 消耗信用点() = device.apply {
         val commodities = listOf(
             Pos(129, 274),
             Pos(384, 271),
