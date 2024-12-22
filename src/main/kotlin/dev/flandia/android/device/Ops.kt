@@ -93,7 +93,7 @@ fun Device.whileMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -
     }
 }
 
-fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit) {
+fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: () -> Unit): Tmpl {
     val frequency = newFrequency(timeout)
     val begin = Instant.now()
     while (frequency.run { which(*tmpls) } == null) {
@@ -102,6 +102,7 @@ fun Device.whileNotMatch(vararg tmpls: Tmpl, timeout: Long = 1.minutes, block: (
             throw TimeoutException("timeout after $timeout ms")
         }
     }
+    return lastMatchedTmpl!!
 }
 
 

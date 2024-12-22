@@ -39,17 +39,24 @@ class ArkLogin(
 
     private fun Device.loginOfficial() {
         Logger.info("登录明日方舟（官服）")
-        whileNotMatch(开始界面, timeout = 10.minutes) {
+        whileNotMatch(开始界面, 开始界面_第一次登录, timeout = 10.minutes) {
             tap(640, 360).nap()
         }
+        val 第一次登录 = matched(开始界面_第一次登录)
 
-        if (conf.切换账户) {
+        tap(640, 515, desc = "开始唤醒").sleepl()
+
+        if (conf.用户名 != "") {
             Logger.info("登录明日方舟（官服），切换账号为：${conf.用户名}")
 
-            tap(925, 684, desc = "账号管理").nap()
+            if (第一次登录) {
+                tap(640, 515, desc = "账号登录").sleep()
+            } else {
+                tap(925, 684, desc = "账号管理").nap()
+                tap(640, 500, desc = "登录其它账号").nap()
+            }
 
-            tap(640, 500, desc = "登录其它账号").nap()
-            tap(784, 560, desc = "密码登录").nap()
+            tap(789, 560, desc = "密码登录").nap()
 
             tap(500, 270, desc = "用户名栏").nap()
             input(conf.用户名, desc = "输入用户名").nap()
@@ -62,6 +69,9 @@ class ArkLogin(
             Logger.info("登录明日方舟（官服），完成切换账号，登录")
             tap(640, 500, desc = "登录其它账号").sleepl()
         } else {
+            if (第一次登录) {
+                throw IllegalStateException("第一次登录，请手动完成登录或配置登陆配置")
+            }
             Logger.info("登录明日方舟（官服），检测到登录界面，登录")
             tap(640, 515, desc = "开始唤醒").sleepl()
         }

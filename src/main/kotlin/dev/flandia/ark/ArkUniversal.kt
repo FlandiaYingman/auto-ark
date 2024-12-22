@@ -56,8 +56,8 @@ fun today(): DayOfWeek {
 }
 
 
-// 开始界面
 val 开始界面 by tmpl()
+val 开始界面_第一次登录 by tmpl()
 
 // 登录认证已失效
 val 登录认证失效 by tmpl()
