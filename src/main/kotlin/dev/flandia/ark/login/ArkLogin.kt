@@ -11,8 +11,6 @@ class ArkLogin(
 ) : ArkModule(auto) {
 
     companion object {
-        private val 登录界面 by tmpl()
-
         @JvmStatic
         fun main(args: Array<String>) {
             ArkLogin(App.defaultAutoArk()).run()
