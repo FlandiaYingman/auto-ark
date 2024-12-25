@@ -418,3 +418,70 @@
         x: 639
         y: 320
       page: 6
+"银心湖列车":
+  "三号站台":
+    "RS-ST-1":
+      position:
+        x: 292
+        y: 200
+      page: 0
+    "RS-1":
+      position:
+        x: 834
+        y: 200
+      page: 0
+    "RS-TR-1":
+      position:
+        x: 509
+        y: 290
+      page: 0
+    "RS-2":
+      position:
+        x: 84
+        y: 290
+      page: 1
+    "RS-3":
+      position:
+        x: 325
+        y: 201
+      page: 1
+    "RS-ST-2":
+      position:
+        x: 768
+        y: 201
+      page: 1
+    "RS-4":
+      position:
+        x: 548
+        y: 290
+      page: 1
+    "RS-5":
+      position:
+        x: 1000
+        y: 290
+      page: 1
+    "RS-6":
+      position:
+        x: 282
+        y: 200
+      page: 2
+    "RS-8":
+      position:
+        x: 418
+        y: 200
+      page: 3
+    "RS-ST-3":
+      position:
+        x: 773
+        y: 198
+      page: 3
+    "RS-7":
+      position:
+        x: 695
+        y: 383
+      page: 2
+    "RS-":
+      position:
+        x: 410
+        y: 383
+      page: 3
