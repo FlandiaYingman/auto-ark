@@ -39,7 +39,7 @@ dependencies {
 
 kotlin {
     compilerOptions {
-        jvmToolchain(21)
+        jvmToolchain(23)
     }
 }
 
