@@ -22,7 +22,7 @@ fun ocr(img: Img): String {
         temp.writeBytes(Img.encode(img))
 
         val stdout = openProc(paddleOCRExe, "--det=false", "--show_log=false", "--image_dir", temp.toString())
-            .waitText(timeout = 3.minutes)
+            .waitText(timeout = 10.minutes)
             .stdout
         Result.parse(stdout)
     }.text
@@ -34,7 +34,7 @@ fun det(img: Img): List<DetResult> {
         temp.writeBytes(Img.encode(img))
 
         val stdout = openProc(paddleOCRExe, "--det=true", "--show_log=false", "--image_dir", temp.toString())
-            .waitText(timeout = 3.minutes)
+            .waitText(timeout = 10.minutes)
             .stdout
         DetResult.parse(stdout)
     }
