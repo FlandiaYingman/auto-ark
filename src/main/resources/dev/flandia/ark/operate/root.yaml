@@ -485,3 +485,70 @@
         x: 410
         y: 383
       page: 3
+"相见欢":
+  "识七味":
+    "OR-ST-1":
+      position:
+        x: 448
+        y: 225
+      page: 0
+    "OR-TR-1":
+      position:
+        x: 596
+        y: 358
+      page: 0
+    "OR-3":
+      position:
+        x: 127
+        y: 410
+      page: 1
+    "OR-1":
+      position:
+        x: 595
+        y: 544
+      page: 0
+    "OR-2":
+      position:
+        x: 960
+        y: 545
+      page: 0
+    "OR-6":
+      position:
+        x: 32
+        y: 259
+      page: 2
+    "OR-4":
+      position:
+        x: 284
+        y: 271
+      page: 1
+    "OR-ST-2":
+      position:
+        x: 808
+        y: 362
+      page: 1
+    "OR-7":
+      position:
+        x: 205
+        y: 363
+      page: 2
+    "OR-5":
+      position:
+        x: 523
+        y: 483
+      page: 1
+    "OR-8":
+      position:
+        x: 109
+        y: 423
+      page: 3
+    "OR-9":
+      position:
+        x: 363
+        y: 422
+      page: 3
+    "OR-ST-3":
+      position:
+        x: 640
+        y: 423
+      page: 3

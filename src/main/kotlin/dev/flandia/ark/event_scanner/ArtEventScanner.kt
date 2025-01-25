@@ -30,10 +30,11 @@ class ArtEventScanner(
     }
 
     override val name: String = "活动扫描模块"
+
     override fun run(): Unit = device.run {
-        val targetEventName = "慈悲灯塔"
-        val targetZoneName = "主题曲"
-        val targetStagePrefix = "14-"
+        val targetEventName = "相见欢"
+        val targetZoneName = "识七味"
+        val targetStagePrefix = "OR-"
 
         resetInterface()
 

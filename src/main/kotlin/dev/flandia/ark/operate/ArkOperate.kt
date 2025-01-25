@@ -1,7 +1,6 @@
 package dev.flandia.ark.operate
 
 
-import org.tinylog.kotlin.Logger
 import dev.flandia.android.device.*
 import dev.flandia.android.util.Rect
 import dev.flandia.ark.App
@@ -25,6 +24,7 @@ import dev.flandia.ark.operate.OperateTemplates.等级提升
 import dev.flandia.ark.operate.OperateTemplates.编队界面
 import dev.flandia.ark.operate.OperateTemplates.行动结束
 import dev.flandia.ark.resetInterface
+import org.tinylog.kotlin.Logger
 
 class ArkOperate(
     auto: AutoArk,
@@ -33,9 +33,7 @@ class ArkOperate(
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            testOperations(
-                "14-19",
-            )
+            ArkOperate(App.defaultAutoArk()).run()
         }
 
         private fun testOperations(vararg operations: String) {
@@ -261,9 +259,9 @@ class ArkOperate(
             tap(640, 360).sleep()
             tap(640, 360).sleep()
         }
-        tap(640, 360).sleep()
-        tap(640, 360).nap()
-        await(关卡信息界面_代理指挥开启)
+        whileNotMatch(关卡信息界面_代理指挥开启) {
+            tap(640, 360).sleep()
+        }
         Logger.info("代理指挥关卡：$operation，完毕")
         return OperateResult.成功
     }
